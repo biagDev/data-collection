@@ -2,14 +2,15 @@
 
 How often does NQ retrace to the high or low of the 9:45-10:00 ET candle (the 2nd 15-minute candle of the regular session) within the next 15 / 30 / 45 minutes after it closes?
 
+> **Correction note (2026-04-25):** the initial run had an off-by-one bug — the Pine bar conditions used `h==10, m==15` to refer to the "1st post-candle" but in TradingView that bar covers 10:15-10:30, not 10:00-10:15 (Pine's `time` is the bar's open time). The numbers below are the corrected version that includes the immediate 10:00-10:15 candle. See git history for the buggy version.
+
 ## Setup
 
 - **Symbol**: `CME_MINI:NQ1!` (continuous front-month)
 - **Timeframe**: 15-minute
 - **Subject candle**: 9:45-10:00 ET
-- **Sample**: 232 trading days (same chart history as the 9:30 analysis)
+- **Sample**: 232 trading days
 - **Data captured**: 2026-04-25
-- **Method**: Pine Script indicator across all loaded chart history; counts emitted via on-chart tables read back over the MCP
 
 ## Definitions
 
@@ -25,43 +26,23 @@ A "hit" = a subsequent candle's wick traded back to the subject candle's high (�
 | High touched (any) | `high_only + both` |
 | Low touched (any) | `low_only + both` |
 
-Three forward windows are measured (each cumulative from 10:00):
+Three forward windows (each cumulative from 10:00):
 
 - **By 10:15** — the 10:00-10:15 candle (1 candle after subject closes)
-- **By 10:30** — the 10:00-10:15 + 10:15-10:30 candles (2 candles)
-- **By 10:45** — the 10:00-10:15 + 10:15-10:30 + 10:30-10:45 candles (3 candles)
+- **By 10:30** — adds the 10:15-10:30 candle (2 candles)
+- **By 10:45** — adds the 10:30-10:45 candle (3 candles)
 
 ## Aggregate Results (n=232)
 
 | Outcome | By 10:15 | By 10:30 | By 10:45 |
 |---|---|---|---|
-| **Either side** | 189 (81.47%) | 216 (93.10%) | **225 (96.98%)** |
-| **Both sides** | 6 (2.59%) | 23 (9.91%) | 34 (14.66%) |
-| High only | 103 (44.40%) | 111 (47.84%) | 108 (46.55%) |
-| Low only | 80 (34.48%) | 82 (35.34%) | 83 (35.78%) |
-| Neither | 43 (18.53%) | 16 (6.90%) | 7 (3.02%) |
-| High touched (any) | 109 (46.98%) | 134 (57.76%) | 142 (61.21%) |
-| Low touched (any) | 86 (37.07%) | 105 (45.26%) | 117 (50.43%) |
-
-### Key takeaways
-
-- **The 9:45 candle is a slightly weaker magnet than the 9:30 candle.** By 15 min after close, only ~81% of days retest a side, vs. 90% for the 9:30 candle. By 45 min, both converge to ~97%.
-- **High-bias persists.** Across all three windows, the high gets touched more often than the low (61.2% vs 50.4% by 10:45). Same directional skew as the 9:30 stats.
-- **Full sweeps are rare in the first 15 min** (2.59%) but climb to 14.66% by 10:45 — slightly less than the 9:30 candle's 15.95% by 10:15.
-- **18.5% of days never retest the 9:45 candle within 15 min after it closes** — meaningful price expansion away from this range is common right at the 10:00 mark.
-
-## Comparison vs. 9:30 candle
-
-For the same observation cutoff (45 min after candle close):
-
-| Metric | 9:30 candle (by 10:15) | 9:45 candle (by 10:45) |
-|---|---|---|
-| Either hit | 96.98% | 96.98% |
-| Both sides | 15.95% | 14.66% |
-| High touched | 58.62% | 61.21% |
-| Low touched | 54.31% | 50.43% |
-
-Almost identical retrace rates — the 9:45 candle behaves like a slightly more high-skewed version of the 9:30 range.
+| **Either side** | 200 (86.21%) | 217 (93.53%) | **226 (97.41%)** |
+| **Both sides** | 13 (5.60%) | 31 (13.36%) | **52 (22.41%)** |
+| High only | 104 (44.83%) | 101 (43.53%) | 98 (42.24%) |
+| Low only | 83 (35.78%) | 85 (36.64%) | 76 (32.76%) |
+| Neither | 32 (13.79%) | 15 (6.47%) | 6 (2.59%) |
+| **High touched (any)** | 117 (50.43%) | 132 (56.90%) | **150 (64.66%)** |
+| **Low touched (any)** | 96 (41.38%) | 116 (50.00%) | **128 (55.17%)** |
 
 ## Day-of-Week Breakdown
 
@@ -69,47 +50,27 @@ Almost identical retrace rates — the 9:45 candle behaves like a slightly more 
 | | Mon | Tue | Wed | Thu | Fri |
 |---|---|---|---|---|---|
 | n | 47 | 47 | 47 | 45 | 46 |
-| By 10:15 | 80.85 | 76.60 | 85.11 | 75.56 | **89.13** |
-| By 10:30 | 91.49 | 91.49 | 93.62 | 91.11 | **97.83** |
-| By 10:45 | 95.74 | 91.49 | **100.00** | 97.78 | **100.00** |
+| By 10:15 | 85.11 | 89.36 | 91.49 | 77.78 | 86.96 |
+| By 10:30 | 93.62 | 91.49 | 95.74 | 91.11 | 95.65 |
+| By 10:45 | 97.87 | 95.74 | **100.00** | 95.56 | 97.83 |
 
-### Both sides hit / full sweep (%)
+### Both sides hit (%)
 | | Mon | Tue | Wed | Thu | Fri |
 |---|---|---|---|---|---|
-| By 10:15 | 2.13 | **8.51** | 2.13 | 0.00 | 0.00 |
-| By 10:30 | 8.51 | **19.15** | 8.51 | 11.11 | 2.17 |
-| By 10:45 | 14.89 | **25.53** | 8.51 | 17.78 | 6.52 |
+| By 10:15 | 4.26 | 8.51 | 2.13 | 8.89 | 4.35 |
+| By 10:30 | 8.51 | 19.15 | 10.64 | 17.78 | 10.87 |
+| By 10:45 | 17.02 | **34.04** | 17.02 | 28.89 | 15.22 |
 
-### Directional split — High-only / Low-only counts
+### Directional split (counts)
 | | Mon | Tue | Wed | Thu | Fri |
 |---|---|---|---|---|---|
-| Hi15 / Lo15 | **28 / 9** | 16 / 16 | 22 / 17 | 16 / 18 | 21 / 20 |
-| Hi30 / Lo30 | **27 / 12** | 19 / 15 | 22 / 18 | 20 / 16 | 23 / 21 |
-| Hi45 / Lo45 | **26 / 12** | 16 / 15 | 23 / 20 | 21 / 15 | 22 / 21 |
-
-### Day-of-week observations
-
-- **Monday strongly bullish** at the 10:00 mark — the high gets retested ~3× as often as the low (28 vs 9 in the 10:15 window). Same Monday-bullish pattern seen in the 9:30 analysis.
-- **Tuesday is the sweep day** — full retraces of both sides happen 25.5% of the time by 10:45, the highest of any DOW for either analysis.
-- **Wednesday and Friday are 100% retest days** by 10:45 — every Wed and Fri in the sample touched at least one side within 45 min.
-- **Friday is balanced directionally** — high and low retests are nearly equal across all windows (e.g. 22 / 21 by 10:45), unlike Friday's bullish-lean for the 9:30 candle.
-
-## Caveats
-
-- **Same 232-day sample** as the 9:30 analysis — limited by TradingView's 15m history depth for NQ1!.
-- **Continuous contract roll noise** is included; not filtered.
-- **Wick definition**: a "hit" only requires the candle's wick to reach the level, not a sustained close.
+| Hi15 / Lo15 | **29 / 9** | 16 / 22 | 25 / 17 | 17 / 14 | 17 / 21 |
+| Hi30 / Lo30 | **30 / 10** | 14 / 20 | 23 / 17 | 16 / 17 | 18 / 21 |
+| Hi45 / Lo45 | **27 / 11** | 14 / 15 | 22 / 17 | 16 / 14 | 19 / 19 |
 
 ## Files
 
-- `pine/945_hit_stats.pine` — Pine Script source
+- `pine/945_hit_stats.pine` — Pine Script source (corrected version)
 - `data/results.json` — full structured results
 - `data/aggregate.csv` — aggregate table
 - `data/by_dow.csv` — day-of-week breakdown
-
-## Reproducing
-
-1. Open `CME_MINI:NQ1!` on a 15m chart in TradingView Desktop with the MCP debug port enabled.
-2. Scroll back to load full available history.
-3. Add `pine/945_hit_stats.pine` as an indicator.
-4. Read the on-chart tables via MCP: `data_get_pine_tables(study_filter="945 Hit Stats")`.

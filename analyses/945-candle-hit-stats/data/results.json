@@ -8,56 +8,49 @@
     "by_10_45": "10:00-10:45 ET (next 3 candles)"
   },
   "definition": {
-    "hit": "A subsequent candle's wick traded back to the 9:45 candle's high (>= H) or low (<= L)",
-    "high_only": "High was hit, low was NOT hit",
-    "low_only": "Low was hit, high was NOT hit",
-    "both_sides": "High AND low were both hit (full sweep)",
-    "either_side": "High OR low was hit",
-    "neither": "Neither extreme was retraced to",
-    "high_any": "high_only + both_sides",
-    "low_any": "low_only + both_sides"
+    "hit": "A subsequent candle's wick traded back to the 9:45 candle's high (>= H) or low (<= L)"
   },
   "as_of_date": "2026-04-25",
   "data_source": "TradingView Desktop chart, NQ1! continuous front-month",
   "sample_size_days": 232,
-  "history_note": "Loaded chart history capped at ~mid-2025. Same sample as 930-candle-hit-stats.",
+  "correction_note": "Initial run had off-by-one bug (skipped the 10:00-10:15 candle). This version is corrected and uses the actual immediate post-close candle.",
 
   "aggregate": {
     "total_days": 232,
     "by_10_15": {
-      "either_side": { "count": 189, "pct": 81.47 },
-      "both_sides":  { "count": 6,   "pct": 2.59 },
-      "high_only":   { "count": 103, "pct": 44.40 },
-      "low_only":    { "count": 80,  "pct": 34.48 },
-      "neither":     { "count": 43,  "pct": 18.53 },
-      "high_any":    { "count": 109, "pct": 46.98 },
-      "low_any":     { "count": 86,  "pct": 37.07 }
+      "either_side": { "count": 200, "pct": 86.21 },
+      "both_sides":  { "count": 13,  "pct": 5.60 },
+      "high_only":   { "count": 104, "pct": 44.83 },
+      "low_only":    { "count": 83,  "pct": 35.78 },
+      "neither":     { "count": 32,  "pct": 13.79 },
+      "high_any":    { "count": 117, "pct": 50.43 },
+      "low_any":     { "count": 96,  "pct": 41.38 }
     },
     "by_10_30": {
-      "either_side": { "count": 216, "pct": 93.10 },
-      "both_sides":  { "count": 23,  "pct": 9.91 },
-      "high_only":   { "count": 111, "pct": 47.84 },
-      "low_only":    { "count": 82,  "pct": 35.34 },
-      "neither":     { "count": 16,  "pct": 6.90 },
-      "high_any":    { "count": 134, "pct": 57.76 },
-      "low_any":     { "count": 105, "pct": 45.26 }
+      "either_side": { "count": 217, "pct": 93.53 },
+      "both_sides":  { "count": 31,  "pct": 13.36 },
+      "high_only":   { "count": 101, "pct": 43.53 },
+      "low_only":    { "count": 85,  "pct": 36.64 },
+      "neither":     { "count": 15,  "pct": 6.47 },
+      "high_any":    { "count": 132, "pct": 56.90 },
+      "low_any":     { "count": 116, "pct": 50.00 }
     },
     "by_10_45": {
-      "either_side": { "count": 225, "pct": 96.98 },
-      "both_sides":  { "count": 34,  "pct": 14.66 },
-      "high_only":   { "count": 108, "pct": 46.55 },
-      "low_only":    { "count": 83,  "pct": 35.78 },
-      "neither":     { "count": 7,   "pct": 3.02 },
-      "high_any":    { "count": 142, "pct": 61.21 },
-      "low_any":     { "count": 117, "pct": 50.43 }
+      "either_side": { "count": 226, "pct": 97.41 },
+      "both_sides":  { "count": 52,  "pct": 22.41 },
+      "high_only":   { "count": 98,  "pct": 42.24 },
+      "low_only":    { "count": 76,  "pct": 32.76 },
+      "neither":     { "count": 6,   "pct": 2.59 },
+      "high_any":    { "count": 150, "pct": 64.66 },
+      "low_any":     { "count": 128, "pct": 55.17 }
     }
   },
 
   "by_day_of_week": {
-    "Mon": { "n": 47, "by_10_15": { "either_pct": 80.85, "both_pct": 2.13, "high_only": 28, "low_only":  9, "neither":  9 }, "by_10_30": { "either_pct": 91.49, "both_pct":  8.51, "high_only": 27, "low_only": 12, "neither": 4 }, "by_10_45": { "either_pct": 95.74, "both_pct": 14.89, "high_only": 26, "low_only": 12, "neither": 2 } },
-    "Tue": { "n": 47, "by_10_15": { "either_pct": 76.60, "both_pct": 8.51, "high_only": 16, "low_only": 16, "neither": 11 }, "by_10_30": { "either_pct": 91.49, "both_pct": 19.15, "high_only": 19, "low_only": 15, "neither": 4 }, "by_10_45": { "either_pct": 91.49, "both_pct": 25.53, "high_only": 16, "low_only": 15, "neither": 4 } },
-    "Wed": { "n": 47, "by_10_15": { "either_pct": 85.11, "both_pct": 2.13, "high_only": 22, "low_only": 17, "neither":  7 }, "by_10_30": { "either_pct": 93.62, "both_pct":  8.51, "high_only": 22, "low_only": 18, "neither": 3 }, "by_10_45": { "either_pct": 100.00,"both_pct":  8.51, "high_only": 23, "low_only": 20, "neither": 0 } },
-    "Thu": { "n": 45, "by_10_15": { "either_pct": 75.56, "both_pct": 0.00, "high_only": 16, "low_only": 18, "neither": 11 }, "by_10_30": { "either_pct": 91.11, "both_pct": 11.11, "high_only": 20, "low_only": 16, "neither": 4 }, "by_10_45": { "either_pct": 97.78, "both_pct": 17.78, "high_only": 21, "low_only": 15, "neither": 1 } },
-    "Fri": { "n": 46, "by_10_15": { "either_pct": 89.13, "both_pct": 0.00, "high_only": 21, "low_only": 20, "neither":  5 }, "by_10_30": { "either_pct": 97.83, "both_pct":  2.17, "high_only": 23, "low_only": 21, "neither": 1 }, "by_10_45": { "either_pct": 100.00,"both_pct":  6.52, "high_only": 22, "low_only": 21, "neither": 0 } }
+    "Mon": { "n": 47, "by_10_15": { "either_pct": 85.11, "both_pct": 4.26, "high_only": 29, "low_only":  9, "neither":  7 }, "by_10_30": { "either_pct": 93.62, "both_pct":  8.51, "high_only": 30, "low_only": 10, "neither": 3 }, "by_10_45": { "either_pct": 97.87, "both_pct": 17.02, "high_only": 27, "low_only": 11, "neither": 1 } },
+    "Tue": { "n": 47, "by_10_15": { "either_pct": 89.36, "both_pct": 8.51, "high_only": 16, "low_only": 22, "neither":  5 }, "by_10_30": { "either_pct": 91.49, "both_pct": 19.15, "high_only": 14, "low_only": 20, "neither": 4 }, "by_10_45": { "either_pct": 95.74, "both_pct": 34.04, "high_only": 14, "low_only": 15, "neither": 2 } },
+    "Wed": { "n": 47, "by_10_15": { "either_pct": 91.49, "both_pct": 2.13, "high_only": 25, "low_only": 17, "neither":  4 }, "by_10_30": { "either_pct": 95.74, "both_pct": 10.64, "high_only": 23, "low_only": 17, "neither": 2 }, "by_10_45": { "either_pct":100.00, "both_pct": 17.02, "high_only": 22, "low_only": 17, "neither": 0 } },
+    "Thu": { "n": 45, "by_10_15": { "either_pct": 77.78, "both_pct": 8.89, "high_only": 17, "low_only": 14, "neither": 10 }, "by_10_30": { "either_pct": 91.11, "both_pct": 17.78, "high_only": 16, "low_only": 17, "neither": 4 }, "by_10_45": { "either_pct": 95.56, "both_pct": 28.89, "high_only": 16, "low_only": 14, "neither": 2 } },
+    "Fri": { "n": 46, "by_10_15": { "either_pct": 86.96, "both_pct": 4.35, "high_only": 17, "low_only": 21, "neither":  6 }, "by_10_30": { "either_pct": 95.65, "both_pct": 10.87, "high_only": 18, "low_only": 21, "neither": 2 }, "by_10_45": { "either_pct": 97.83, "both_pct": 15.22, "high_only": 19, "low_only": 19, "neither": 1 } }
   }
 }

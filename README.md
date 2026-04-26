@@ -10,5 +10,11 @@ Requires TradingView Desktop running with `--remote-debugging-port=9222`. Use `t
 
 ## Analyses
 
-- [analyses/930-candle-hit-stats](analyses/930-candle-hit-stats) — How often does NQ retrace to the high or low of the 9:30 ET 15m opening candle within 15 / 30 minutes? Aggregate + day-of-week breakdown across 232 days.
-- [analyses/945-candle-hit-stats](analyses/945-candle-hit-stats) — Same analysis for the 9:45-10:00 ET candle, measured 15 / 30 / 45 min after it closes. 232 days.
+### NQ Opening-range candle hit-rate series
+
+For each of the first four 15-minute candles of the NQ regular session, we measure how often subsequent candles wick back to the subject candle's high or low. Each analysis includes aggregate + day-of-week breakdown, and `both / high-only / low-only / either / neither` partitions plus `high-any / low-any` totals. Sample = 232 trading days of NQ1! 15m data.
+
+- [analyses/930-candle-hit-stats](analyses/930-candle-hit-stats) — 9:30-9:45 ET candle, measured by 10:00 / 10:15
+- [analyses/945-candle-hit-stats](analyses/945-candle-hit-stats) — 9:45-10:00 ET candle, by 10:15 / 10:30 / 10:45 _(corrected; see README note)_
+- [analyses/1000-candle-hit-stats](analyses/1000-candle-hit-stats) — 10:00-10:15 ET candle, by 10:30 / 10:45 / 11:00
+- [analyses/1015-candle-hit-stats](analyses/1015-candle-hit-stats) — 10:15-10:30 ET candle, by 10:45 / 11:00 / 11:15
