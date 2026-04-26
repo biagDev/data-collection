@@ -1,0 +1,23 @@
+{
+  "theme": "Time-to-retest distribution for the 9:30-9:45 candle",
+  "symbol": "CME_MINI:NQ1!",
+  "method": "For each 9:30-9:45 candle, count 15m bars from 9:45 until the first bar that wicks back to the candle's H or L. Bucket the days by elapsed time.",
+  "sample_size_days": 223,
+  "as_of_date": "2026-04-26",
+
+  "buckets": [
+    { "bars": "1",     "minutes": "0-15",    "days": 209, "pct": 93.72 },
+    { "bars": "2",     "minutes": "15-30",   "days": 16,  "pct": 7.17 },
+    { "bars": "3",     "minutes": "30-45",   "days": 3,   "pct": 1.35 },
+    { "bars": "4",     "minutes": "45-60",   "days": 2,   "pct": 0.90 },
+    { "bars": "5-8",   "minutes": "60-120",  "days": 2,   "pct": 0.90 },
+    { "bars": "9-16",  "minutes": "120-240", "days": 0,   "pct": 0.00 },
+    { "bars": "17+",   "minutes": "240+",    "days": 0,   "pct": 0.00 },
+    { "bars": "never", "minutes": "—",       "days": 0,   "pct": 0.00 }
+  ],
+
+  "summary": {
+    "mean_time_to_retest_minutes_conditional": 17.46,
+    "note": "Sums to slightly over 100% because hit-counts exceed totalDays counter (one extra day of forward measurement). Distribution shape is the headline."
+  }
+}

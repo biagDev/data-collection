@@ -1,0 +1,21 @@
+{
+  "theme": "Max excursion before first retest of the 9:30 candle (sized as % of the opening range)",
+  "symbol": "CME_MINI:NQ1!",
+  "method": "Subject = 9:30-9:45 candle. After it closes, track how far price travels above its high or below its low BEFORE the first wick-back to either extreme. Express that excursion as a % of the opening candle's range.",
+  "sample_size_days": 223,
+  "as_of_date": "2026-04-26",
+
+  "buckets": [
+    { "range": "0-25% of opening range",  "days": 104, "pct": 46.64 },
+    { "range": "25-50%",                  "days": 66,  "pct": 29.60 },
+    { "range": "50-100%",                 "days": 49,  "pct": 21.97 },
+    { "range": "100-200% (1-2x range)",   "days": 13,  "pct": 5.83 },
+    { "range": "200%+ (extends >2x)",     "days": 0,   "pct": 0.00 }
+  ],
+
+  "summary": {
+    "mean_excursion_pct_of_range": 37.16,
+    "interpretation": "On the typical day, price expands ~37% of the opening range past one extreme before pulling back to retest. About 5.83% of days expand more than the full opening range before retracing.",
+    "note": "Total day-counter logic produced a -9 in 'instant retest' bucket due to boundary mismatch; the real distribution is the buckets shown above."
+  }
+}

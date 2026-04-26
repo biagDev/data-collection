@@ -25,3 +25,7 @@ For each of the first four 15-minute candles of the NQ regular session, we measu
 
 - [analyses/9am-1h-candle-hit-stats](analyses/9am-1h-candle-hit-stats) — 9:00-10:00 ET 1h candle, by 10:15 / 10:30 / 10:45 / 11:00. 66% / 78% / 88% / 91% retest probability.
 - [analyses/6am-4h-candle-hit-stats](analyses/6am-4h-candle-hit-stats) — 6:00-10:00 ET 4h candle, by 10:30 / 11:00. 67% / 81% retest probability.
+
+### NQ extended statistics (9 themes)
+
+- [analyses/extended-stats](analyses/extended-stats) — Time-to-retest, max excursion, conditional-on-color, first-touch direction, midpoint mean reversion, HOD/LOD timing, range stats, volume profile, prior-day HL retest. See README inside for the full menu.
