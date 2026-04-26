@@ -22,12 +22,43 @@ A "hit" = a subsequent candle's wick traded back to the opening candle's high (�
 | **High only** | High retraced, low did NOT |
 | **Low only** | Low retraced, high did NOT |
 | **Neither** | Neither extreme was retraced |
-| **High touched (any)** | High was retraced (regardless of whether low also was) — i.e. `high_only + both` |
-| **Low touched (any)** | Low was retraced (regardless of whether high also was) — i.e. `low_only + both` |
+| **High touched (any)** | High was retraced — regardless of whether the low was also retraced |
+| **Low touched (any)** | Low was retraced — regardless of whether the high was also retraced |
 
 Two windows are measured:
 - **By 10:00** — only the 9:45-10:00 candle
 - **By 10:15** — the 9:45-10:00 AND 10:00-10:15 candles (cumulative)
+
+### "Only" rows vs. "Any" rows — what's the difference?
+
+The "only" rows and "any" rows answer different questions:
+
+- **"Only" rows** → *"If exactly one side gets hit, which one?"* — useful for directional bias trades.
+- **"Any" rows** → *"Will this level get touched at all, regardless of what else happens?"* — useful for stop placement, target setting, or alerts where the other side is irrelevant.
+
+The arithmetic relationship:
+
+```
+High touched (any)  =  High only  +  Both sides
+Low touched (any)   =  Low only   +  Both sides
+Either side         =  High only  +  Low only  +  Both sides
+```
+
+Note that `High any` and `Low any` overlap on the "Both sides" days — they don't sum to 100%. The mutually-exclusive partition is `High only + Low only + Both + Neither = 100%`.
+
+Verifying with the numbers:
+
+**By 10:00:**
+- High any = 102 (high only) + 14 (both) = **116** ✓
+- Low any  = 93 (low only)  + 14 (both) = **107** ✓
+- Either   = 102 + 93 + 14 = **209** ✓
+- Total partition = 102 + 93 + 14 + 23 (neither) = **232** ✓
+
+**By 10:15:**
+- High any = 99 (high only) + 37 (both) = **136** ✓
+- Low any  = 89 (low only)  + 37 (both) = **126** ✓
+- Either   = 99 + 89 + 37 = **225** ✓
+- Total partition = 99 + 89 + 37 + 7 (neither) = **232** ✓
 
 ## Aggregate Results (n=232)
 
