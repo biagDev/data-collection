@@ -11,3 +11,4 @@ Requires TradingView Desktop running with `--remote-debugging-port=9222`. Use `t
 ## Analyses
 
 - [analyses/930-candle-hit-stats](analyses/930-candle-hit-stats) — How often does NQ retrace to the high or low of the 9:30 ET 15m opening candle within 15 / 30 minutes? Aggregate + day-of-week breakdown across 232 days.
+- [analyses/945-candle-hit-stats](analyses/945-candle-hit-stats) — Same analysis for the 9:45-10:00 ET candle, measured 15 / 30 / 45 min after it closes. 232 days.
