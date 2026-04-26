@@ -2,7 +2,7 @@
   "mcpServers": {
     "tradingview": {
       "command": "/opt/homebrew/bin/node",
-      "args": ["/Users/biag/tradingview-mcp-jackson/src/server.js"]
+      "args": ["/Users/biag/Claude/data-collection/tradingview-mcp/src/server.js"]
     }
   }
 }

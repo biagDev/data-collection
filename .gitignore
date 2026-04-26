@@ -1,4 +1,6 @@
 node_modules/
+tradingview-mcp/node_modules/
+tradingview-mcp/screenshots/
 .DS_Store
 *.log
 .env
