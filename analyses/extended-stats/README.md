@@ -22,39 +22,42 @@ How often does the current RTH session retest the prior session's RTH high or lo
 
 ---
 
-## 02 — Time-to-retest distribution for the 9:30 candle (n=223)
+## 02 — Time-to-retest distribution for the 9:30 candle (n=223) [v2]
 
 How long until the 9:30 candle's H or L gets first wicked?
 
 | Bars after 9:45 | Minutes | % of days |
 |---|---|---|
-| 1 (9:45-10:00) | 0-15 | **93.72%** |
-| 2 | 15-30 | 7.17% |
+| 1 (9:45-10:00) | 0-15 | **91.03%** |
+| 2 | 15-30 | 6.73% |
 | 3 | 30-45 | 1.35% |
 | 4 | 45-60 | 0.90% |
-| 5-8 | 60-120 | 0.90% |
-| 9+ | 120+ | 0.00% |
+| 5+ | 60+ | 0.00% |
 | Never by EOD | — | 0.00% |
 
-**Mean time-to-retest (conditional on hit)**: **17.46 minutes**.
+**Mean time-to-retest (conditional on hit)**: **16.82 minutes**.
 
-**Takeaway**: Almost all retests happen in the very next 15-min bar. If the 9:30 candle hasn't been wicked within 30 min, it's unlikely to ever be (only ~3% of remaining days).
+**Takeaway**: ~91% of retests happen in the very next 15-min bar. If the 9:30 candle hasn't been wicked within 30 min, it's unlikely to ever be.
+
+> Numbers updated in audit (commit after `5d6e7cb`). v1 had a denominator bug producing 93.72%; corrected to 91.03%. See `AUDIT.md`.
 
 ---
 
-## 03 — Max excursion before retest (n=223)
+## 03 — Max excursion before retest (n=223) [v2]
 
 When price expands away from the 9:30 candle before retesting, how far does it go (as % of the opening range)?
 
 | Excursion | % of days |
 |---|---|
-| 0-25% of opening range | 46.64% |
-| 25-50% | 29.60% |
-| 50-100% | 21.97% |
+| 0-25% of opening range | 44.84% |
+| 25-50% | 27.80% |
+| 50-100% | 21.52% |
 | 100-200% (1-2x range) | 5.83% |
 | 200%+ | 0.00% |
 
-**Mean excursion**: **37.16% of opening range**.
+**Mean excursion**: **37.53% of opening range**.
+
+> Numbers updated in audit. v1 had a "-9" bug visible in the data due to denominator inconsistency. v2 fixes the math; small adjustments to bucket %s.
 
 **Takeaway**: Typical pre-retest excursion is just over 1/3 of the opening range. Only ~6% of days, price extends more than the full opening range before retracing. So a stop placed at 1x range above/below the wick is rarely hit before a pullback.
 
