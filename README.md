@@ -29,3 +29,7 @@ For each of the first four 15-minute candles of the NQ regular session, we measu
 ### NQ extended statistics (9 themes)
 
 - [analyses/extended-stats](analyses/extended-stats) — Time-to-retest, max excursion, conditional-on-color, first-touch direction, midpoint mean reversion, HOD/LOD timing, range stats, volume profile, prior-day HL retest. See README inside for the full menu.
+
+### NQ daily patterns
+
+- [analyses/daily-patterns-v1](analyses/daily-patterns-v1) — Streak continuation, close-quartile follow-through, NR7 expansion, gap-fill probability, range-position fade. **~6,700 daily bars (27 years)** of NQ history. Headline: bull streaks continue, NR7 expansion 84%, large gaps don't fill.
