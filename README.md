@@ -8,6 +8,15 @@ The TradingView MCP server lives in `tradingview-mcp/` (vendored clone of [trade
 
 Requires TradingView Desktop running with `--remote-debugging-port=9222`. Use `tv_launch` from the MCP if it isn't running.
 
+## Convention
+
+Every analysis ships with three layers:
+
+- **`README.md`** — full technical write-up, methodology, all tables
+- **`EASY_READ.md`** — plain-English headline tables with friendly column names ("Days in sample" instead of "n", glossary for jargon, reliability notes). Start here if you don't want to read the full technical write-up.
+- **`data/*.csv` / `data/results.json`** — machine-readable raw numbers
+- **`pine/*.pine`** — Pine Script analytical core for reproducibility
+
 ## Analyses
 
 ### NQ Opening-range candle hit-rate series
