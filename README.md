@@ -42,3 +42,8 @@ For each of the first four 15-minute candles of the NQ regular session, we measu
 ### NQ daily patterns
 
 - [analyses/daily-patterns-v1](analyses/daily-patterns-v1) — Streak continuation, close-quartile follow-through, NR7 expansion, gap-fill probability, range-position fade. **~6,700 daily bars (27 years)** of NQ history. Headline: bull streaks continue, NR7 expansion 84%, large gaps don't fill.
+- [analyses/daily-patterns-v2](analyses/daily-patterns-v2) — Combined signals (streak + close-quartile) and 200MA regime split for every Vol.1 stat. Headline: 200MA regime is the most important filter we've found — drift signals only work above MA.
+
+### NQ 9:30 candle followthrough
+
+- [analyses/930-followthrough](analyses/930-followthrough) — When the 9:30 color predicts correctly AND the predicted side gets retested, does today close in that direction? Wide-body green 9:30 + high retest closes green 77% of the time. Average follow-through 1.2x the 9:30 range past the high.
