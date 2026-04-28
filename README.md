@@ -47,3 +47,5 @@ For each of the first four 15-minute candles of the NQ regular session, we measu
 ### NQ 9:30 candle followthrough
 
 - [analyses/930-followthrough](analyses/930-followthrough) — When the 9:30 color predicts correctly AND the predicted side gets retested, does today close in that direction? Wide-body green 9:30 + high retest closes green 77% of the time. Average follow-through 1.2x the 9:30 range past the high.
+- [analyses/retest-conditional-stats](analyses/retest-conditional-stats) — 9:30 retest rate conditioned on wide-body / 200MA / regime change / VWAP confluence. **Headline: VWAP confluence pushes retest rate from 90% baseline to 97%.**
+- [analyses/setup-b-r-distribution](analyses/setup-b-r-distribution) — R-multiple distribution simulating Setup B as a real trade with 1R stop at 9:30 low. **Headline: 77% "close green" rate doesn't survive a 1R stop — average final R is -0.12 with 44% stop-out rate.** Strategy needs wider stop or earlier take-profit.

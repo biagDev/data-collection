@@ -1,0 +1,10 @@
+condition,n,by_10_00_pct,by_10_15_pct,delta_vs_baseline_10_00
+baseline_all_days,233,90.13,97.00,0.00
+wide_body_930,102,93.14,98.04,3.01
+narrow_body_930,131,87.79,96.18,-2.34
+above_200ma,215,90.23,97.21,0.10
+below_200ma,18,88.89,94.44,-1.24
+regime_change_day,4,75.00,100.00,-15.13
+no_regime_change,229,90.39,96.94,0.26
+vwap_confluence_within_0_1pct,97,96.91,98.97,6.78
+no_vwap_confluence,136,85.29,95.59,-4.83

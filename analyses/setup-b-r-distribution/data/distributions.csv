@@ -1,0 +1,11 @@
+distribution,bucket,days,pct
+final_R,less_than_neg1,8,20.51
+final_R,neg1_to_0,10,25.64
+final_R,0_to_pos1,14,35.90
+final_R,pos1_to_pos2,3,7.69
+final_R,pos2_or_more,4,10.26
+MFE_R,0_to_05,7,17.95
+MFE_R,05_to_1,14,35.90
+MFE_R,1_to_2,12,30.77
+MFE_R,2_to_3,5,12.82
+MFE_R,3_plus,1,2.56

@@ -1,0 +1,84 @@
+{
+  "theme": "9:30 retest probability conditioned on multiple signals",
+  "symbol": "CME_MINI:NQ1!",
+  "timeframe": "15m",
+  "sample_size_days": 233,
+  "as_of_date": "2026-04-26",
+  "purpose": "Quantify how the baseline 90% retest rate shifts under different conditions: wide-body 9:30, 200MA regime, regime-change days, VWAP confluence.",
+
+  "baseline": {
+    "n": 233,
+    "either_side_hit_by_10_00_pct": 90.13,
+    "either_side_hit_by_10_15_pct": 97.00
+  },
+
+  "conditional_results": [
+    {
+      "condition": "Wide-body 9:30 (body >= 50% of range)",
+      "n": 102,
+      "by_10_00_pct": 93.14,
+      "by_10_15_pct": 98.04,
+      "delta_vs_baseline_10_00": 3.01,
+      "verdict": "Modest +3pp uplift over baseline. Confirms intuition but small effect."
+    },
+    {
+      "condition": "Narrow-body 9:30 (body < 50% of range)",
+      "n": 131,
+      "by_10_00_pct": 87.79,
+      "by_10_15_pct": 96.18,
+      "delta_vs_baseline_10_00": -2.34,
+      "verdict": "Slightly less retest-prone than baseline."
+    },
+    {
+      "condition": "Above 200-day MA (yesterday's daily close)",
+      "n": 215,
+      "by_10_00_pct": 90.23,
+      "by_10_15_pct": 97.21,
+      "delta_vs_baseline_10_00": 0.10,
+      "verdict": "No edge from regime filter — retest rates are essentially identical to baseline."
+    },
+    {
+      "condition": "Below 200-day MA",
+      "n": 18,
+      "by_10_00_pct": 88.89,
+      "by_10_15_pct": 94.44,
+      "delta_vs_baseline_10_00": -1.24,
+      "warning": "Tiny sample (n=18) — 232-day window is overwhelmingly bull regime",
+      "verdict": "No meaningful difference, but sample too small to be definitive."
+    },
+    {
+      "condition": "Regime change day (200MA crossed yesterday)",
+      "n": 4,
+      "by_10_00_pct": 75.00,
+      "by_10_15_pct": 100.00,
+      "delta_vs_baseline_10_00": -15.13,
+      "warning": "Only 4 such days in 233-day sample — anecdotal at best",
+      "verdict": "Suggestive of slower retests on regime-change days but sample inadequate."
+    },
+    {
+      "condition": "VWAP confluence (9:30 high or low within 0.1% of session VWAP at 10:00)",
+      "n": 97,
+      "by_10_00_pct": 96.91,
+      "by_10_15_pct": 98.97,
+      "delta_vs_baseline_10_00": 6.78,
+      "verdict": "Strongest finding. +7pp uplift over baseline. VWAP confluence dramatically increases retest probability — magnetic effect of multiple price levels lining up."
+    },
+    {
+      "condition": "No VWAP confluence",
+      "n": 136,
+      "by_10_00_pct": 85.29,
+      "by_10_15_pct": 95.59,
+      "delta_vs_baseline_10_00": -4.83,
+      "verdict": "Without VWAP nearby, retest rate drops 5pp below baseline."
+    }
+  ],
+
+  "key_findings": {
+    "1": "VWAP confluence is the strongest filter — pushes retest probability from 90% (baseline) to 97% (with confluence). 11pp swing between confluence and no-confluence days.",
+    "2": "Wide-body 9:30 modestly boosts retest probability (+3pp). Confirms intuition but smaller than expected.",
+    "3": "200MA regime barely matters for retest probability — both above and below MA show similar rates. The 232-day sample is heavily skewed toward bull regime (215 above vs 18 below).",
+    "4": "Regime-change days appear to have slower retests but sample is only 4 days — anecdotal."
+  },
+
+  "sample_size_caveats": "232-233 day window. Tiny sub-samples (regime-change=4, below MA=18) cannot be acted on. Larger conditions (wide-body=102, vwap=97) have ~±5pp confidence intervals. The +6.78pp VWAP edge is real and meaningful."
+}

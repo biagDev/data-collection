@@ -1,0 +1,57 @@
+{
+  "theme": "Setup B R-multiple distribution — sizing the wide-body green 9:30 + high retest trade",
+  "symbol": "CME_MINI:NQ1!",
+  "timeframe": "15m",
+  "sample_size_setupB_trades": 39,
+  "as_of_date": "2026-04-26",
+  "builds_on": "analyses/930-followthrough (which found wide-body green 9:30 + high retest closes green 76.92% of the time)",
+
+  "setup_definition": {
+    "trigger": "Wide-body green 9:30 candle (body >= 50% of range)",
+    "entry": "9:30 high price (oh) at first retest in 9:45-10:00 bar",
+    "stop": "9:30 low price (ol)",
+    "1R_distance": "oh - ol = the 9:30 candle's range",
+    "trade_held_until": "RTH close (15:45 candle close)"
+  },
+
+  "summary": {
+    "total_trades": 39,
+    "stopped_out_pct": 43.59,
+    "avg_final_R_held_to_close": -0.12,
+    "avg_MFE_R": 1.07,
+    "avg_MAE_R": 1.33,
+    "winners_no_drawdown_pct": 0,
+    "winners_with_drawdown_pct": 48.72,
+    "losers_no_recovery_pct": 15.38,
+    "headline_finding": "Despite the 76.92% 'day closes green' rate, holding to close with a 1R stop at the 9:30 low produces a slightly NEGATIVE expected R (-0.12R). The path to the green close goes through significant drawdown — average MAE is 1.33R, and 44% of trades get stopped at -1R."
+  },
+
+  "final_R_distribution_held_to_close": [
+    { "bucket": "< -1R (full stop loss)",   "days": 8,  "pct": 20.51 },
+    { "bucket": "-1R to 0R",                "days": 10, "pct": 25.64 },
+    { "bucket": "0 to +1R",                 "days": 14, "pct": 35.90 },
+    { "bucket": "+1R to +2R",               "days": 3,  "pct": 7.69 },
+    { "bucket": "+2R or more",              "days": 4,  "pct": 10.26 }
+  ],
+
+  "MFE_distribution_peak_in_favor": [
+    { "bucket": "0 - 0.5R",  "days": 7,  "pct": 17.95, "interpretation": "Trade never reached +0.5R — failed setups" },
+    { "bucket": "0.5R - 1R", "days": 14, "pct": 35.90, "interpretation": "Modest favorable move but didn't reach +1R" },
+    { "bucket": "1R - 2R",   "days": 12, "pct": 30.77, "interpretation": "Solid favorable move" },
+    { "bucket": "2R - 3R",   "days": 5,  "pct": 12.82, "interpretation": "Big winner territory" },
+    { "bucket": "3R+",       "days": 1,  "pct": 2.56,  "interpretation": "Outlier home runs" }
+  ],
+
+  "key_findings": {
+    "1": "The 76.92% 'day-closes-green' stat from 930-followthrough is misleading for trade sizing. With a 1R stop at the 9:30 low, you get stopped out 44% of the time — even on days that eventually close green.",
+    "2": "Average MAE (peak adverse excursion) is 1.33R — meaning the AVERAGE trade goes 1.33x the 9:30 range against entry at some point. The 9:30 low is too tight a stop for this setup.",
+    "3": "Average MFE (peak favorable) is 1.07R — when trades work, they work nicely. ~46% of trades reach 1R+ in favor at some point.",
+    "4": "Final R held to close: -0.12R on average. Strategy is unprofitable as defined. The 'green close' rate doesn't translate into positive R because winners are smaller than losers.",
+    "5": "Best trade structure (suggested, not tested): wider stop OR earlier take-profit. With a 0.5R take-profit, ~82% of trades reach that level (only the 0-0.5R MFE bucket = 18% wouldn't trigger). But sequencing of MFE vs MAE matters — if MAE happens first, the take-profit never triggers."
+  },
+
+  "limitations": {
+    "intra_bar_sequencing_not_tracked": "The Pine indicator records peak MFE and peak MAE separately, but does not capture which came first within a bar. For accurate trade simulation with stops and targets, intra-bar tick data would be needed.",
+    "sample_size": "n=39 setups in 232-day window. Confidence interval on the 43.59% stop-out rate is roughly ±15pp. Headline conclusions are directional, not precise."
+  }
+}

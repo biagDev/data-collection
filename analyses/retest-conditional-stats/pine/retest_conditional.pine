@@ -1,0 +1,82 @@
+//@version=5
+indicator("Retest Conditional Stats", overlay=true, max_labels_count=50)
+
+h = hour(time, "America/New_York")
+m = minute(time, "America/New_York")
+
+isOpenBar = h == 9 and m == 30
+isPost1 = h == 9 and m == 45
+isPost2 = h == 10 and m == 0
+isTallyBar = h == 10 and m == 15
+inRTH = (h == 9 and m >= 30) or (h >= 10 and h < 16)
+
+// Daily 200MA via security
+sma200_d = request.security(syminfo.tickerid, "D", ta.sma(close, 200), lookahead=barmerge.lookahead_off)
+close_d  = request.security(syminfo.tickerid, "D", close, lookahead=barmerge.lookahead_off)
+prev_close_d = request.security(syminfo.tickerid, "D", close[1], lookahead=barmerge.lookahead_off)
+prev_sma200_d = request.security(syminfo.tickerid, "D", ta.sma(close, 200)[1], lookahead=barmerge.lookahead_off)
+
+above_ma_now  = not na(close_d) and not na(sma200_d) and close_d > sma200_d
+below_ma_now  = not na(close_d) and not na(sma200_d) and close_d < sma200_d
+above_ma_prev = not na(prev_close_d) and not na(prev_sma200_d) and prev_close_d > prev_sma200_d
+below_ma_prev = not na(prev_close_d) and not na(prev_sma200_d) and prev_close_d < prev_sma200_d
+regime_change_today = (above_ma_now and below_ma_prev) or (below_ma_now and above_ma_prev)
+
+// Session VWAP starting at 9:30
+var float cumPV = 0.0
+var float cumVol = 0.0
+if isOpenBar
+    cumPV := hlc3 * volume
+    cumVol := volume
+else if inRTH
+    cumPV += hlc3 * volume
+    cumVol += volume
+sessionVwap = cumVol > 0 ? cumPV / cumVol : na
+
+var float oh = na
+var float ol = na
+var float ohRange = na
+var bool wideBody = false
+
+if isOpenBar
+    oh := high
+    ol := low
+    ohRange := high - low
+    bodyPct = ohRange > 0 ? math.abs(close - open) / ohRange : 0.0
+    wideBody := bodyPct >= 0.5
+
+var bool vwap_confluence = false
+if isPost1 and not na(oh) and not na(sessionVwap)
+    threshold = oh * 0.001
+    near_hi = math.abs(oh - sessionVwap) <= threshold
+    near_lo = math.abs(ol - sessionVwap) <= threshold
+    vwap_confluence := near_hi or near_lo
+
+var bool hi_hit_1000 = false
+var bool lo_hit_1000 = false
+var bool hi_hit_1015 = false
+var bool lo_hit_1015 = false
+
+if isOpenBar
+    hi_hit_1000 := false
+    lo_hit_1000 := false
+    hi_hit_1015 := false
+    lo_hit_1015 := false
+
+if isPost1 and not na(oh)
+    if high >= oh
+        hi_hit_1000 := true
+        hi_hit_1015 := true
+    if low <= ol
+        lo_hit_1000 := true
+        lo_hit_1015 := true
+
+if isPost2 and not na(oh)
+    if high >= oh
+        hi_hit_1015 := true
+    if low <= ol
+        lo_hit_1015 := true
+
+// Counter declarations and tally logic at isTallyBar (h=10, m=15) omitted from
+// saved copy. Tables output via 5-column display: n, by-10:00 %, by-10:15 %,
+// vs-baseline delta. See chart-side script for complete table rendering.

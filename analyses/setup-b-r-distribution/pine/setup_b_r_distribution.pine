@@ -1,0 +1,49 @@
+//@version=5
+indicator("Setup B R Distribution", overlay=true, max_labels_count=50)
+
+// Setup B = wide-body green 9:30 + high retests by 10:00.
+// Entry = 9:30 high (oh) at first retest in post1 (9:45-10:00).
+// Stop = 9:30 low (ol). 1R = ohRange = oh - ol.
+// Track MFE / MAE / final R from entry through 15:45 RTH close.
+
+h = hour(time, "America/New_York")
+m = minute(time, "America/New_York")
+
+isOpenBar = h == 9 and m == 30
+isPost1 = h == 9 and m == 45
+inRTH = (h == 9 and m >= 30) or (h >= 10 and h < 16)
+isLastRthBar = h == 15 and m == 45
+
+var float oh = na
+var float ol = na
+var float ohRange = na
+var bool wasGreen = false
+var bool wideBody = false
+var bool entered = false
+var float maxAfter = na
+var float minAfter = na
+
+if isOpenBar
+    oh := high
+    ol := low
+    ohRange := high - low
+    bodyPct = ohRange > 0 ? math.abs(close - open) / ohRange : 0.0
+    wideBody := bodyPct >= 0.5
+    wasGreen := close > open
+    entered := false
+    maxAfter := na
+    minAfter := na
+
+if isPost1 and not na(oh) and wasGreen and wideBody and high >= oh
+    entered := true
+    maxAfter := high
+    minAfter := low
+
+if entered and inRTH and not isOpenBar and not isPost1
+    maxAfter := math.max(maxAfter, high)
+    minAfter := math.min(minAfter, low)
+
+// Counter declarations and tally logic at isLastRthBar omitted from saved copy.
+// Output tables: summary stats / final-R distribution / MFE distribution.
+// finalR = (close - oh) / ohRange, mfeR = (maxAfter - oh) / ohRange,
+// maeR = (oh - minAfter) / ohRange.
