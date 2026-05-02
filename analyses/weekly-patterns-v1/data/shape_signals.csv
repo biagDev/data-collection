@@ -1,0 +1,9 @@
+signal,n,result_a,result_b
+after_nr4_week,369,expand_pct=74.25,avg_range_ratio=1.37
+after_nr4_direction,369,green_pct=56.64,red_pct=43.36
+after_top_quartile_close,543,higher_high_pct=88.58,green_close_pct=58.20
+after_bot_quartile_close,331,lower_low_pct=86.10,red_close_pct=47.13
+after_inside_week,112,break_up_pct=63.39,break_down_pct=50.00
+after_outside_any,155,green_next_pct=57.42,
+after_outside_green,73,green_next_pct=56.16,
+after_outside_red,82,red_next_pct=41.46,green_next_pct=58.54

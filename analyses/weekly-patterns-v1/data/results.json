@@ -1,0 +1,98 @@
+{
+  "theme": "Weekly Patterns Vol.1 — five starter stats on NQ weekly candles",
+  "symbol": "CME_MINI:NQ1!",
+  "timeframe": "Weekly",
+  "sample_size_weeks_approx": 1398,
+  "as_of_date": "2026-04-26",
+  "data_source_caveats": "NQ1! continuous front-month, weekly bars. Globex session anchoring (per TV default). Quarterly contract rolls introduce small artificial gaps that may inflate the 'gap < 50 pts' bucket.",
+
+  "stat_1_streak_continuation": {
+    "description": "P(next week's color | last N consecutive same-color weeks). Streak length = exactly N (Nth-consecutive same color, with N+1 not same color).",
+    "after_green_streaks": [
+      { "streak_length": 1,    "n": 348, "p_continue_green_pct": 54.60, "edge": 4.60 },
+      { "streak_length": 2,    "n": 190, "p_continue_green_pct": 50.53, "edge": 0.53 },
+      { "streak_length": 3,    "n": 96,  "p_continue_green_pct": 59.38, "edge": 9.38 },
+      { "streak_length": 4,    "n": 56,  "p_continue_green_pct": 55.36, "edge": 5.36 },
+      { "streak_length": "5+", "n": 88,  "p_continue_green_pct": 65.91, "edge": 15.91 }
+    ],
+    "after_red_streaks_p_green_next": [
+      { "streak_length": 1,    "n": 346, "p_green_next_pct": 55.78, "edge": 5.78 },
+      { "streak_length": 2,    "n": 153, "p_green_next_pct": 59.48, "edge": 9.48 },
+      { "streak_length": 3,    "n": 62,  "p_green_next_pct": 41.94, "edge": -8.06, "warning": "Counter-intuitive — momentum continues red instead of bouncing" },
+      { "streak_length": 4,    "n": 36,  "p_green_next_pct": 66.67, "edge": 16.67 },
+      { "streak_length": "5+", "n": 23,  "p_green_next_pct": 52.17, "edge": 2.17, "warning": "Small sample" }
+    ]
+  },
+
+  "stat_2_nr4_expansion": {
+    "description": "NR4 = current week's range is the smallest of the last 4 weeks. Measure next-week expansion + direction.",
+    "n": 369,
+    "next_week_expanded_pct": 74.25,
+    "average_range_ratio_next_to_nr4": 1.37,
+    "next_week_green_pct": 56.64,
+    "next_week_red_pct": 43.36
+  },
+
+  "stat_3_close_quartile_followthrough": {
+    "description": "After this week's close in the top or bottom 25% of its range, what does next week do?",
+    "after_top_quartile_close": {
+      "n": 543,
+      "higher_high_next_week_pct": 88.58,
+      "green_close_next_week_pct": 58.20
+    },
+    "after_bot_quartile_close": {
+      "n": 331,
+      "lower_low_next_week_pct": 86.10,
+      "red_close_next_week_pct": 47.13
+    }
+  },
+
+  "stat_4_inside_outside_week": {
+    "description": "Inside week = entire week's range contained within prior week. Outside week = entire prior week's range engulfed by current week.",
+    "after_inside_week": {
+      "n": 112,
+      "next_week_breaks_high_pct": 63.39,
+      "next_week_breaks_low_pct": 50.00,
+      "next_week_green_close_pct": 54.46,
+      "interpretation": "Inside weeks tend to break upward (63% vs 50%) — net bullish bias on resolution."
+    },
+    "after_outside_week_any": {
+      "n": 155,
+      "next_week_green_close_pct": 57.42
+    },
+    "after_outside_GREEN_week": {
+      "n": 73,
+      "next_week_green_close_pct": 56.16,
+      "interpretation": "Outside-green leads to slight continuation — modest edge."
+    },
+    "after_outside_RED_week": {
+      "n": 82,
+      "next_week_red_close_pct": 41.46,
+      "p_green_next_pct": 58.54,
+      "interpretation": "Outside-red weeks REVERSE — only 41% follow with another red. This is a stronger signal than the inside-week or outside-green patterns."
+    }
+  },
+
+  "stat_5_weekly_gap_fill": {
+    "description": "Gap = this week's open vs last week's close. Fill = price returns to last week's close at some point during the week.",
+    "by_direction": {
+      "gap_up_any":   { "n": 652, "filled_pct": 91.41, "p_week_green_pct": 57.36 },
+      "gap_down_any": { "n": 656, "filled_pct": 94.36, "p_week_red_pct":   46.19 }
+    },
+    "by_size": [
+      { "bucket": "< 50 pts",      "n": 1235, "filled_pct": 93.68, "warning": "Likely inflated by contract roll noise" },
+      { "bucket": "50-150 pts",    "n": 56,   "filled_pct": 80.36 },
+      { "bucket": "150-300 pts",   "n": 10,   "filled_pct": 80.00 },
+      { "bucket": "300+ pts",      "n": 7,    "filled_pct": 71.43, "warning": "Tiny sample" }
+    ]
+  },
+
+  "key_findings": {
+    "1": "Bull streaks continue strongly on weekly. After 5+ green weeks, 65.91% chance of another green week — much stronger than daily's 57.26% at the same streak length.",
+    "2": "Weekly mean reversion after 3 red weeks DOESN'T hold (41.94% green next vs 58% on 1- and 2-red streaks). 3 red weeks signals real bear momentum, while 4 red snaps back hard at 66.67%. Counter-intuitive curve.",
+    "3": "Close-quartile follow-through is huge: 88.58% chance of breaking the prior week's high after a top-quartile close. Equivalent to but stronger than daily.",
+    "4": "Outside-red week is the strongest reversal signal: 58.54% green next week. Outside-green and inside weeks are weaker.",
+    "5": "Weekly NR4 expansion is real but weaker than daily NR7 — 74% expand vs daily's 84%. Direction read same modest bullish bias (~57% green).",
+    "6": "Weekly gaps: most are tiny (1235 of 1318 are under 50 pts), and most fill (91-94%). Larger weekly gaps (>50 pts) fill at ~80%, lower than tiny gaps but still high."
+  }
+}

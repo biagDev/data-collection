@@ -1,0 +1,7 @@
+bucket,n,filled_pct,green_pct
+gap_up_any,652,91.41,57.36
+gap_down_any,656,94.36,53.81
+gap_lt_50pts,1235,93.68,
+gap_50_150pts,56,80.36,
+gap_150_300pts,10,80.00,
+gap_300pts_plus,7,71.43,

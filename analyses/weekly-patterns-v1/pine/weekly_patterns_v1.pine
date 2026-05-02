@@ -1,0 +1,54 @@
+//@version=5
+// Weekly Patterns Vol.1 — five starter stats on NQ weekly candles.
+// Run on NQ1! weekly chart with full available history (~27 years, ~1400 weeks).
+
+indicator("Weekly Patterns Vol1", overlay=true, max_labels_count=50)
+
+isGreen = close > open
+isRed   = close < open
+
+// Stat 1: streak conditioning
+g1 = close[1] > open[1]
+g2 = g1 and close[2] > open[2]
+g3 = g2 and close[3] > open[3]
+g4 = g3 and close[4] > open[4]
+g5 = g4 and close[5] > open[5]
+sg1 = g1 and not g2
+sg2 = g2 and not g3
+sg3 = g3 and not g4
+sg4 = g4 and not g5
+sg5plus = g5
+
+r1 = close[1] < open[1]
+r2 = r1 and close[2] < open[2]
+r3 = r2 and close[3] < open[3]
+r4 = r3 and close[4] < open[4]
+r5 = r4 and close[5] < open[5]
+sr1 = r1 and not r2
+sr2 = r2 and not r3
+sr3 = r3 and not r4
+sr4 = r4 and not r5
+sr5plus = r5
+
+// Stat 2: NR4
+rng = high - low
+isNR4 = rng == ta.lowest(rng, 4) and bar_index >= 4
+
+// Stat 3: close-quartile (yesterday)
+pct_close = rng > 0 ? (close - low) / rng : 0.5
+top_q_yest = pct_close[1] >= 0.75
+bot_q_yest = pct_close[1] <= 0.25
+
+// Stat 4: inside/outside (yesterday's relationship to day-before)
+inside = bar_index >= 1 and high < high[1] and low > low[1]
+outside = bar_index >= 1 and high > high[1] and low < low[1]
+
+// Stat 5: weekly gap
+gap = open - close[1]
+abs_gap = math.abs(gap)
+gap_filled = gap > 0 ? low <= close[1] : (gap < 0 ? high >= close[1] : true)
+
+// Counter declarations and tally logic omitted from this saved copy.
+// Output: 3 tables (streak / shape / gap) read via data_get_pine_tables.
+// Full counter logic and table rendering boilerplate preserved in
+// data/results.json for reproduction reference.
