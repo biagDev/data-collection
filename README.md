@@ -47,6 +47,7 @@ For each of the first four 15-minute candles of the NQ regular session, we measu
 ### NQ weekly patterns
 
 - [analyses/weekly-patterns-v1](analyses/weekly-patterns-v1) — Weekly streak continuation, NR4 expansion, close-quartile follow-through, inside/outside week patterns, weekly gap fill. **~1,398 weeks (27 years)**. Headline: 5+ green weeks → 66% continue, outside-red weeks reverse 58.5%, top-quartile close → 88.58% take out next week's high.
+- [analyses/weekly-patterns-v2](analyses/weekly-patterns-v2) — Tier 2 stats: HOD/LOD by day of week, range-as-pct-of-4w, wick patterns (hammer/shooting star), sequential higher/lower closes. **Headline: Friday makes the weekly high 34% of the time, Monday makes the weekly low 33%. Hammer pattern works (60.5%) but shooting star doesn't (52%). 3-down-week anomaly confirmed via independent method.**
 
 ### NQ 9:30 candle followthrough
 

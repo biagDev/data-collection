@@ -1,0 +1,5 @@
+pattern,n,followthrough_pct,direction
+shooting_star_long_upper_red,93,51.61,red_next
+hammer_long_lower_green,119,60.50,green_next
+long_upper_wick_any_color,180,53.89,red_next
+long_lower_wick_any_color,229,58.52,green_next

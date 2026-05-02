@@ -1,0 +1,63 @@
+{
+  "theme": "Weekly Patterns Vol.2 — Tier 2 stats (HOD/LOD timing, range vs monthly, wick patterns, sequential closes)",
+  "symbol": "CME_MINI:NQ1!",
+  "as_of_date": "2026-04-26",
+  "builds_on": "analyses/weekly-patterns-v1",
+
+  "stat_6_hod_lod_by_dow": {
+    "description": "For each weekly session, which day of the week made the high (HOD) and the low (LOD)? Run on NQ1! daily Globex chart. Note: NQ futures Globex daily bars open at 6 PM ET the prior calendar day, so Pine's `dayofweek` is offset relative to RTH session day. Below shows both the Pine label AND the corresponding RTH trading day.",
+    "convention_note": "Pine dayofweek=1 (Sunday eve open) = Monday RTH trading day. dayofweek=5 (Thursday eve open) = Friday RTH trading day. We never see dayofweek=6/7 because Friday eve / Saturday have no Globex session.",
+    "sample_size_weeks": 1399,
+    "rows": [
+      { "pine_dow": 1, "rth_trading_day": "Monday",    "hod_count": 311, "hod_pct": 22.23, "lod_count": 458, "lod_pct": 32.74 },
+      { "pine_dow": 2, "rth_trading_day": "Tuesday",   "hod_count": 192, "hod_pct": 13.72, "lod_count": 222, "lod_pct": 15.87 },
+      { "pine_dow": 3, "rth_trading_day": "Wednesday", "hod_count": 182, "hod_pct": 13.01, "lod_count": 170, "lod_pct": 12.15 },
+      { "pine_dow": 4, "rth_trading_day": "Thursday",  "hod_count": 237, "hod_pct": 16.94, "lod_count": 205, "lod_pct": 14.65 },
+      { "pine_dow": 5, "rth_trading_day": "Friday",    "hod_count": 477, "hod_pct": 34.10, "lod_count": 344, "lod_pct": 24.59 }
+    ],
+    "key_finding": "Friday makes the weekly HIGH 34% of the time (highest of any day). Monday makes the weekly LOW 33% of the time (highest of any day). Together, Mon-Fri is asymmetric: highs lean toward end-of-week, lows toward start-of-week. The 'sell Monday, buy Friday' framing is statistically supported by 1,400 weeks of data."
+  },
+
+  "stat_7_week_pct_of_4week_range": {
+    "description": "Each week's range expressed as % of the trailing 4-week range (used as monthly-equivalent). Bucketed distribution.",
+    "n": 1396,
+    "average_week_pct_of_4week": 52.07,
+    "buckets": [
+      { "bucket": "<25% (small slice)",                 "n": 58,   "pct": 4.15 },
+      { "bucket": "25-50%",                             "n": 664,  "pct": 47.56 },
+      { "bucket": "50-75%",                             "n": 481,  "pct": 34.46 },
+      { "bucket": "75-100% (week IS the 4-week range)", "n": 193,  "pct": 13.83 }
+    ],
+    "interpretation": "Average week makes ~52% of its 4-week range. About half of weeks (47.56%) make 25-50% of the 4-week range. About 14% of weeks alone establish 75%+ of the 4-week range — these are the dominant weeks that 'set the month.'"
+  },
+
+  "stat_8_wick_week_patterns": {
+    "description": "Reversal patterns based on weekly candle structure.",
+    "rows": [
+      { "pattern": "Shooting star (long upper wick + red close)", "n": 93,  "p_red_next_pct": 51.61, "edge": 1.61, "verdict": "barely above coin flip" },
+      { "pattern": "Hammer (long lower wick + green close)",      "n": 119, "p_grn_next_pct": 60.50, "edge": 10.50, "verdict": "Real edge — strongest wick signal" },
+      { "pattern": "Long upper wick (any color)",                  "n": 180, "p_red_next_pct": 53.89, "edge": 3.89, "verdict": "weak" },
+      { "pattern": "Long lower wick (any color)",                  "n": 229, "p_grn_next_pct": 58.52, "edge": 8.52, "verdict": "Solid bullish reversal signal" }
+    ],
+    "key_finding": "Hammer (long-lower-wick + green close) is the cleanest weekly wick pattern at 60.5% green-next (n=119). Shooting stars (mirror pattern) are essentially worthless on NQ weekly — only 51.61% red-next. Asymmetry consistent with NQ's upward drift bias."
+  },
+
+  "stat_9_sequential_higher_closes": {
+    "description": "Strict sequential progression of weekly closes — each close higher than the prior. Stricter than streak-by-color (which only requires same-color, not monotonic).",
+    "after_n_higher_closes": [
+      { "streak_length": 1,    "n": 340, "p_higher_close_next_pct": 56.47, "edge": 6.47 },
+      { "streak_length": 2,    "n": 192, "p_higher_close_next_pct": 49.48, "edge": -0.52, "verdict": "drops to coin flip — interesting" },
+      { "streak_length": 3,    "n": 95,  "p_higher_close_next_pct": 63.16, "edge": 13.16 },
+      { "streak_length": 4,    "n": 59,  "p_higher_close_next_pct": 59.32, "edge": 9.32 },
+      { "streak_length": "5+", "n": 88,  "p_higher_close_next_pct": 60.23, "edge": 10.23 }
+    ],
+    "after_n_lower_closes_p_higher_next": [
+      { "streak_length": 1,    "n": 339, "p_higher_close_next_pct": 54.87, "edge": 4.87 },
+      { "streak_length": 2,    "n": 153, "p_higher_close_next_pct": 54.90, "edge": 4.90 },
+      { "streak_length": 3,    "n": 69,  "p_higher_close_next_pct": 42.03, "edge": -7.97, "verdict": "Counter-intuitive — same anomaly as Vol.1 streak stat. 3 sequential lower closes does NOT bounce." },
+      { "streak_length": 4,    "n": 39,  "p_higher_close_next_pct": 66.67, "edge": 16.67 },
+      { "streak_length": "5+", "n": 21,  "p_higher_close_next_pct": 57.14, "edge": 7.14, "warning": "small sample" }
+    ],
+    "key_finding": "The 3-sequential-lower-closes anomaly mirrors the 3-red-streak anomaly from Vol.1 (42.03% vs 41.94% — almost identical). This confirms the pattern: the 3rd consecutive down week does NOT bounce. By the 4th down week it snaps back at 66.67%. Same pattern measured two ways with the same result is strong evidence."
+  }
+}

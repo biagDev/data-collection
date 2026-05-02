@@ -1,0 +1,62 @@
+//@version=5
+// Weekly Patterns Vol.2 — Tier 2 stats. Two indicators required:
+// (1) "Weekly Vol2 (T2)" runs on weekly chart for stats 7, 8, 9.
+// (2) "Weekly HOD LOD by DOW" runs on daily chart for stat 6.
+// Saved snippets below show the analytical core of each.
+
+// ============================================
+// Indicator 1: Weekly chart (stats 7, 8, 9)
+// ============================================
+// indicator("Weekly Vol2 (T2)", overlay=true)
+// rng = high - low
+// // Stat 7: range vs trailing 4-week range
+// m4_high = ta.highest(high, 4)
+// m4_low  = ta.lowest(low, 4)
+// m4_range = m4_high - m4_low
+// week_pct_of_4w = m4_range > 0 ? rng / m4_range * 100.0 : 0.0
+// // Stat 8: wick patterns
+// upperWick = high - math.max(open, close)
+// lowerWick = math.min(open, close) - low
+// upperWickPct = rng > 0 ? upperWick / rng : 0.0
+// lowerWickPct = rng > 0 ? lowerWick / rng : 0.0
+// isLongUpperWick = upperWickPct >= 0.5
+// isLongLowerWick = lowerWickPct >= 0.5
+// isShootingStar = isLongUpperWick and (close < open)
+// isHammer = isLongLowerWick and (close > open)
+// // Stat 9: sequential close progression
+// hh1 = close[1] > close[2]
+// hh2 = hh1 and close[2] > close[3]
+// hh3 = hh2 and close[3] > close[4]
+// hh4 = hh3 and close[4] > close[5]
+// hh5 = hh4 and close[5] > close[6]
+// shh1 = hh1 and not hh2
+// shh2 = hh2 and not hh3
+// // ... (mirror for ll = lower closes)
+
+// ============================================
+// Indicator 2: Daily chart (stat 6)
+// ============================================
+// indicator("Weekly HOD LOD by DOW", overlay=true)
+// new_week = ta.change(time("W")) != 0
+// dow = dayofweek
+// var float wHigh = na
+// var float wLow = na
+// var int wHighDow = na
+// var int wLowDow = na
+// if new_week
+//     // tally previous week's HOD/LOD by wHighDow / wLowDow before reset
+//     wHigh := high
+//     wLow := low
+//     wHighDow := dow
+//     wLowDow := dow
+// else if not na(wHigh)
+//     if high > wHigh
+//         wHigh := high
+//         wHighDow := dow
+//     if low < wLow
+//         wLow := low
+//         wLowDow := dow
+//
+// On NQ Globex futures daily charts: dayofweek=1 (Sun-eve open) corresponds
+// to Monday RTH trading; dayofweek=5 (Thu-eve open) corresponds to Friday RTH.
+// Saturday/Friday-eve have no Globex session so dayofweek=6 and 7 never appear.

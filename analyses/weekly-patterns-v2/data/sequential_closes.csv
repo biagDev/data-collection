@@ -1,0 +1,11 @@
+direction,streak_length,n,p_higher_close_next_pct,edge_vs_50
+higher,1,340,56.47,+6.47
+higher,2,192,49.48,-0.52
+higher,3,95,63.16,+13.16
+higher,4,59,59.32,+9.32
+higher,5+,88,60.23,+10.23
+lower,1,339,54.87,+4.87
+lower,2,153,54.90,+4.90
+lower,3,69,42.03,-7.97
+lower,4,39,66.67,+16.67
+lower,5+,21,57.14,+7.14
