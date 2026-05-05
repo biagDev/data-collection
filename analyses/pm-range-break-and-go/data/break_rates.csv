@@ -1,0 +1,11 @@
+level,window,broken_pct
+PMH,by_10_00,49.34
+PMH,by_10_30,57.64
+PMH,by_11_00,61.57
+PMH,by_eod,71.18
+PML,by_10_00,49.34
+PML,by_10_30,55.90
+PML,by_eod,68.56
+both_sweep,by_eod,40.17
+either,by_eod,99.56
+neither_contained,by_eod,0.44

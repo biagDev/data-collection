@@ -1,0 +1,77 @@
+{
+  "theme": "Pre-market range break-and-go — does RTH take out the pre-market H/L?",
+  "symbol": "CME_MINI:NQ1!",
+  "timeframe": "15m",
+  "as_of_date": "2026-05-04",
+  "premarket_window": "4:00 AM - 9:30 AM ET",
+  "sample_size_days": 229,
+
+  "definitions": {
+    "PMH": "Pre-market high (highest price in 4:00-9:30 ET window)",
+    "PML": "Pre-market low (lowest price in same window)",
+    "PM_color": "Green if 9:30 RTH open > 4:00 PM-open; red if below",
+    "PMH_broken": "Any RTH bar's high exceeded PMH",
+    "PML_broken": "Any RTH bar's low went below PML",
+    "Sweep": "Both PMH AND PML broken during RTH",
+    "Contained": "Neither broken — RTH stays inside PM range"
+  },
+
+  "aggregate_break_rates": {
+    "pmh_broken_by_10_00_pct": 49.34,
+    "pmh_broken_by_10_30_pct": 57.64,
+    "pmh_broken_by_11_00_pct": 61.57,
+    "pmh_broken_by_eod_pct": 71.18,
+    "pml_broken_by_10_00_pct": 49.34,
+    "pml_broken_by_10_30_pct": 55.90,
+    "pml_broken_by_eod_pct": 68.56,
+    "both_broken_sweep_pct": 40.17,
+    "neither_broken_contained_pct": 0.44,
+    "either_broken_pct": 99.56,
+    "key_finding": "Only 1 day in 229 (0.44%) stayed inside the PM range. RTH ALMOST ALWAYS takes out at least one side of pre-market."
+  },
+
+  "conditional_on_pm_color": {
+    "after_green_pm": {
+      "n": 127,
+      "pmh_broken_eod_pct": 84.25,
+      "pml_broken_eod_pct": 56.69
+    },
+    "after_red_pm": {
+      "n": 102,
+      "pmh_broken_eod_pct": 54.90,
+      "pml_broken_eod_pct": 83.33
+    },
+    "key_finding": "Strong directional mirror. After a green PM session, 84% chance the PMH gets broken (vs 57% the PML). After red PM, 83% PML break vs 55% PMH. PM session direction is a strong predictor of which side of the PM range RTH will break."
+  },
+
+  "first_break_direction_unconditional": {
+    "pmh_first_pct": 48.91,
+    "pml_first_pct": 47.60,
+    "key_finding": "Without color conditioning, first-break direction is a coin flip. The directional edge from PM color (above) shows up in EOD outcomes, not first-break timing."
+  },
+
+  "by_pm_range_size": {
+    "small_pm_lt_100pts":     { "n": 75,  "both_broken_pct": 53.33, "interpretation": "Tight pre-market compresses, likely to break both sides during RTH" },
+    "medium_pm_100_300pts":   { "n": 138, "both_broken_pct": 35.51, "interpretation": "Most common bucket. About 1 in 3 sweep both sides." },
+    "large_pm_gt_300pts":     { "n": 16,  "both_broken_pct": 18.75, "interpretation": "Wide pre-market range — RTH usually only takes one side. Small sample though." },
+    "key_finding": "Sweep rate inversely correlated with PM range size. Tight PM ranges sweep both sides more often (53%) than wide PM ranges (19%). Compression begets sweeps."
+  },
+
+  "range_stats": {
+    "avg_pm_range_pts": 153.85,
+    "avg_rth_range_pts": 308.36,
+    "avg_pm_pct_of_rth": 53.78,
+    "interpretation": "PM range averages 154 NQ points, RTH averages 308 — exactly 2x. PM accounts for ~54% of the day's total range on average."
+  },
+
+  "key_findings": {
+    "1": "Pre-market levels are nearly always traded. Only 0.44% of days (1 in 229) stayed inside the PM range.",
+    "2": "PMH break by EOD: 71%, PML break by EOD: 69%, both broken: 40%. Each side has individual ~70% break probability.",
+    "3": "PM color is a clean directional predictor: green PM -> 84% PMH break, red PM -> 83% PML break. Mirror pattern.",
+    "4": "First-break direction without conditioning is a coin flip (49/48). Color is what separates the winners from losers.",
+    "5": "Small PM ranges (<100 pts) sweep both sides 53% of the time. Large PM ranges (>300 pts) only 19% — suggesting wide PM = directional move that holds.",
+    "6": "PM range averages ~54% of RTH range. The premarket session contributes meaningful price discovery."
+  },
+
+  "sample_size_caveat": "229 days = ~11 months. Aggregate stats trustworthy to ±3pp. Sub-buckets like 'large PM range' (n=16) are anecdotal — wider CIs."
+}

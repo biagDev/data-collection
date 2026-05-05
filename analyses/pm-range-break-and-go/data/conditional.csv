@@ -1,0 +1,6 @@
+condition,n,pmh_broken_eod_pct,pml_broken_eod_pct
+after_green_pm_session,127,84.25,56.69
+after_red_pm_session,102,54.90,83.33
+small_pm_range_lt_100pts,75,,
+medium_pm_range_100_300pts,138,,
+large_pm_range_gt_300pts,16,,

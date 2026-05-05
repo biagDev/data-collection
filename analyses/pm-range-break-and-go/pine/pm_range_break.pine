@@ -1,0 +1,68 @@
+//@version=5
+// Pre-market range break-and-go — does RTH take out the PM high/low?
+// Run on NQ1! 15-minute chart.
+
+indicator("PM Range Break Stats", overlay=true)
+
+h = hour(time, "America/New_York")
+m = minute(time, "America/New_York")
+
+isPMStart = h == 4 and m == 0
+isPMBar = (h >= 4 and h < 9) or (h == 9 and m < 30)
+isOpenBar = h == 9 and m == 30
+inRTH = (h == 9 and m >= 30) or (h >= 10 and h < 16)
+isLastRthBar = h == 15 and m == 45
+
+var float pmHigh = na
+var float pmLow = na
+var float pmOpen = na
+var float pmClose = na
+var float pmRange = na
+var bool pmGreen = false
+var bool pmRed = false
+
+if isPMStart
+    pmHigh := high
+    pmLow := low
+    pmOpen := open
+else if isPMBar and not na(pmHigh)
+    pmHigh := math.max(pmHigh, high)
+    pmLow := math.min(pmLow, low)
+
+if isOpenBar and not na(pmHigh)
+    pmRange := pmHigh - pmLow
+    pmClose := open
+    pmGreen := pmClose > pmOpen
+    pmRed := pmClose < pmOpen
+
+var bool pmh_broken = false
+var bool pml_broken = false
+var int pmh_break_bar = na
+var int pml_break_bar = na
+var int rth_bar = 0
+var float rthHigh = na
+var float rthLow = na
+
+if isOpenBar
+    pmh_broken := false
+    pml_broken := false
+    pmh_break_bar := na
+    pml_break_bar := na
+    rth_bar := 0
+    rthHigh := high
+    rthLow := low
+
+if inRTH and not na(pmHigh)
+    rth_bar += 1
+    rthHigh := math.max(rthHigh, high)
+    rthLow := math.min(rthLow, low)
+    if not pmh_broken and high > pmHigh
+        pmh_broken := true
+        pmh_break_bar := rth_bar
+    if not pml_broken and low < pmLow
+        pml_broken := true
+        pml_break_bar := rth_bar
+
+// Counter declarations and tally logic at isLastRthBar omitted from saved copy.
+// rth_bar <= 2 = "by 10:00", <= 4 = "by 10:30", <= 6 = "by 11:00".
+// Output: 3 tables (break rates / conditional / range stats) read via data_get_pine_tables.
