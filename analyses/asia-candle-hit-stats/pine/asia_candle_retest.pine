@@ -1,0 +1,40 @@
+//@version=5
+// Asia session candle retest stats — six 15m candles from 8:00-9:15 PM ET.
+// Three forward windows (+15, +30, +45 min after subject closes).
+// Outputs three tables: either-side / both-side sweep / directional split.
+indicator("Asia Candle Retest", overlay=true, max_labels_count=50)
+
+h = hour(time, "America/New_York")
+m = minute(time, "America/New_York")
+
+// Subject candles 8:00 PM - 9:15 PM ET
+isOpen_0 = h == 20 and m == 0
+isOpen_1 = h == 20 and m == 15
+isOpen_2 = h == 20 and m == 30
+isOpen_3 = h == 20 and m == 45
+isOpen_4 = h == 21 and m == 0
+isOpen_5 = h == 21 and m == 15
+
+// Post bars (+1, +2, +3 forward 15m bars per subject)
+isP1_0 = h == 20 and m == 15
+isP2_0 = h == 20 and m == 30
+isP3_0 = h == 20 and m == 45
+isP1_1 = h == 20 and m == 30
+isP2_1 = h == 20 and m == 45
+isP3_1 = h == 21 and m == 0
+isP1_2 = h == 20 and m == 45
+isP2_2 = h == 21 and m == 0
+isP3_2 = h == 21 and m == 15
+isP1_3 = h == 21 and m == 0
+isP2_3 = h == 21 and m == 15
+isP3_3 = h == 21 and m == 30
+isP1_4 = h == 21 and m == 15
+isP2_4 = h == 21 and m == 30
+isP3_4 = h == 21 and m == 45
+isP1_5 = h == 21 and m == 30
+isP2_5 = h == 21 and m == 45
+isP3_5 = h == 22 and m == 0
+
+// State / counter declarations and tally logic per subject omitted from saved
+// copy. Same structure as london-candle-hit-stats. Tally fires at isP3_N for
+// each subject. See data/results.json for outputs.

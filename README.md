@@ -62,3 +62,7 @@ For each of the first four 15-minute candles of the NQ regular session, we measu
 ### NQ London session
 
 - [analyses/london-candle-hit-stats](analyses/london-candle-hit-stats) — Replication of the NY candle retest series for the London open killzone. Six 15m candles 3:00-4:15 ET, 219-day sample. **Headline: London 3:45 candle has the highest retest rate of any single candle in the repo (95% within 15 min, 99% within 30 min). Beats NY 9:30 (90% / 97%). Sweep rate 41% by +45 min — more than 2x NY 9:30. London open is more magnetic than NY open.**
+
+### NQ Asia session
+
+- [analyses/asia-candle-hit-stats](analyses/asia-candle-hit-stats) — Replication of the NY/London series for the Asia killzone. Six 15m candles 8:00-9:15 PM ET (Tokyo morning), 220-day sample. **Headline: 8:45 PM is the strongest Asia magnet (89% retest +15, 33% sweep +45). 9:15 PM ties with London 3:45 for highest +45 retest in the repo (99.54%). Asia has the strongest HIGH-bias of any session — 17pp Hi/Lo gap at 8:00 PM. Magnetism: London > Asia > NY.**

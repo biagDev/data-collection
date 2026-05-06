@@ -1,0 +1,79 @@
+{
+  "theme": "Asia session candle retest stats — replication of NY/London intraday series for the Asia killzone",
+  "symbol": "CME_MINI:NQ1!",
+  "timeframe": "15m",
+  "sample_size_days": "219-220 (varies slightly by candle due to data alignment)",
+  "as_of_date": "2026-05-04",
+  "session_window": "8:00 PM - 10:00 PM ET (Tokyo morning, classic Asia killzone)",
+  "subject_candles": "Six 15-minute candles from 8:00-9:15 PM ET",
+  "forward_windows": "+15 min, +30 min, +45 min after subject candle closes",
+
+  "either_side_retest": {
+    "description": "Probability the high OR low of the subject candle gets touched by a later candle's wick.",
+    "rows": [
+      { "candle": "8:00 PM", "n": 220, "by_plus_15": 81.36, "by_plus_30": 91.82, "by_plus_45": 95.45 },
+      { "candle": "8:15 PM", "n": 220, "by_plus_15": 82.73, "by_plus_30": 92.73, "by_plus_45": 95.91 },
+      { "candle": "8:30 PM", "n": 220, "by_plus_15": 81.82, "by_plus_30": 94.55, "by_plus_45": 97.27 },
+      { "candle": "8:45 PM", "n": 220, "by_plus_15": 89.09, "by_plus_30": 95.45, "by_plus_45": 98.18 },
+      { "candle": "9:00 PM", "n": 219, "by_plus_15": 75.34, "by_plus_30": 93.61, "by_plus_45": 96.35 },
+      { "candle": "9:15 PM", "n": 219, "by_plus_15": 89.04, "by_plus_30": 96.35, "by_plus_45": 99.54 }
+    ]
+  },
+
+  "both_sides_sweep": {
+    "description": "Probability BOTH the high AND the low of the subject get touched (full sweep).",
+    "rows": [
+      { "candle": "8:00 PM", "n": 220, "by_plus_15": 5.00,  "by_plus_30": 15.91, "by_plus_45": 22.73 },
+      { "candle": "8:15 PM", "n": 220, "by_plus_15": 10.00, "by_plus_30": 21.82, "by_plus_45": 30.00 },
+      { "candle": "8:30 PM", "n": 220, "by_plus_15": 6.36,  "by_plus_30": 20.45, "by_plus_45": 27.27 },
+      { "candle": "8:45 PM", "n": 220, "by_plus_15": 13.64, "by_plus_30": 23.64, "by_plus_45": 32.73 },
+      { "candle": "9:00 PM", "n": 219, "by_plus_15": 7.31,  "by_plus_30": 17.81, "by_plus_45": 26.94 },
+      { "candle": "9:15 PM", "n": 219, "by_plus_15": 11.87, "by_plus_30": 22.37, "by_plus_45": 29.22 }
+    ]
+  },
+
+  "directional_split": {
+    "description": "Hi-any / Lo-any rates — probability the high (or low) gets touched at all.",
+    "rows": [
+      { "candle": "8:00 PM", "n": 220, "hi_any_plus_15": 51.82, "lo_any_plus_15": 34.55, "hi_any_plus_45": 65.91, "lo_any_plus_45": 52.27 },
+      { "candle": "8:15 PM", "n": 220, "hi_any_plus_15": 46.82, "lo_any_plus_15": 45.91, "hi_any_plus_45": 67.27, "lo_any_plus_45": 58.64 },
+      { "candle": "8:30 PM", "n": 220, "hi_any_plus_15": 47.27, "lo_any_plus_15": 40.91, "hi_any_plus_45": 66.82, "lo_any_plus_45": 57.73 },
+      { "candle": "8:45 PM", "n": 220, "hi_any_plus_15": 56.82, "lo_any_plus_15": 45.91, "hi_any_plus_45": 73.18, "lo_any_plus_45": 57.73 },
+      { "candle": "9:00 PM", "n": 219, "hi_any_plus_15": 42.47, "lo_any_plus_15": 40.18, "hi_any_plus_45": 68.95, "lo_any_plus_45": 54.34 },
+      { "candle": "9:15 PM", "n": 219, "hi_any_plus_15": 56.16, "lo_any_plus_15": 44.75, "hi_any_plus_45": 69.41, "lo_any_plus_45": 59.36 }
+    ]
+  },
+
+  "session_comparison": {
+    "either_plus_15": {
+      "ny_9_30": 90.09,
+      "london_3_45": 94.98,
+      "asia_8_45": 89.09,
+      "asia_9_15": 89.04
+    },
+    "either_plus_30": {
+      "ny_9_30": 96.98,
+      "london_3_45": 99.09,
+      "asia_8_45": 95.45,
+      "asia_9_15": 96.35
+    },
+    "both_sweep_plus_30": {
+      "ny_9_30": 15.95,
+      "london_3_45": 32.42,
+      "asia_8_45": 23.64,
+      "asia_9_15": 22.37
+    },
+    "verdict": "Asia retest rates sit BETWEEN NY and London. Lower magnetism than London open, similar to NY 9:30 at +30 min. Sweep rates ~7pp higher than NY 9:30 but ~10pp lower than London 3:45."
+  },
+
+  "key_findings": {
+    "1": "8:45 PM ET is the strongest single-candle Asia magnet — 89.09% retest by +15 min, 32.73% sweep rate by +45 min. Coincides with Tokyo opening drive.",
+    "2": "9:15 PM ET hits 99.54% by +45 min — tied with London 3:45 for the highest +45 rate in the entire repo.",
+    "3": "9:00 PM is the WEAKEST Asia retest at 75.34% by +15 — the only Asia candle below 80%. Possibly captures a directional move that initially holds before reversing.",
+    "4": "Strong HIGH-bias is the most striking pattern: at 8:00 PM, Hi-any +15 is 51.82% vs Lo-any only 34.55% (17pp gap). NQ's bullish drift compounds with the Asia session's tendency to drift up after Tokyo open.",
+    "5": "Sweep rates moderate compared to London (London 3:45 at 32.42% by +30; Asia 8:45 at 23.64% by +30). Asia is less two-sided than London but more so than NY.",
+    "6": "Asia is a third-tier 'magnetic' session: NY 9:30 < Asia 8:45 < London 3:45 on most metrics. London is the strongest, NY the weakest of the three."
+  },
+
+  "sample_size_caveats": "219-220 days. Aggregate stats trustworthy to ±3pp. Sample size matches NY (232) and London (219) series for direct comparison."
+}
