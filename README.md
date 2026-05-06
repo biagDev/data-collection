@@ -58,3 +58,7 @@ For each of the first four 15-minute candles of the NQ regular session, we measu
 ### NQ pre-market
 
 - [analyses/pm-range-break-and-go](analyses/pm-range-break-and-go) — Does RTH take out the 4:00-9:30 ET pre-market high/low? **Headline: only 1 day in 229 (0.44%) stayed inside the PM range. Green PM → 84% PMH break. Red PM → 83% PML break. Tight PM ranges sweep both sides 53% of the time vs 19% for wide PM ranges.**
+
+### NQ London session
+
+- [analyses/london-candle-hit-stats](analyses/london-candle-hit-stats) — Replication of the NY candle retest series for the London open killzone. Six 15m candles 3:00-4:15 ET, 219-day sample. **Headline: London 3:45 candle has the highest retest rate of any single candle in the repo (95% within 15 min, 99% within 30 min). Beats NY 9:30 (90% / 97%). Sweep rate 41% by +45 min — more than 2x NY 9:30. London open is more magnetic than NY open.**
