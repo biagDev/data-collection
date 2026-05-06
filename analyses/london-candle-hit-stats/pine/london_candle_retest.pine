@@ -1,0 +1,42 @@
+//@version=5
+// London session candle retest stats — six 15m candles from 3:00-4:15 ET.
+// Each candle tracked through three forward windows (+15, +30, +45 min after close).
+// Outputs three tables: either-side hit %, both-side sweep %, directional split.
+// Counter declarations and tally logic omitted from saved copy.
+indicator("London Candle Retest", overlay=true, max_labels_count=50)
+
+h = hour(time, "America/New_York")
+m = minute(time, "America/New_York")
+
+// Subject candles
+isOpen_0 = h == 3 and m == 0
+isOpen_1 = h == 3 and m == 15
+isOpen_2 = h == 3 and m == 30
+isOpen_3 = h == 3 and m == 45
+isOpen_4 = h == 4 and m == 0
+isOpen_5 = h == 4 and m == 15
+
+// Post bars (each subject's +1, +2, +3 forward 15m bars)
+isP1_0 = h == 3 and m == 15
+isP2_0 = h == 3 and m == 30
+isP3_0 = h == 3 and m == 45
+isP1_1 = h == 3 and m == 30
+isP2_1 = h == 3 and m == 45
+isP3_1 = h == 4 and m == 0
+isP1_2 = h == 3 and m == 45
+isP2_2 = h == 4 and m == 0
+isP3_2 = h == 4 and m == 15
+isP1_3 = h == 4 and m == 0
+isP2_3 = h == 4 and m == 15
+isP3_3 = h == 4 and m == 30
+isP1_4 = h == 4 and m == 15
+isP2_4 = h == 4 and m == 30
+isP3_4 = h == 4 and m == 45
+isP1_5 = h == 4 and m == 30
+isP2_5 = h == 4 and m == 45
+isP3_5 = h == 5 and m == 0
+
+// State and counters per subject (oh_N, ol_N, hh1_N..hh3_N, ll1_N..ll3_N
+// per-window cumulative hit flags, plus n_N, e1_N..e3_N, b1_N..b3_N,
+// ha1_N..ha3_N, la1_N..la3_N counters). Tally fires at isP3_N for each
+// subject. See data/results.json for outputs.
