@@ -1,0 +1,15 @@
+{
+  "theme": "ES time-to-retest distribution for the 9:30 candle",
+  "symbol": "CME_MINI:ES1!",
+  "n": 211,
+  "as_of_date": "2026-05-04",
+  "buckets": [
+    { "bars": 1, "minutes": "0-15",   "days": 192, "pct": 91.00 },
+    { "bars": 2, "minutes": "15-30",  "days": 15,  "pct": 7.11 },
+    { "bars": 3, "minutes": "30-45",  "days": 3,   "pct": 1.42 },
+    { "bars": "4+", "minutes": "45+", "days": 1,   "pct": 0.47 },
+    { "bars": "never", "minutes": "—", "days": 0,  "pct": 0.00 }
+  ],
+  "mean_time_minutes": 16.71,
+  "comparison_to_nq": "ES 91.00% by 1 bar vs NQ 91.03%. Virtually identical."
+}

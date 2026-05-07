@@ -1,0 +1,15 @@
+{
+  "theme": "ES max excursion before retest of 9:30 candle",
+  "symbol": "CME_MINI:ES1!",
+  "n": 211,
+  "as_of_date": "2026-05-04",
+  "buckets": [
+    { "range": "0-25% of opening range", "days": 73, "pct": 34.60 },
+    { "range": "25-50%", "days": 66, "pct": 31.28 },
+    { "range": "50-100%", "days": 48, "pct": 22.75 },
+    { "range": "100-200%", "days": 20, "pct": 9.48 },
+    { "range": "200%+", "days": 2, "pct": 0.95 }
+  ],
+  "mean_excursion_pct": 47.74,
+  "comparison_to_nq": "ES mean excursion 47.74% vs NQ 37.53%. ES has BIGGER excursions before retest. Stops should be wider on ES."
+}

@@ -1,0 +1,10 @@
+{
+  "theme": "ES 10:15 candle retest stats",
+  "symbol": "CME_MINI:ES1!",
+  "timeframe": "15m",
+  "n": 219,
+  "as_of_date": "2026-05-04",
+  "either_side": { "by_plus_15_pct": 90.41, "by_plus_30_pct": 96.80, "by_plus_45_pct": 99.09 },
+  "both_sides_sweep": { "by_plus_15_pct": 10.05, "by_plus_30_pct": 25.57, "by_plus_45_pct": 31.96 },
+  "directional": { "hi_any_plus_15_pct": 53.88, "lo_any_plus_15_pct": 46.58, "hi_any_plus_45_pct": 68.49, "lo_any_plus_45_pct": 62.56 }
+}

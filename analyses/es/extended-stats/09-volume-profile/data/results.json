@@ -1,0 +1,23 @@
+{
+  "theme": "ES volume profile by 15-min RTH bucket",
+  "symbol": "CME_MINI:ES1!",
+  "n": "211-219 per bucket",
+  "as_of_date": "2026-05-04",
+  "buckets": [
+    { "open_et": "9:30",  "avg_vol": 83707,  "n": 219 },
+    { "open_et": "9:45",  "avg_vol": 66111,  "n": 219 },
+    { "open_et": "10:00", "avg_vol": 63470,  "n": 219 },
+    { "open_et": "10:15", "avg_vol": 54518,  "n": 219 },
+    { "open_et": "10:30", "avg_vol": 52236,  "n": 219 },
+    { "open_et": "10:45", "avg_vol": 48998,  "n": 219 },
+    { "open_et": "11:00", "avg_vol": 46068,  "n": 219 },
+    { "open_et": "11:30", "avg_vol": 41646,  "n": 219 },
+    { "open_et": "12:00", "avg_vol": 34006,  "n": 219 },
+    { "open_et": "13:00", "avg_vol": 31307,  "n": 214 },
+    { "open_et": "14:00", "avg_vol": 29981,  "n": 211 },
+    { "open_et": "15:00", "avg_vol": 31288,  "n": 211 },
+    { "open_et": "15:30", "avg_vol": 36467,  "n": 211 },
+    { "open_et": "15:45", "avg_vol": 121476, "n": 211 }
+  ],
+  "comparison_to_nq": "ES 9:30 volume 83.7k contracts vs NQ 37k — ES is ~2x NQ liquidity. ES 15:45 close volume 121k is 1.45x its 9:30 (vs NQ 15:45 at 26k = 0.72x its 9:30). ES has dramatically larger MOC closing rotation."
+}

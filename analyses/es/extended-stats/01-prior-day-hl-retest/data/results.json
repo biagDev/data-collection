@@ -1,0 +1,19 @@
+{
+  "theme": "ES prior-day HL retest rate",
+  "symbol": "CME_MINI:ES1!",
+  "n": 211,
+  "as_of_date": "2026-05-04",
+  "first_hour": {
+    "either_pct": 71.09,
+    "both_pct": 1.42,
+    "pdh_only_pct": 42.18,
+    "pdl_only_pct": 27.49
+  },
+  "full_rth": {
+    "either_pct": 92.89,
+    "both_pct": 12.32,
+    "pdh_only_pct": 48.34,
+    "pdl_only_pct": 32.23
+  },
+  "comparison_to_nq": "ES first-hour either 71% vs NQ 77.48%. NQ retests prior-day levels FASTER than ES in the first hour. Full-RTH rates almost identical (92.89% vs 91.89%)."
+}

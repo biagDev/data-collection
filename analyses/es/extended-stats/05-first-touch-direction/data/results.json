@@ -1,0 +1,13 @@
+{
+  "theme": "ES first-touch direction for 9:30 candle retest",
+  "symbol": "CME_MINI:ES1!",
+  "n": 211,
+  "as_of_date": "2026-05-04",
+  "outcomes": {
+    "high_first": { "days": 102, "pct": 48.34 },
+    "low_first":  { "days": 91,  "pct": 43.13 },
+    "same_bar":   { "days": 18,  "pct": 8.53 },
+    "never_hit":  { "days": 0,   "pct": 0.00 }
+  },
+  "comparison_to_nq": "ES 48.34/43.13 vs NQ 47.98/46.64. ES has slightly stronger high-first lean but both essentially coin flip without color conditioning."
+}

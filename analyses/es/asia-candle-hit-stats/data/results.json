@@ -1,0 +1,15 @@
+{
+  "theme": "ES Asia session candle retest",
+  "symbol": "CME_MINI:ES1!",
+  "n_per_candle": "219-220",
+  "as_of_date": "2026-05-04",
+  "rows": [
+    { "candle_et": "8:00_PM", "either_plus_15": 80.91, "either_plus_45": 95.91, "both_plus_45": 24.09 },
+    { "candle_et": "8:15_PM", "either_plus_15": 83.64, "either_plus_45": 97.27, "both_plus_45": 34.09 },
+    { "candle_et": "8:30_PM", "either_plus_15": 85.00, "either_plus_45": 98.64, "both_plus_45": 28.64 },
+    { "candle_et": "8:45_PM", "either_plus_15": 90.00, "either_plus_45": 99.55, "both_plus_45": 33.18 },
+    { "candle_et": "9:00_PM", "either_plus_15": 78.54, "either_plus_45": 97.26, "both_plus_45": 27.40 },
+    { "candle_et": "9:15_PM", "either_plus_15": 91.78, "either_plus_45": 99.54, "both_plus_45": 36.07 }
+  ],
+  "comparison_to_nq": "ES Asia 8:45 (90 / 99.55 / 33.18) vs NQ (89.09 / 98.18 / 32.73). Almost identical. ES 9:15 (91.78) slightly stronger than NQ (89.04). Asia patterns highly consistent across both equity indices."
+}

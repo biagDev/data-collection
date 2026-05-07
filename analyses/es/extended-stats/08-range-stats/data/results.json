@@ -1,0 +1,18 @@
+{
+  "theme": "ES range stats — 9:30 candle vs full RTH",
+  "symbol": "CME_MINI:ES1!",
+  "n": 211,
+  "as_of_date": "2026-05-04",
+  "averages": {
+    "avg_open_candle_range_pts": 18.93,
+    "avg_full_rth_range_pts": 64.14,
+    "avg_open_pct_of_day": 32.01
+  },
+  "distribution_open_pct_of_day": {
+    "lt_25": { "days": 66, "pct": 31.28 },
+    "25_50": { "days": 127, "pct": 60.19 },
+    "50_75": { "days": 18, "pct": 8.53 },
+    "ge_75": { "days": 0, "pct": 0.00 }
+  },
+  "comparison_to_nq": "ES 9:30 makes 32% of day's range vs NQ's 38.7%. ES's opening 15min is slightly smaller relative contribution. Note absolute: ES 19 pts vs NQ 109 pts (NQ moves much further in absolute terms)."
+}

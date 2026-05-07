@@ -1,0 +1,17 @@
+{
+  "theme": "ES pre-market range (4:00-9:30 ET) break-and-go",
+  "symbol": "CME_MINI:ES1!",
+  "n": 211,
+  "as_of_date": "2026-05-04",
+  "aggregate": {
+    "pmh_broken_by_10_00_pct": 44.55,
+    "pmh_broken_by_10_30_pct": 54.03,
+    "pmh_broken_by_eod_pct": 70.14,
+    "pml_broken_by_eod_pct": 63.98,
+    "both_broken_sweep_pct": 34.60,
+    "neither_broken_contained_pct": 0.47
+  },
+  "after_green_pm": { "n": 119, "pmh_eod_pct": 79.83, "pml_eod_pct": 53.78 },
+  "after_red_pm": { "n": 90, "pmh_eod_pct": 56.67, "pml_eod_pct": 77.78 },
+  "comparison_to_nq": "Same pattern: only 0.47% contained (NQ 0.44%). After green PM 79.83%/53.78% (NQ 84.25/56.69). After red PM 56.67/77.78 (NQ 54.90/83.33). ES PM directional signal slightly weaker than NQ but mirror pattern intact."
+}

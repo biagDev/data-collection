@@ -1,0 +1,15 @@
+{
+  "theme": "ES Weekly Patterns Vol.2 — wick patterns + inside/outside",
+  "symbol": "CME_MINI:ES1!",
+  "as_of_date": "2026-05-04",
+  "wick_patterns": {
+    "hammer_green_next_pct": { "n": 153, "pct": 60.13 },
+    "shooting_star_red_next_pct": { "n": 77, "pct": 59.74 }
+  },
+  "inside_outside": {
+    "inside_break_up_pct": 65.85,
+    "outside_green_continue_pct": 49.45,
+    "outside_red_continue_pct": 45.16
+  },
+  "comparison_to_nq": "Hammer pattern works on both: ES 60.13% vs NQ 60.50%. KEY DIFFERENCE: Shooting star red-next ES 59.74% vs NQ 51.61%. Shooting stars actually WORK on ES (10pp edge) but NOT on NQ (essentially coin flip). The bullish-drift asymmetry that suppresses bearish reversal patterns on NQ is weaker on ES — bearish reversal patterns are tradeable on ES."
+}

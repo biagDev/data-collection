@@ -1,0 +1,18 @@
+{
+  "theme": "ES Daily Patterns Vol.2 — 200MA regime split",
+  "symbol": "CME_MINI:ES1!",
+  "as_of_date": "2026-05-04",
+  "regime_split": {
+    "after_3plus_green_p_green_next": {
+      "above_ma": { "n": 888, "pct": 55.74 },
+      "below_ma": { "n": 200, "pct": 48.50 },
+      "delta": 7.24
+    },
+    "after_3plus_red_p_green_next": {
+      "above_ma": { "n": 318, "pct": 62.26 },
+      "below_ma": { "n": 278, "pct": 56.12 },
+      "delta": 6.14
+    }
+  },
+  "comparison_to_nq": "200MA regime separation REPLICATED on ES. NQ showed +8.01pp difference for 3+g streaks above vs below MA. ES shows +7.24pp. Pattern is real and robust across both indices: bull-streak continuation only works in uptrends. ES 3+r bounce above MA (62.26%) is dramatically stronger than NQ's (56.97%) — when ES is above MA, post-3-red bounces hit harder than NQ."
+}

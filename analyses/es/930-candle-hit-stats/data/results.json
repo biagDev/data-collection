@@ -1,0 +1,11 @@
+{
+  "theme": "ES 9:30 candle retest stats",
+  "symbol": "CME_MINI:ES1!",
+  "timeframe": "15m",
+  "n": 219,
+  "as_of_date": "2026-05-04",
+  "either_side": { "by_plus_15_pct": 90.87, "by_plus_30_pct": 97.72, "by_plus_45_pct": 99.54 },
+  "both_sides_sweep": { "by_plus_15_pct": 9.13, "by_plus_30_pct": 21.92, "by_plus_45_pct": 28.31 },
+  "directional": { "hi_any_plus_15_pct": 52.51, "lo_any_plus_15_pct": 47.49, "hi_any_plus_45_pct": 68.95, "lo_any_plus_45_pct": 58.90 },
+  "comparison_to_nq": "ES 9:30 either +15 (90.87%) virtually identical to NQ (90.09%). ES sweep +30 (21.92%) HIGHER than NQ (15.95%) — ES is more two-sided after the open."
+}

@@ -1,0 +1,36 @@
+{
+  "theme": "ES Daily Patterns Vol.1 — streaks, NR7, close-quartile, gaps, 20-day range position",
+  "symbol": "CME_MINI:ES1!",
+  "as_of_date": "2026-05-04",
+  "streaks": {
+    "after_green": [
+      { "len": 1, "n": 1845, "p_continue_pct": 51.92 },
+      { "len": 2, "n": 939, "p_continue_pct": 55.17 },
+      { "len": 3, "n": 509, "p_continue_pct": 55.60 },
+      { "len": 4, "n": 276, "p_continue_pct": 56.52 },
+      { "len": "5+", "n": 323, "p_continue_pct": 54.49 }
+    ],
+    "after_red_p_green_next": [
+      { "len": 1, "n": 1832, "p_green_pct": 53.93 },
+      { "len": 2, "n": 824, "p_green_pct": 53.28 },
+      { "len": 3, "n": 374, "p_green_pct": 57.75 },
+      { "len": 4, "n": 155, "p_green_pct": 58.71 },
+      { "len": "5+", "n": 88, "p_green_pct": 69.32 }
+    ]
+  },
+  "close_quartile": {
+    "after_top_q": { "n": 2618, "hh_next_pct": 83.35, "grn_next_pct": 52.37 },
+    "after_bot_q": { "n": 1677, "ll_next_pct": 81.04 }
+  },
+  "nr7": { "n": 1149, "expand_pct": 83.55, "green_pct": 53.09 },
+  "gap_fill": [
+    { "bucket": "<25 pts",   "n": 5986, "fill_pct": 93.38 },
+    { "bucket": "25-100",    "n": 52,   "fill_pct": 44.23 },
+    { "bucket": "100+",      "n": 0,    "fill_pct": 0 }
+  ],
+  "range_position": {
+    "top10_of_20day": { "n": 1820, "p_green_next_pct": 52.80 },
+    "bot10_of_20day": { "n": 513,  "p_green_next_pct": 55.36 }
+  },
+  "comparison_to_nq": "ES streak stats similar to NQ but 5+r bounce MUCH stronger (69.32% vs 57.38%). ES Top-Q HH (83.35%) close to NQ (85.61%). NR7 expansion identical (83.55% vs 83.52%). Big difference: ES medium gaps (25-100 pts) fill only 44% vs NQ 67% — ES gap-and-go is more reliable. ES has zero 100+ pt gaps in 27-yr sample (lower absolute volatility). The 3-down-week anomaly that hit on NQ does NOT appear on ES daily — 3r bounces 57.75% (above coin flip)."
+}

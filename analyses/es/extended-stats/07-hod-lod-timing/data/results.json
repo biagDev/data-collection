@@ -1,0 +1,16 @@
+{
+  "theme": "ES HOD/LOD timing distribution",
+  "symbol": "CME_MINI:ES1!",
+  "n": 211,
+  "as_of_date": "2026-05-04",
+  "buckets": [
+    { "hour": "9:30-10:00", "hod_pct": 27.01, "lod_pct": 31.75 },
+    { "hour": "10-11",      "hod_pct": 15.64, "lod_pct": 16.59 },
+    { "hour": "11-12",      "hod_pct": 8.53,  "lod_pct": 12.32 },
+    { "hour": "12-13",      "hod_pct": 7.58,  "lod_pct": 7.11 },
+    { "hour": "13-14",      "hod_pct": 7.11,  "lod_pct": 8.06 },
+    { "hour": "14-15",      "hod_pct": 8.53,  "lod_pct": 8.53 },
+    { "hour": "15-16",      "hod_pct": 25.59, "lod_pct": 15.64 }
+  ],
+  "comparison_to_nq": "Same U-shape as NQ. ES first-30min HOD slightly lower (27% vs 31%). Last hour HOD higher on ES (25.59% vs 23.77%)."
+}

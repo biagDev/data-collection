@@ -1,0 +1,16 @@
+{
+  "theme": "ES 9:30 retest rates split by candle color",
+  "symbol": "CME_MINI:ES1!",
+  "n_green": 104,
+  "n_red": 105,
+  "as_of_date": "2026-05-04",
+  "after_green_9_30": {
+    "by_10_00": { "either_pct": 89.42, "high_any_pct": 75.00, "low_any_pct": 24.04 },
+    "by_10_15": { "either_pct": 98.08, "high_any_pct": 86.54, "low_any_pct": 36.54 }
+  },
+  "after_red_9_30": {
+    "by_10_00": { "either_pct": 92.38, "high_any_pct": 27.62, "low_any_pct": 72.38 },
+    "by_10_15": { "either_pct": 98.10, "high_any_pct": 40.95, "low_any_pct": 76.19 }
+  },
+  "key_finding": "Mirror pattern confirmed on ES (75/24 after green vs 27/72 after red) — virtually identical to NQ (74/21 after green vs 24/74 after red). The directional asymmetry from candle color is a market-wide equity-index pattern, not NQ-specific."
+}

@@ -1,0 +1,30 @@
+{
+  "theme": "ES Weekly Patterns Vol.1",
+  "symbol": "CME_MINI:ES1!",
+  "as_of_date": "2026-05-04",
+  "streaks": {
+    "after_green": [
+      { "len": 1, "n": 376, "p_continue_pct": 54.52 },
+      { "len": 2, "n": 203, "p_continue_pct": 55.67 },
+      { "len": 3, "n": 112, "p_continue_pct": 56.25 },
+      { "len": 4, "n": 63, "p_continue_pct": 69.84 },
+      { "len": "5+", "n": 84, "p_continue_pct": 51.19 }
+    ],
+    "after_red_p_green_next": [
+      { "len": 1, "n": 374, "p_green_pct": 57.22 },
+      { "len": 2, "n": 160, "p_green_pct": 58.13 },
+      { "len": 3, "n": 67, "p_green_pct": 53.73 },
+      { "len": 4, "n": 31, "p_green_pct": 67.74 },
+      { "len": "5+", "n": 19, "p_green_pct": 52.63 }
+    ]
+  },
+  "close_quartile": {
+    "after_top_q_hh_next_pct": 88.44,
+    "after_bot_q_ll_next_pct": 85.58
+  },
+  "nr4_expand_pct": 75.38,
+  "inside_week_break_up_pct": 65.85,
+  "outside_green_continue_pct": 49.45,
+  "outside_red_continue_pct": 45.16,
+  "comparison_to_nq": "ES Top-Q HH (88.44%) matches NQ (88.58%). NR4 expansion 75.38% matches NQ 74.25%. CRITICAL: NQ's '3-down-week anomaly' (41.94% bounce) does NOT replicate on ES — ES 3r bounces normally at 53.73%. The anomaly appears to be NQ-specific or noise. ES 4g continuation jumps to 69.84% (vs NQ 55.36%) — ES has stronger 4-week trend continuation."
+}

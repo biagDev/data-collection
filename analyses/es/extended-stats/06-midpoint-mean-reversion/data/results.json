@@ -1,0 +1,8 @@
+{
+  "theme": "ES midpoint mean reversion to 9:30 candle midpoint",
+  "symbol": "CME_MINI:ES1!",
+  "n": 211,
+  "as_of_date": "2026-05-04",
+  "midpoint_touched_by_eod": { "days": 179, "pct": 84.83 },
+  "comparison_to_nq": "ES 84.83% vs NQ 78.92%. ES mean-reverts to its 9:30 midpoint MORE often than NQ — about 6pp higher. Only 15% of ES days are pure-trend days that never return to opening midpoint."
+}

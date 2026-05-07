@@ -1,0 +1,10 @@
+{
+  "theme": "ES 10:30 candle retest stats",
+  "symbol": "CME_MINI:ES1!",
+  "timeframe": "15m",
+  "n": 219,
+  "as_of_date": "2026-05-04",
+  "either_side": { "by_plus_15_pct": 86.76, "by_plus_30_pct": 96.80, "by_plus_45_pct": 98.63 },
+  "both_sides_sweep": { "by_plus_15_pct": 10.96, "by_plus_30_pct": 20.09, "by_plus_45_pct": 29.68 },
+  "directional": { "hi_any_plus_15_pct": 47.03, "lo_any_plus_15_pct": 50.68, "hi_any_plus_45_pct": 62.56, "lo_any_plus_45_pct": 65.75, "note": "Only ES NY candle with low-bias > high-bias" }
+}

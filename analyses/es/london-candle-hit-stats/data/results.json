@@ -1,0 +1,15 @@
+{
+  "theme": "ES London session candle retest",
+  "symbol": "CME_MINI:ES1!",
+  "n_per_candle": 219,
+  "as_of_date": "2026-05-04",
+  "rows": [
+    { "candle_et": "3:00", "either_plus_15": 84.02, "either_plus_45": 96.35, "both_plus_45": 28.77 },
+    { "candle_et": "3:15", "either_plus_15": 85.84, "either_plus_45": 99.54, "both_plus_45": 34.25 },
+    { "candle_et": "3:30", "either_plus_15": 86.76, "either_plus_45": 97.72, "both_plus_45": 35.16 },
+    { "candle_et": "3:45", "either_plus_15": 93.61, "either_plus_45": 99.09, "both_plus_45": 38.81 },
+    { "candle_et": "4:00", "either_plus_15": 88.13, "either_plus_45": 96.80, "both_plus_45": 29.68 },
+    { "candle_et": "4:15", "either_plus_15": 91.32, "either_plus_45": 98.17, "both_plus_45": 31.96 }
+  ],
+  "comparison_to_nq": "ES London 3:45 (93.61/99.09/38.81) vs NQ (94.98/99.09/40.64) — virtually identical, confirming London 3:45 is the strongest single-candle magnet across both equity indices."
+}
