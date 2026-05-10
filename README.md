@@ -67,6 +67,10 @@ For each of the first four 15-minute candles of the NQ regular session, we measu
 
 - [analyses/asia-candle-hit-stats](analyses/asia-candle-hit-stats) — Replication of the NY/London series for the Asia killzone. Six 15m candles 8:00-9:15 PM ET (Tokyo morning), 220-day sample. **Headline: 8:45 PM is the strongest Asia magnet (89% retest +15, 33% sweep +45). 9:15 PM ties with London 3:45 for highest +45 retest in the repo (99.54%). Asia has the strongest HIGH-bias of any session — 17pp Hi/Lo gap at 8:00 PM. Magnetism: London > Asia > NY.**
 
+### Globex 6 PM ET re-open (PRELIMINARY, n=21)
+
+- [analyses/globex-6pm-candle-hit-stats](analyses/globex-6pm-candle-hit-stats) — Six 15m candles 6:00-7:15 PM ET (after the daily 5-6 PM CME settlement break). NQ + ES both included; ES at [analyses/es/globex-6pm-candle-hit-stats](analyses/es/globex-6pm-candle-hit-stats). **Headline: 6:00 PM is the WEAKEST session-open candle ever measured (48-52% retest +15) — Globex re-opens are highly directional. NQ 6:00 PM has 0% sweep rate by +45 and 19% low-any rate (lowest in repo, strong upward bias). 7:15 PM hits 100% retest by +45 with 43-52% sweep — magnetism resumes once initial directional move plays out. Sample = 21 days due to data-depth limitation; treat as preliminary.**
+
 ### ES (S&P 500 E-mini) — multi-asset replication
 
 - [analyses/es/](analyses/es/) — 20 of NQ's 27 analyses replicated on ES. Same methodology, same time windows. **Headline findings: 9:30 candle retest rates virtually identical to NQ (90.87% vs 90.09%). Color-conditional signal (green→75/24, red→27/72) fully replicated. 200MA regime filter universally confirmed. BUT: 3-down-week anomaly does NOT replicate on ES (NQ 41.94%, ES 53.73%). Shooting stars work on ES (60%) but not NQ (52%). ES has bigger excursions before retest but stronger midpoint reversion. ES gap-fill at medium sizes is weaker than NQ.** See [analyses/es/EASY_READ.md](analyses/es/EASY_READ.md) for full comparison table.

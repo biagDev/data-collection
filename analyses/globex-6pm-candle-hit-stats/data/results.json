@@ -1,0 +1,28 @@
+{
+  "theme": "NQ Globex 6PM ET re-open candle retest stats — Pass 1",
+  "symbol": "CME_MINI:NQ1!",
+  "timeframe": "15m",
+  "n_per_candle": 21,
+  "as_of_date": "2026-05-07",
+  "sample_size_warning": "Sample is only 21 days because TradingView's chart had limited Globex history loaded after recent symbol switches. The 232-day depth available for daytime stats wasn't recovered for overnight bars after switching symbols multiple times. Treat these numbers as PRELIMINARY/DIRECTIONAL only — confidence intervals are roughly ±15pp at this sample size. Re-run on a freshly-loaded chart for production-quality numbers.",
+  "session_window": "6:00 PM - 8:00 PM ET (Globex post-settlement re-open)",
+  "subject_candles": "Six 15-minute candles from 6:00-7:15 PM ET",
+  "forward_windows": "+15, +30, +45 min after subject closes",
+
+  "rows": [
+    { "candle": "6:00 PM", "n": 21, "either_plus_15": 47.62, "either_plus_45": 66.67, "both_plus_45": 0.00,  "hi_any_plus_45": 47.62, "lo_any_plus_45": 19.05 },
+    { "candle": "6:15 PM", "n": 21, "either_plus_15": 80.95, "either_plus_45": 95.24, "both_plus_45": 23.81, "hi_any_plus_45": 47.62, "lo_any_plus_45": 71.43 },
+    { "candle": "6:30 PM", "n": 21, "either_plus_15": 85.71, "either_plus_45": 95.24, "both_plus_45": 23.81, "hi_any_plus_45": 66.67, "lo_any_plus_45": 52.38 },
+    { "candle": "6:45 PM", "n": 21, "either_plus_15": 80.95, "either_plus_45": 95.24, "both_plus_45": 28.57, "hi_any_plus_45": 71.43, "lo_any_plus_45": 52.38 },
+    { "candle": "7:00 PM", "n": 21, "either_plus_15": 66.67, "either_plus_45": 95.24, "both_plus_45": 19.05, "hi_any_plus_45": 61.90, "lo_any_plus_45": 52.38 },
+    { "candle": "7:15 PM", "n": 21, "either_plus_15": 85.71, "either_plus_45": 100.00, "both_plus_45": 42.86, "hi_any_plus_45": 80.95, "lo_any_plus_45": 61.90 }
+  ],
+
+  "preliminary_findings": {
+    "1": "The 6:00 PM open candle is the WEAKEST retest (47.62% by +15, 66.67% by +45). The actual Globex re-open establishes a directional move that holds — much like the 3:00 AM London open and the 9:30 RTH open patterns we documented earlier.",
+    "2": "Sweep rate (both sides) is 0% for the 6:00 PM candle by +45 min. Globex re-opens are highly directional events. By +45 min, only one side has been retested.",
+    "3": "Later Globex candles (6:15-7:15) reach 95-100% retest by +45 — same magnetism pattern as London/Asia.",
+    "4": "7:15 PM is the strongest Globex magnet (100% retest +45, 42.86% sweep) — possibly because by then the early Globex move has played out and price starts mean-reverting.",
+    "5": "The 6:00 PM candle's 19% low-any rate is the lowest of any session candle ever measured — meaning Globex re-opens almost NEVER take out the open candle's low in the first 45 min. Strong upward bias at re-open."
+  }
+}

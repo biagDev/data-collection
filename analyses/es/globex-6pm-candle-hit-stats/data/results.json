@@ -1,0 +1,19 @@
+{
+  "theme": "ES Globex 6PM ET re-open candle retest stats — Pass 1",
+  "symbol": "CME_MINI:ES1!",
+  "timeframe": "15m",
+  "n_per_candle": 21,
+  "as_of_date": "2026-05-07",
+  "sample_size_warning": "Same data-depth limitation as NQ Globex stats. Sample = 21 days only. Treat as PRELIMINARY/DIRECTIONAL.",
+
+  "rows": [
+    { "candle": "6:00 PM", "n": 21, "either_plus_15": 52.38, "either_plus_45": 76.19, "both_plus_45": 4.76 },
+    { "candle": "6:15 PM", "n": 21, "either_plus_15": 95.24, "either_plus_45": 100.00, "both_plus_45": 23.81 },
+    { "candle": "6:30 PM", "n": 21, "either_plus_15": 80.95, "either_plus_45": 95.24, "both_plus_45": 28.57 },
+    { "candle": "6:45 PM", "n": 21, "either_plus_15": 85.71, "either_plus_45": 95.24, "both_plus_45": 38.10 },
+    { "candle": "7:00 PM", "n": 21, "either_plus_15": 76.19, "either_plus_45": 100.00, "both_plus_45": 38.10 },
+    { "candle": "7:15 PM", "n": 21, "either_plus_15": 95.24, "either_plus_45": 100.00, "both_plus_45": 52.38 }
+  ],
+
+  "comparison_to_nq": "Same shape: 6:00 PM is the weakest open (52% vs NQ 48% by +15min) and 7:15 PM is the strongest. ES sweep rates are HIGHER than NQ at every candle — 7:15 PM ES sweep is 52.38% vs NQ 42.86%. Pattern of weak-open / strong-late-Globex is consistent across both indices. Both confirm Globex re-open is a directional event in early candles, mean-reverting later."
+}
