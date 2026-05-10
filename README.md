@@ -19,9 +19,11 @@ Every analysis ships with three layers:
 
 ## Analyses
 
+**Current scope: ~47 analyses across NQ (27) + ES (20) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
+
 ### NQ Opening-range candle hit-rate series
 
-For each of the first four 15-minute candles of the NQ regular session, we measure how often subsequent candles wick back to the subject candle's high or low. Each analysis includes aggregate + day-of-week breakdown, and `both / high-only / low-only / either / neither` partitions plus `high-any / low-any` totals. Sample = 232 trading days of NQ1! 15m data.
+For each of the first six 15-minute candles of the NQ regular session, we measure how often subsequent candles wick back to the subject candle's high or low. Each analysis includes aggregate + day-of-week breakdown, and `both / high-only / low-only / either / neither` partitions plus `high-any / low-any` totals. Sample = 232 trading days of NQ1! 15m data.
 
 - [analyses/930-candle-hit-stats](analyses/930-candle-hit-stats) — 9:30-9:45 ET candle, measured by 10:00 / 10:15
 - [analyses/945-candle-hit-stats](analyses/945-candle-hit-stats) — 9:45-10:00 ET candle, by 10:15 / 10:30 / 10:45 _(corrected; see README note)_
