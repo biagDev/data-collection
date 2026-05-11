@@ -1,0 +1,134 @@
+//@version=5
+// Top Retest Windows — Multi-session Opening Range Magnet
+//
+// Modified from the ORM 9:30-10:15 concept: instead of one window, this draws
+// magnet H/L levels for the top-10 highest-probability 15-minute retest candles
+// measured across NQ + ES + sessions.
+//
+// Each enabled window:
+//   1. Captures the H/L of the subject 15m candle at its close
+//   2. Draws horizontal lines extending N bars forward
+//   3. Optional midpoint line (50% level)
+//   4. Optional ✓ marks where price retests the H or L within the window
+//
+// Top-10 unique time windows (deduplicated across NQ + ES):
+//   3:45 ET   — London 3:45 candle (94.98% NQ, 93.61% ES)
+//   9:30 ET   — NY open (90.09% NQ, 90.87% ES)
+//   10:15 ET  — NY (86.21% NQ, 90.41% ES)
+//   10:30 ET  — NY (89.22% NQ, 86.76% ES)
+//   8:45 PM ET — Asia (89.09% NQ, 90.00% ES)
+//   9:15 PM ET — Asia (89.04% NQ, 91.78% ES)
+//
+// Source repo: https://github.com/biagDev/data-collection
+// Underlying stats: analyses/930-candle-hit-stats, london-candle-hit-stats, asia-candle-hit-stats
+
+indicator("Top Retest Windows Magnet", overlay=true, max_lines_count=500, max_labels_count=500)
+
+// === Inputs ===
+showLondon345 = input.bool(true, "London 3:45 ET  (NQ 94.98% / ES 93.61%)", group="Windows")
+show930      = input.bool(true, "NY 9:30 ET      (NQ 90.09% / ES 90.87%)", group="Windows")
+show1015     = input.bool(true, "NY 10:15 ET     (NQ 86.21% / ES 90.41%)", group="Windows")
+show1030     = input.bool(true, "NY 10:30 ET     (NQ 89.22% / ES 86.76%)", group="Windows")
+showAsia845  = input.bool(true, "Asia 8:45 PM ET (NQ 89.09% / ES 90.00%)", group="Windows")
+showAsia915  = input.bool(true, "Asia 9:15 PM ET (NQ 89.04% / ES 91.78%)", group="Windows")
+
+extendBars   = input.int(4, "Forward bars to extend each level", minval=1, maxval=20, group="Display", tooltip="Number of 15m bars to extend H/L magnet lines forward after the subject candle closes. 4 = 60 min (covers the +45 min retest window plus one buffer bar).")
+showLabels   = input.bool(true, "Show level labels", group="Display")
+showMidpoint = input.bool(false, "Show midpoint line (50%)", group="Display")
+highlightHit = input.bool(true, "Highlight when level is hit", group="Display")
+
+colLondon = input.color(color.new(#00bcd4, 0), "London color", group="Colors")
+colNY     = input.color(color.new(#2196f3, 0), "NY color",     group="Colors")
+colAsia   = input.color(color.new(#9c27b0, 0), "Asia color",   group="Colors")
+colHit    = input.color(color.new(#ff9800, 0), "Hit highlight color", group="Colors")
+
+// === Time detection ===
+h = hour(time, "America/New_York")
+m = minute(time, "America/New_York")
+
+isLondon345 = h == 3  and m == 45 and showLondon345
+is930       = h == 9  and m == 30 and show930
+is1015      = h == 10 and m == 15 and show1015
+is1030      = h == 10 and m == 30 and show1030
+isAsia845   = h == 20 and m == 45 and showAsia845
+isAsia915   = h == 21 and m == 15 and showAsia915
+
+// === Draw H/L magnet for each window ===
+f_draw(bool trigger, string lbl, color col) =>
+    if trigger
+        hi = high
+        lo = low
+        mid = (hi + lo) / 2.0
+        line.new(bar_index, hi, bar_index + extendBars, hi, color=col, width=2)
+        line.new(bar_index, lo, bar_index + extendBars, lo, color=col, width=2)
+        if showMidpoint
+            line.new(bar_index, mid, bar_index + extendBars, mid, color=color.new(col, 60), width=1, style=line.style_dashed)
+        if showLabels
+            label.new(bar_index + extendBars, hi, lbl + " H " + str.tostring(hi, format.mintick), style=label.style_label_left, color=color.new(col, 70), textcolor=color.white, size=size.small)
+            label.new(bar_index + extendBars, lo, lbl + " L " + str.tostring(lo, format.mintick), style=label.style_label_left, color=color.new(col, 70), textcolor=color.white, size=size.small)
+
+f_draw(isLondon345, "L3:45", colLondon)
+f_draw(is930,       "9:30",  colNY)
+f_draw(is1015,      "10:15", colNY)
+f_draw(is1030,      "10:30", colNY)
+f_draw(isAsia845,   "A8:45", colAsia)
+f_draw(isAsia915,   "A9:15", colAsia)
+
+// === Hit highlight: per-window state, marks retests within forward window ===
+var float l345_h = na
+var float l345_l = na
+var int l345_bar = na
+var float w930_h = na
+var float w930_l = na
+var int w930_bar = na
+var float w1015_h = na
+var float w1015_l = na
+var int w1015_bar = na
+var float w1030_h = na
+var float w1030_l = na
+var int w1030_bar = na
+var float a845_h = na
+var float a845_l = na
+var int a845_bar = na
+var float a915_h = na
+var float a915_l = na
+var int a915_bar = na
+
+if isLondon345
+    l345_h := high
+    l345_l := low
+    l345_bar := bar_index
+if is930
+    w930_h := high
+    w930_l := low
+    w930_bar := bar_index
+if is1015
+    w1015_h := high
+    w1015_l := low
+    w1015_bar := bar_index
+if is1030
+    w1030_h := high
+    w1030_l := low
+    w1030_bar := bar_index
+if isAsia845
+    a845_h := high
+    a845_l := low
+    a845_bar := bar_index
+if isAsia915
+    a915_h := high
+    a915_l := low
+    a915_bar := bar_index
+
+f_hit(float hh, float ll, int srcBar) =>
+    if highlightHit and not na(hh) and not na(srcBar) and bar_index > srcBar and bar_index <= srcBar + extendBars
+        if high >= hh and low <= hh
+            label.new(bar_index, hh, "✓", style=label.style_label_down, color=colHit, textcolor=color.white, size=size.tiny)
+        if high >= ll and low <= ll
+            label.new(bar_index, ll, "✓", style=label.style_label_up, color=colHit, textcolor=color.white, size=size.tiny)
+
+f_hit(l345_h, l345_l, l345_bar)
+f_hit(w930_h, w930_l, w930_bar)
+f_hit(w1015_h, w1015_l, w1015_bar)
+f_hit(w1030_h, w1030_l, w1030_bar)
+f_hit(a845_h, a845_l, a845_bar)
+f_hit(a915_h, a915_l, a915_bar)
