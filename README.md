@@ -19,7 +19,7 @@ Every analysis ships with three layers:
 
 ## Analyses
 
-**Current scope: ~55 analyses across NQ (35) + ES (20) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
+**Current scope: ~69 analyses across NQ (35) + ES (20) + GC (14) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
 
 ### NQ Opening-range candle hit-rate series
 
@@ -85,6 +85,10 @@ Same methodology as the opening-range series, extended into the NY lunch zone an
 ### Globex 6 PM ET re-open (PRELIMINARY, n=21)
 
 - [analyses/globex-6pm-candle-hit-stats](analyses/globex-6pm-candle-hit-stats) — Six 15m candles 6:00-7:15 PM ET (after the daily 5-6 PM CME settlement break). NQ + ES both included; ES at [analyses/es/globex-6pm-candle-hit-stats](analyses/es/globex-6pm-candle-hit-stats). **Headline: 6:00 PM is the WEAKEST session-open candle ever measured (48-52% retest +15) — Globex re-opens are highly directional. NQ 6:00 PM has 0% sweep rate by +45 and 19% low-any rate (lowest in repo, strong upward bias). 7:15 PM hits 100% retest by +45 with 43-52% sweep — magnetism resumes once initial directional move plays out. Sample = 21 days due to data-depth limitation; treat as preliminary.**
+
+### GC (Gold Futures, COMEX) — multi-asset replication
+
+- [analyses/gc/](analyses/gc/) — 14 of NQ's intraday candle hit-stats analyses replicated on GC (COMEX:GC1!). Same time windows, same Pine logic. **Headline findings: (1) the NY 9:30 magnet is equity-index-specific — GC gets 80% retest +15 vs NQ/ES ~90%. (2) GC's 9:45 candle slightly beats its 9:30 — gold appears to need one candle to "settle" before mean-reversion kicks in. (3) By +45 min retest rates converge to 97-99% — gold mean-reverts intraday just like indices, just not anchored to 9:30. (4) Lunch-zone sweep rates ~33-36% — comparable to NQ.** See [analyses/gc/EASY_READ.md](analyses/gc/EASY_READ.md) for full comparison. Extended-stats, daily/weekly patterns, sessions, and followthrough chain not yet replicated on GC — ask if you want those.
 
 ### ES (S&P 500 E-mini) — multi-asset replication
 

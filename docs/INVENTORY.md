@@ -1,6 +1,6 @@
 # Repo Inventory
 
-Complete index of every analysis in `analyses/`, organized by topic. **55 analyses total.**
+Complete index of every analysis in `analyses/`, organized by topic. **69 analyses total.**
 
 ## NQ analyses (35)
 
@@ -71,6 +71,34 @@ Complete index of every analysis in `analyses/`, organized by topic. **55 analys
 | # | Folder | Session |
 |---|---|---|
 | 36 | [globex-6pm-candle-hit-stats](../analyses/globex-6pm-candle-hit-stats) | Globex 6:00-7:15 PM ET (small sample) |
+
+---
+
+## GC analyses (14 — all in `analyses/gc/`)
+
+Replication of NQ's intraday candle hit-stats series on `COMEX:GC1!` (Gold Futures). Time windows mirror NQ literally; see [analyses/gc/EASY_READ.md](../analyses/gc/EASY_READ.md) for the comparison summary.
+
+| # | Folder | Subject |
+|---|---|---|
+| 1 | [gc/930-candle-hit-stats](../analyses/gc/930-candle-hit-stats) | 9:30-9:45 ET |
+| 2 | [gc/945-candle-hit-stats](../analyses/gc/945-candle-hit-stats) | 9:45-10:00 ET |
+| 3 | [gc/1000-candle-hit-stats](../analyses/gc/1000-candle-hit-stats) | 10:00-10:15 ET |
+| 4 | [gc/1015-candle-hit-stats](../analyses/gc/1015-candle-hit-stats) | 10:15-10:30 ET |
+| 5 | [gc/1030-candle-hit-stats](../analyses/gc/1030-candle-hit-stats) | 10:30-10:45 ET |
+| 6 | [gc/1045-candle-hit-stats](../analyses/gc/1045-candle-hit-stats) | 10:45-11:00 ET |
+| 7 | [gc/1100-candle-hit-stats](../analyses/gc/1100-candle-hit-stats) | 11:00-11:15 ET |
+| 8 | [gc/1130-candle-hit-stats](../analyses/gc/1130-candle-hit-stats) | 11:30-11:45 ET |
+| 9 | [gc/1200-candle-hit-stats](../analyses/gc/1200-candle-hit-stats) | 12:00-12:15 ET |
+| 10 | [gc/1230-candle-hit-stats](../analyses/gc/1230-candle-hit-stats) | 12:30-12:45 ET |
+| 11 | [gc/1300-candle-hit-stats](../analyses/gc/1300-candle-hit-stats) | 13:00-13:15 ET |
+| 12 | [gc/1400-candle-hit-stats](../analyses/gc/1400-candle-hit-stats) | 14:00-14:15 ET |
+| 13 | [gc/1500-candle-hit-stats](../analyses/gc/1500-candle-hit-stats) | 15:00-15:15 ET |
+| 14 | [gc/1545-candle-hit-stats](../analyses/gc/1545-candle-hit-stats) | 15:45-16:00 ET |
+
+**GC analyses NOT yet replicated** (NQ deep dives — future batches):
+- extended-stats (9 themes), daily-patterns v1+v2, weekly-patterns v1+v2
+- pm-range-break-and-go, london/asia/globex session retests
+- 930-followthrough chain, 9am-1h, 6am-4h multi-timeframe
 
 ---
 
