@@ -1,6 +1,6 @@
 # Repo Inventory
 
-Complete index of every analysis in `analyses/`, organized by topic. **71 analyses total.**
+Complete index of every analysis in `analyses/`, organized by topic. **73 analyses total.**
 
 ## NQ analyses (35)
 
@@ -74,7 +74,7 @@ Complete index of every analysis in `analyses/`, organized by topic. **71 analys
 
 ---
 
-## GC analyses (16 — all in `analyses/gc/`)
+## GC analyses (18 — all in `analyses/gc/`)
 
 Replication of NQ's intraday candle hit-stats series on `COMEX:GC1!` (Gold Futures). Time windows mirror NQ literally; see [analyses/gc/EASY_READ.md](../analyses/gc/EASY_READ.md) for the comparison summary.
 
@@ -96,6 +96,8 @@ Replication of NQ's intraday candle hit-stats series on `COMEX:GC1!` (Gold Futur
 | 14 | [gc/1545-candle-hit-stats](../analyses/gc/1545-candle-hit-stats) | 15:45-16:00 ET |
 | 15 | [gc/london-candle-hit-stats](../analyses/gc/london-candle-hit-stats) | London 3:00-4:15 ET (6 candles, consolidated) |
 | 16 | [gc/asia-candle-hit-stats](../analyses/gc/asia-candle-hit-stats) | Asia 8:00-9:15 PM ET (6 candles, consolidated) |
+| 17 | [gc/lbma-fix-window](../analyses/gc/lbma-fix-window) | **GC-native:** LBMA AM Fix window 5:00-6:15 ET (6 candles around 5:30 AM fix) |
+| 18 | [gc/comex-pit-open](../analyses/gc/comex-pit-open) | **GC-native:** COMEX pit open 8:00-9:15 AM ET (6 candles around 8:20 open, includes 9:15 — strongest single candle in repo) |
 
 **GC analyses NOT yet replicated** (NQ deep dives — future batches):
 - extended-stats (9 themes), daily-patterns v1+v2, weekly-patterns v1+v2

@@ -1,0 +1,92 @@
+{
+  "theme": "GC COMEX Pit Open session candle retest stats \u2014 gold-native session anchor analysis",
+  "symbol": "COMEX:GC1!",
+  "timeframe": "15m",
+  "sample_size_days": "223-223",
+  "as_of_date": "2026-05-12",
+  "session_window": "8:00-9:30 AM ET (around COMEX pit open at 8:20 AM ET, plus the 8:30 AM US econ data release window)",
+  "context": "The COMEX gold futures pit opens at 8:20 AM ET. The 8:30 AM US data release window (CPI, NFP, initial claims, retail sales, etc.) overlaps. This is gold's most important NY-time anchor \u2014 NOT the 9:30 ET equity open used by NQ/ES.",
+  "subject_candles": "Six 15-minute candles, sequential",
+  "forward_windows": "+15 / +30 / +45 min after subject candle closes",
+  "description": "Probability the high OR low of the subject candle gets touched by a later candle's wick.",
+  "rows": [
+    {
+      "candle": "8:00 AM",
+      "n": 223,
+      "either_plus_15_pct": 85.65,
+      "either_plus_30_pct": 96.86,
+      "either_plus_45_pct": 99.1,
+      "both_plus_15_pct": 13.0,
+      "both_plus_30_pct": 31.84,
+      "both_plus_45_pct": 35.87,
+      "high_any_plus_45_pct": 69.96,
+      "low_any_plus_45_pct": 65.02,
+      "neither_plus_45_pct": 0.9
+    },
+    {
+      "candle": "8:15 AM",
+      "n": 223,
+      "either_plus_15_pct": 89.24,
+      "either_plus_30_pct": 95.96,
+      "either_plus_45_pct": 98.65,
+      "both_plus_15_pct": 15.7,
+      "both_plus_30_pct": 22.87,
+      "both_plus_45_pct": 31.39,
+      "high_any_plus_45_pct": 68.16,
+      "low_any_plus_45_pct": 61.88,
+      "neither_plus_45_pct": 1.35
+    },
+    {
+      "candle": "8:30 AM",
+      "n": 223,
+      "either_plus_15_pct": 78.92,
+      "either_plus_30_pct": 91.48,
+      "either_plus_45_pct": 95.96,
+      "both_plus_15_pct": 7.62,
+      "both_plus_30_pct": 18.83,
+      "both_plus_45_pct": 26.46,
+      "high_any_plus_45_pct": 65.02,
+      "low_any_plus_45_pct": 57.4,
+      "neither_plus_45_pct": 4.04
+    },
+    {
+      "candle": "8:45 AM",
+      "n": 223,
+      "either_plus_15_pct": 92.83,
+      "either_plus_30_pct": 96.86,
+      "either_plus_45_pct": 99.55,
+      "both_plus_15_pct": 14.8,
+      "both_plus_30_pct": 23.77,
+      "both_plus_45_pct": 43.95,
+      "high_any_plus_45_pct": 73.09,
+      "low_any_plus_45_pct": 70.4,
+      "neither_plus_45_pct": 0.45
+    },
+    {
+      "candle": "9:00 AM",
+      "n": 223,
+      "either_plus_15_pct": 82.51,
+      "either_plus_30_pct": 97.76,
+      "either_plus_45_pct": 98.65,
+      "both_plus_15_pct": 7.62,
+      "both_plus_30_pct": 32.74,
+      "both_plus_45_pct": 43.5,
+      "high_any_plus_45_pct": 75.34,
+      "low_any_plus_45_pct": 66.82,
+      "neither_plus_45_pct": 1.35
+    },
+    {
+      "candle": "9:15 AM",
+      "n": 223,
+      "either_plus_15_pct": 98.65,
+      "either_plus_30_pct": 99.55,
+      "either_plus_45_pct": 100.0,
+      "both_plus_15_pct": 27.35,
+      "both_plus_30_pct": 40.81,
+      "both_plus_45_pct": 52.02,
+      "high_any_plus_45_pct": 75.78,
+      "low_any_plus_45_pct": 76.23,
+      "neither_plus_45_pct": 0.0
+    }
+  ]
+}

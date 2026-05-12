@@ -19,7 +19,7 @@ Every analysis ships with three layers:
 
 ## Analyses
 
-**Current scope: ~71 analyses across NQ (35) + ES (20) + GC (16) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
+**Current scope: ~73 analyses across NQ (35) + ES (20) + GC (18) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
 
 ### NQ Opening-range candle hit-rate series
 
@@ -88,7 +88,7 @@ Same methodology as the opening-range series, extended into the NY lunch zone an
 
 ### GC (Gold Futures, COMEX) — multi-asset replication
 
-- [analyses/gc/](analyses/gc/) — 16 analyses on GC (COMEX:GC1!): 14 NY-anchored intraday candle hit-stats + London (3:00-4:15 ET, 6 candles) + Asia (8:00-9:15 PM ET, 6 candles). **GC Asia 8:45 PM ET is the strongest single-candle magnet ever measured in this repo — 96.41% retest within 15 min and 47.53% full sweep within 45 min. Beats NQ London 3:45 on both metrics. Likely Shanghai Gold Exchange morning session flow.** Other headlines: (1) the NY 9:30 magnet is equity-index-specific — GC gets 80% retest +15 vs NQ/ES ~90%. (2) GC's 9:45 candle slightly beats its 9:30 — gold appears to need one candle to "settle" before mean-reversion kicks in. (3) By +45 min retest rates converge to 97-99% — gold mean-reverts intraday just like indices, just not anchored to 9:30. (4) Lunch-zone sweep rates ~33-36% — comparable to NQ.** See [analyses/gc/EASY_READ.md](analyses/gc/EASY_READ.md) for full comparison. Extended-stats, daily/weekly patterns, sessions, and followthrough chain not yet replicated on GC — ask if you want those.
+- [analyses/gc/](analyses/gc/) — 18 analyses on GC (COMEX:GC1!): 14 NY-anchored intraday candle hit-stats + London + Asia + **2 new gold-native session anchors** (LBMA AM Fix window 5:00-6:15 ET, COMEX pit open 8:00-9:15 AM ET). **GC COMEX 9:15 AM ET is the new strongest single-candle magnet in the entire repo: 98.65% retest within 15 min, 100% by +45 min, 52.02% full sweep within 45 min — beats GC Asia 8:45 PM (96.41% / 47.53%) and NQ London 3:45 (94.98% / 40.64%).** The structural insight: gold's true NY-time anchor is the 9:15 AM pre-equity-open settling point (after the 8:30 data window and the COMEX 8:20 open), NOT the NY 9:30 equity open. **GC 8:30 AM is the weakest candle in the COMEX block (78.92% retest +15)** — that's the CPI/NFP/claims data release window where gold moves directionally without snapping back. Other headlines: (1) the NY 9:30 magnet is equity-index-specific — GC gets 80% retest +15 vs NQ/ES ~90%. (2) GC's 9:45 candle slightly beats its 9:30 — gold appears to need one candle to "settle" before mean-reversion kicks in. (3) By +45 min retest rates converge to 97-99% — gold mean-reverts intraday just like indices, just not anchored to 9:30. (4) Lunch-zone sweep rates ~33-36% — comparable to NQ.** See [analyses/gc/EASY_READ.md](analyses/gc/EASY_READ.md) for full comparison. Extended-stats, daily/weekly patterns, sessions, and followthrough chain not yet replicated on GC — ask if you want those.
 
 ### ES (S&P 500 E-mini) — multi-asset replication
 

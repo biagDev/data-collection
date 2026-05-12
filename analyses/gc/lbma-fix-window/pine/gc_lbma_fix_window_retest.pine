@@ -1,0 +1,557 @@
+//@version=5
+indicator("GC LBMA AM Fix Retest", overlay=true, max_labels_count=50)
+
+h = hour(time, "America/New_York")
+m = minute(time, "America/New_York")
+dow = dayofweek(time, "America/New_York")
+
+// Subject candle hour/minute pairs (6 candles, sequential 15m)
+isSubj0 = h == 5 and m == 0
+isSubj1 = h == 5 and m == 15
+isSubj2 = h == 5 and m == 30
+isSubj3 = h == 5 and m == 45
+isSubj4 = h == 6 and m == 0
+isSubj5 = h == 6 and m == 15
+isP1_0 = h == 5 and m == 15
+isP2_0 = h == 5 and m == 30
+isP3_0 = h == 5 and m == 45
+isP1_1 = h == 5 and m == 30
+isP2_1 = h == 5 and m == 45
+isP3_1 = h == 6 and m == 0
+isP1_2 = h == 5 and m == 45
+isP2_2 = h == 6 and m == 0
+isP3_2 = h == 6 and m == 15
+isP1_3 = h == 6 and m == 0
+isP2_3 = h == 6 and m == 15
+isP3_3 = h == 6 and m == 30
+isP1_4 = h == 6 and m == 15
+isP2_4 = h == 6 and m == 30
+isP3_4 = h == 6 and m == 45
+isP1_5 = h == 6 and m == 30
+isP2_5 = h == 6 and m == 45
+isP3_5 = h == 7 and m == 0
+
+// Per-candle state and counters
+var float oh_0 = na
+var float ol_0 = na
+var bool hh1_0 = false
+var bool ll1_0 = false
+var bool hh2_0 = false
+var bool ll2_0 = false
+var bool hh3_0 = false
+var bool ll3_0 = false
+var int  n_0  = 0
+var int  e1_0 = 0
+var int  e2_0 = 0
+var int  e3_0 = 0
+var int  b1_0 = 0
+var int  b2_0 = 0
+var int  b3_0 = 0
+var int  ha3_0= 0
+var int  la3_0= 0
+var int  none3_0= 0
+var float oh_1 = na
+var float ol_1 = na
+var bool hh1_1 = false
+var bool ll1_1 = false
+var bool hh2_1 = false
+var bool ll2_1 = false
+var bool hh3_1 = false
+var bool ll3_1 = false
+var int  n_1  = 0
+var int  e1_1 = 0
+var int  e2_1 = 0
+var int  e3_1 = 0
+var int  b1_1 = 0
+var int  b2_1 = 0
+var int  b3_1 = 0
+var int  ha3_1= 0
+var int  la3_1= 0
+var int  none3_1= 0
+var float oh_2 = na
+var float ol_2 = na
+var bool hh1_2 = false
+var bool ll1_2 = false
+var bool hh2_2 = false
+var bool ll2_2 = false
+var bool hh3_2 = false
+var bool ll3_2 = false
+var int  n_2  = 0
+var int  e1_2 = 0
+var int  e2_2 = 0
+var int  e3_2 = 0
+var int  b1_2 = 0
+var int  b2_2 = 0
+var int  b3_2 = 0
+var int  ha3_2= 0
+var int  la3_2= 0
+var int  none3_2= 0
+var float oh_3 = na
+var float ol_3 = na
+var bool hh1_3 = false
+var bool ll1_3 = false
+var bool hh2_3 = false
+var bool ll2_3 = false
+var bool hh3_3 = false
+var bool ll3_3 = false
+var int  n_3  = 0
+var int  e1_3 = 0
+var int  e2_3 = 0
+var int  e3_3 = 0
+var int  b1_3 = 0
+var int  b2_3 = 0
+var int  b3_3 = 0
+var int  ha3_3= 0
+var int  la3_3= 0
+var int  none3_3= 0
+var float oh_4 = na
+var float ol_4 = na
+var bool hh1_4 = false
+var bool ll1_4 = false
+var bool hh2_4 = false
+var bool ll2_4 = false
+var bool hh3_4 = false
+var bool ll3_4 = false
+var int  n_4  = 0
+var int  e1_4 = 0
+var int  e2_4 = 0
+var int  e3_4 = 0
+var int  b1_4 = 0
+var int  b2_4 = 0
+var int  b3_4 = 0
+var int  ha3_4= 0
+var int  la3_4= 0
+var int  none3_4= 0
+var float oh_5 = na
+var float ol_5 = na
+var bool hh1_5 = false
+var bool ll1_5 = false
+var bool hh2_5 = false
+var bool ll2_5 = false
+var bool hh3_5 = false
+var bool ll3_5 = false
+var int  n_5  = 0
+var int  e1_5 = 0
+var int  e2_5 = 0
+var int  e3_5 = 0
+var int  b1_5 = 0
+var int  b2_5 = 0
+var int  b3_5 = 0
+var int  ha3_5= 0
+var int  la3_5= 0
+var int  none3_5= 0
+
+
+if isSubj0
+    oh_0 := high
+    ol_0 := low
+    hh1_0 := false
+    ll1_0 := false
+    hh2_0 := false
+    ll2_0 := false
+    hh3_0 := false
+    ll3_0 := false
+
+if isP1_0 and not na(oh_0)
+    if high >= oh_0
+        hh1_0 := true
+        hh2_0 := true
+        hh3_0 := true
+    if low <= ol_0
+        ll1_0 := true
+        ll2_0 := true
+        ll3_0 := true
+
+if isP2_0 and not na(oh_0)
+    if high >= oh_0
+        hh2_0 := true
+        hh3_0 := true
+    if low <= ol_0
+        ll2_0 := true
+        ll3_0 := true
+
+if isP3_0 and not na(oh_0)
+    if high >= oh_0
+        hh3_0 := true
+    if low <= ol_0
+        ll3_0 := true
+
+    n_0 += 1
+    if hh1_0 or ll1_0
+        e1_0 += 1
+    if hh2_0 or ll2_0
+        e2_0 += 1
+    if hh3_0 or ll3_0
+        e3_0 += 1
+    if hh1_0 and ll1_0
+        b1_0 += 1
+    if hh2_0 and ll2_0
+        b2_0 += 1
+    if hh3_0 and ll3_0
+        b3_0 += 1
+    if hh3_0
+        ha3_0 += 1
+    if ll3_0
+        la3_0 += 1
+    if not hh3_0 and not ll3_0
+        none3_0 += 1
+
+
+if isSubj1
+    oh_1 := high
+    ol_1 := low
+    hh1_1 := false
+    ll1_1 := false
+    hh2_1 := false
+    ll2_1 := false
+    hh3_1 := false
+    ll3_1 := false
+
+if isP1_1 and not na(oh_1)
+    if high >= oh_1
+        hh1_1 := true
+        hh2_1 := true
+        hh3_1 := true
+    if low <= ol_1
+        ll1_1 := true
+        ll2_1 := true
+        ll3_1 := true
+
+if isP2_1 and not na(oh_1)
+    if high >= oh_1
+        hh2_1 := true
+        hh3_1 := true
+    if low <= ol_1
+        ll2_1 := true
+        ll3_1 := true
+
+if isP3_1 and not na(oh_1)
+    if high >= oh_1
+        hh3_1 := true
+    if low <= ol_1
+        ll3_1 := true
+
+    n_1 += 1
+    if hh1_1 or ll1_1
+        e1_1 += 1
+    if hh2_1 or ll2_1
+        e2_1 += 1
+    if hh3_1 or ll3_1
+        e3_1 += 1
+    if hh1_1 and ll1_1
+        b1_1 += 1
+    if hh2_1 and ll2_1
+        b2_1 += 1
+    if hh3_1 and ll3_1
+        b3_1 += 1
+    if hh3_1
+        ha3_1 += 1
+    if ll3_1
+        la3_1 += 1
+    if not hh3_1 and not ll3_1
+        none3_1 += 1
+
+
+if isSubj2
+    oh_2 := high
+    ol_2 := low
+    hh1_2 := false
+    ll1_2 := false
+    hh2_2 := false
+    ll2_2 := false
+    hh3_2 := false
+    ll3_2 := false
+
+if isP1_2 and not na(oh_2)
+    if high >= oh_2
+        hh1_2 := true
+        hh2_2 := true
+        hh3_2 := true
+    if low <= ol_2
+        ll1_2 := true
+        ll2_2 := true
+        ll3_2 := true
+
+if isP2_2 and not na(oh_2)
+    if high >= oh_2
+        hh2_2 := true
+        hh3_2 := true
+    if low <= ol_2
+        ll2_2 := true
+        ll3_2 := true
+
+if isP3_2 and not na(oh_2)
+    if high >= oh_2
+        hh3_2 := true
+    if low <= ol_2
+        ll3_2 := true
+
+    n_2 += 1
+    if hh1_2 or ll1_2
+        e1_2 += 1
+    if hh2_2 or ll2_2
+        e2_2 += 1
+    if hh3_2 or ll3_2
+        e3_2 += 1
+    if hh1_2 and ll1_2
+        b1_2 += 1
+    if hh2_2 and ll2_2
+        b2_2 += 1
+    if hh3_2 and ll3_2
+        b3_2 += 1
+    if hh3_2
+        ha3_2 += 1
+    if ll3_2
+        la3_2 += 1
+    if not hh3_2 and not ll3_2
+        none3_2 += 1
+
+
+if isSubj3
+    oh_3 := high
+    ol_3 := low
+    hh1_3 := false
+    ll1_3 := false
+    hh2_3 := false
+    ll2_3 := false
+    hh3_3 := false
+    ll3_3 := false
+
+if isP1_3 and not na(oh_3)
+    if high >= oh_3
+        hh1_3 := true
+        hh2_3 := true
+        hh3_3 := true
+    if low <= ol_3
+        ll1_3 := true
+        ll2_3 := true
+        ll3_3 := true
+
+if isP2_3 and not na(oh_3)
+    if high >= oh_3
+        hh2_3 := true
+        hh3_3 := true
+    if low <= ol_3
+        ll2_3 := true
+        ll3_3 := true
+
+if isP3_3 and not na(oh_3)
+    if high >= oh_3
+        hh3_3 := true
+    if low <= ol_3
+        ll3_3 := true
+
+    n_3 += 1
+    if hh1_3 or ll1_3
+        e1_3 += 1
+    if hh2_3 or ll2_3
+        e2_3 += 1
+    if hh3_3 or ll3_3
+        e3_3 += 1
+    if hh1_3 and ll1_3
+        b1_3 += 1
+    if hh2_3 and ll2_3
+        b2_3 += 1
+    if hh3_3 and ll3_3
+        b3_3 += 1
+    if hh3_3
+        ha3_3 += 1
+    if ll3_3
+        la3_3 += 1
+    if not hh3_3 and not ll3_3
+        none3_3 += 1
+
+
+if isSubj4
+    oh_4 := high
+    ol_4 := low
+    hh1_4 := false
+    ll1_4 := false
+    hh2_4 := false
+    ll2_4 := false
+    hh3_4 := false
+    ll3_4 := false
+
+if isP1_4 and not na(oh_4)
+    if high >= oh_4
+        hh1_4 := true
+        hh2_4 := true
+        hh3_4 := true
+    if low <= ol_4
+        ll1_4 := true
+        ll2_4 := true
+        ll3_4 := true
+
+if isP2_4 and not na(oh_4)
+    if high >= oh_4
+        hh2_4 := true
+        hh3_4 := true
+    if low <= ol_4
+        ll2_4 := true
+        ll3_4 := true
+
+if isP3_4 and not na(oh_4)
+    if high >= oh_4
+        hh3_4 := true
+    if low <= ol_4
+        ll3_4 := true
+
+    n_4 += 1
+    if hh1_4 or ll1_4
+        e1_4 += 1
+    if hh2_4 or ll2_4
+        e2_4 += 1
+    if hh3_4 or ll3_4
+        e3_4 += 1
+    if hh1_4 and ll1_4
+        b1_4 += 1
+    if hh2_4 and ll2_4
+        b2_4 += 1
+    if hh3_4 and ll3_4
+        b3_4 += 1
+    if hh3_4
+        ha3_4 += 1
+    if ll3_4
+        la3_4 += 1
+    if not hh3_4 and not ll3_4
+        none3_4 += 1
+
+
+if isSubj5
+    oh_5 := high
+    ol_5 := low
+    hh1_5 := false
+    ll1_5 := false
+    hh2_5 := false
+    ll2_5 := false
+    hh3_5 := false
+    ll3_5 := false
+
+if isP1_5 and not na(oh_5)
+    if high >= oh_5
+        hh1_5 := true
+        hh2_5 := true
+        hh3_5 := true
+    if low <= ol_5
+        ll1_5 := true
+        ll2_5 := true
+        ll3_5 := true
+
+if isP2_5 and not na(oh_5)
+    if high >= oh_5
+        hh2_5 := true
+        hh3_5 := true
+    if low <= ol_5
+        ll2_5 := true
+        ll3_5 := true
+
+if isP3_5 and not na(oh_5)
+    if high >= oh_5
+        hh3_5 := true
+    if low <= ol_5
+        ll3_5 := true
+
+    n_5 += 1
+    if hh1_5 or ll1_5
+        e1_5 += 1
+    if hh2_5 or ll2_5
+        e2_5 += 1
+    if hh3_5 or ll3_5
+        e3_5 += 1
+    if hh1_5 and ll1_5
+        b1_5 += 1
+    if hh2_5 and ll2_5
+        b2_5 += 1
+    if hh3_5 and ll3_5
+        b3_5 += 1
+    if hh3_5
+        ha3_5 += 1
+    if ll3_5
+        la3_5 += 1
+    if not hh3_5 and not ll3_5
+        none3_5 += 1
+
+
+f_pct(num, den) =>
+    den > 0 ? num * 100.0 / den : 0.0
+
+var table tbl = table.new(position.top_right, 11, 8, border_width=1)
+
+if barstate.islast
+    table.cell(tbl, 0, 0, "Candle ET", bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 1, 0, "n",       bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 2, 0, "E+15%",  bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 3, 0, "E+30%",  bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 4, 0, "E+45%",  bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 5, 0, "B+15%",  bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 6, 0, "B+30%",  bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 7, 0, "B+45%",  bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 8, 0, "Ha45%",  bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 9, 0, "La45%",  bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 10, 0, "N+45%", bgcolor=color.navy, text_color=color.white)
+    table.cell(tbl, 0, 1, "05:00")
+    table.cell(tbl, 1, 1, str.tostring(n_0))
+    table.cell(tbl, 2, 1, str.tostring(f_pct(e1_0, n_0), "#.##"))
+    table.cell(tbl, 3, 1, str.tostring(f_pct(e2_0, n_0), "#.##"))
+    table.cell(tbl, 4, 1, str.tostring(f_pct(e3_0, n_0), "#.##"))
+    table.cell(tbl, 5, 1, str.tostring(f_pct(b1_0, n_0), "#.##"))
+    table.cell(tbl, 6, 1, str.tostring(f_pct(b2_0, n_0), "#.##"))
+    table.cell(tbl, 7, 1, str.tostring(f_pct(b3_0, n_0), "#.##"))
+    table.cell(tbl, 8, 1, str.tostring(f_pct(ha3_0, n_0), "#.##"))
+    table.cell(tbl, 9, 1, str.tostring(f_pct(la3_0, n_0), "#.##"))
+    table.cell(tbl, 10, 1, str.tostring(f_pct(none3_0, n_0), "#.##"))
+    table.cell(tbl, 0, 2, "05:15")
+    table.cell(tbl, 1, 2, str.tostring(n_1))
+    table.cell(tbl, 2, 2, str.tostring(f_pct(e1_1, n_1), "#.##"))
+    table.cell(tbl, 3, 2, str.tostring(f_pct(e2_1, n_1), "#.##"))
+    table.cell(tbl, 4, 2, str.tostring(f_pct(e3_1, n_1), "#.##"))
+    table.cell(tbl, 5, 2, str.tostring(f_pct(b1_1, n_1), "#.##"))
+    table.cell(tbl, 6, 2, str.tostring(f_pct(b2_1, n_1), "#.##"))
+    table.cell(tbl, 7, 2, str.tostring(f_pct(b3_1, n_1), "#.##"))
+    table.cell(tbl, 8, 2, str.tostring(f_pct(ha3_1, n_1), "#.##"))
+    table.cell(tbl, 9, 2, str.tostring(f_pct(la3_1, n_1), "#.##"))
+    table.cell(tbl, 10, 2, str.tostring(f_pct(none3_1, n_1), "#.##"))
+    table.cell(tbl, 0, 3, "05:30")
+    table.cell(tbl, 1, 3, str.tostring(n_2))
+    table.cell(tbl, 2, 3, str.tostring(f_pct(e1_2, n_2), "#.##"))
+    table.cell(tbl, 3, 3, str.tostring(f_pct(e2_2, n_2), "#.##"))
+    table.cell(tbl, 4, 3, str.tostring(f_pct(e3_2, n_2), "#.##"))
+    table.cell(tbl, 5, 3, str.tostring(f_pct(b1_2, n_2), "#.##"))
+    table.cell(tbl, 6, 3, str.tostring(f_pct(b2_2, n_2), "#.##"))
+    table.cell(tbl, 7, 3, str.tostring(f_pct(b3_2, n_2), "#.##"))
+    table.cell(tbl, 8, 3, str.tostring(f_pct(ha3_2, n_2), "#.##"))
+    table.cell(tbl, 9, 3, str.tostring(f_pct(la3_2, n_2), "#.##"))
+    table.cell(tbl, 10, 3, str.tostring(f_pct(none3_2, n_2), "#.##"))
+    table.cell(tbl, 0, 4, "05:45")
+    table.cell(tbl, 1, 4, str.tostring(n_3))
+    table.cell(tbl, 2, 4, str.tostring(f_pct(e1_3, n_3), "#.##"))
+    table.cell(tbl, 3, 4, str.tostring(f_pct(e2_3, n_3), "#.##"))
+    table.cell(tbl, 4, 4, str.tostring(f_pct(e3_3, n_3), "#.##"))
+    table.cell(tbl, 5, 4, str.tostring(f_pct(b1_3, n_3), "#.##"))
+    table.cell(tbl, 6, 4, str.tostring(f_pct(b2_3, n_3), "#.##"))
+    table.cell(tbl, 7, 4, str.tostring(f_pct(b3_3, n_3), "#.##"))
+    table.cell(tbl, 8, 4, str.tostring(f_pct(ha3_3, n_3), "#.##"))
+    table.cell(tbl, 9, 4, str.tostring(f_pct(la3_3, n_3), "#.##"))
+    table.cell(tbl, 10, 4, str.tostring(f_pct(none3_3, n_3), "#.##"))
+    table.cell(tbl, 0, 5, "06:00")
+    table.cell(tbl, 1, 5, str.tostring(n_4))
+    table.cell(tbl, 2, 5, str.tostring(f_pct(e1_4, n_4), "#.##"))
+    table.cell(tbl, 3, 5, str.tostring(f_pct(e2_4, n_4), "#.##"))
+    table.cell(tbl, 4, 5, str.tostring(f_pct(e3_4, n_4), "#.##"))
+    table.cell(tbl, 5, 5, str.tostring(f_pct(b1_4, n_4), "#.##"))
+    table.cell(tbl, 6, 5, str.tostring(f_pct(b2_4, n_4), "#.##"))
+    table.cell(tbl, 7, 5, str.tostring(f_pct(b3_4, n_4), "#.##"))
+    table.cell(tbl, 8, 5, str.tostring(f_pct(ha3_4, n_4), "#.##"))
+    table.cell(tbl, 9, 5, str.tostring(f_pct(la3_4, n_4), "#.##"))
+    table.cell(tbl, 10, 5, str.tostring(f_pct(none3_4, n_4), "#.##"))
+    table.cell(tbl, 0, 6, "06:15")
+    table.cell(tbl, 1, 6, str.tostring(n_5))
+    table.cell(tbl, 2, 6, str.tostring(f_pct(e1_5, n_5), "#.##"))
+    table.cell(tbl, 3, 6, str.tostring(f_pct(e2_5, n_5), "#.##"))
+    table.cell(tbl, 4, 6, str.tostring(f_pct(e3_5, n_5), "#.##"))
+    table.cell(tbl, 5, 6, str.tostring(f_pct(b1_5, n_5), "#.##"))
+    table.cell(tbl, 6, 6, str.tostring(f_pct(b2_5, n_5), "#.##"))
+    table.cell(tbl, 7, 6, str.tostring(f_pct(b3_5, n_5), "#.##"))
+    table.cell(tbl, 8, 6, str.tostring(f_pct(ha3_5, n_5), "#.##"))
+    table.cell(tbl, 9, 6, str.tostring(f_pct(la3_5, n_5), "#.##"))
+    table.cell(tbl, 10, 6, str.tostring(f_pct(none3_5, n_5), "#.##"))

@@ -30,7 +30,12 @@ Time windows mirror NQ literally (NY-anchored: 9:30 AM through 15:45 ET). This i
 ## Session retests (NEW — added 2026-05-12)
 
 - [`london-candle-hit-stats/`](london-candle-hit-stats/) — 6 candles 3:00-4:15 ET. **Strongest GC London candle is 3:45 at 88.29% retest +15** — peaks in the same slot as NQ/ES London but ~6pp weaker. Sweep rates roughly uniform (28-32% by +45) across the session.
-- [`asia-candle-hit-stats/`](asia-candle-hit-stats/) — 6 candles 8:00-9:15 PM ET. **GC Asia 8:45 PM ET = 96.41% retest +15, 47.53% sweep +45 — the strongest single-candle magnet in the entire repo.** Likely Shanghai Gold Exchange morning session flow (8:45 PM ET = ~9:45 AM Beijing). The 9:00 PM candle is conversely the weakest in the block (75% +15) — post-SGE-open directional commit window.
+- [`asia-candle-hit-stats/`](asia-candle-hit-stats/) — 6 candles 8:00-9:15 PM ET. **GC Asia 8:45 PM ET = 96.41% retest +15, 47.53% sweep +45.** Was the strongest single-candle magnet until COMEX 9:15 dethroned it. Likely Shanghai Gold Exchange morning session flow (8:45 PM ET = ~9:45 AM Beijing). The 9:00 PM candle is conversely the weakest in the block (75% +15) — post-SGE-open directional commit window.
+
+## Gold-native session anchors (NEW — added 2026-05-12)
+
+- [`lbma-fix-window/`](lbma-fix-window/) — 6 candles 5:00-6:15 ET around the LBMA AM Fix at 10:30 GMT (5:30 AM ET). **The 5:30 AM Fix candle itself is the *weakest* of the block** (80.63% retest +15) — gold moves directionally during the fix and doesn't snap back. Mean-reversion picks up 5:45-6:15. **5:15 AM has a 21pp low-bias** — the strongest single-candle low-bias in any GC session.
+- [`comex-pit-open/`](comex-pit-open/) — 6 candles 8:00-9:15 AM ET around the COMEX pit open (8:20 AM) and the 8:30 AM US data release window. **GC COMEX 9:15 AM ET is the new strongest candle in the entire repo: 98.65% retest +15, 100% +45, 52.02% sweep +45.** The 8:30 AM candle is conversely the *weakest* of the block (78.92%) — that's the CPI/NFP/claims release window where gold moves directionally. **Gold's true NY-time anchor is 9:15 AM (pre-equity-open settling), NOT the 9:30 NY equity open.**
 
 ## What's NOT yet covered (future batches)
 
