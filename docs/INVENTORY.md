@@ -1,6 +1,6 @@
 # Repo Inventory
 
-Complete index of every analysis in `analyses/`, organized by topic. **69 analyses total.**
+Complete index of every analysis in `analyses/`, organized by topic. **71 analyses total.**
 
 ## NQ analyses (35)
 
@@ -74,7 +74,7 @@ Complete index of every analysis in `analyses/`, organized by topic. **69 analys
 
 ---
 
-## GC analyses (14 — all in `analyses/gc/`)
+## GC analyses (16 — all in `analyses/gc/`)
 
 Replication of NQ's intraday candle hit-stats series on `COMEX:GC1!` (Gold Futures). Time windows mirror NQ literally; see [analyses/gc/EASY_READ.md](../analyses/gc/EASY_READ.md) for the comparison summary.
 
@@ -94,10 +94,12 @@ Replication of NQ's intraday candle hit-stats series on `COMEX:GC1!` (Gold Futur
 | 12 | [gc/1400-candle-hit-stats](../analyses/gc/1400-candle-hit-stats) | 14:00-14:15 ET |
 | 13 | [gc/1500-candle-hit-stats](../analyses/gc/1500-candle-hit-stats) | 15:00-15:15 ET |
 | 14 | [gc/1545-candle-hit-stats](../analyses/gc/1545-candle-hit-stats) | 15:45-16:00 ET |
+| 15 | [gc/london-candle-hit-stats](../analyses/gc/london-candle-hit-stats) | London 3:00-4:15 ET (6 candles, consolidated) |
+| 16 | [gc/asia-candle-hit-stats](../analyses/gc/asia-candle-hit-stats) | Asia 8:00-9:15 PM ET (6 candles, consolidated) |
 
 **GC analyses NOT yet replicated** (NQ deep dives — future batches):
 - extended-stats (9 themes), daily-patterns v1+v2, weekly-patterns v1+v2
-- pm-range-break-and-go, london/asia/globex session retests
+- pm-range-break-and-go, globex 6PM session retest
 - 930-followthrough chain, 9am-1h, 6am-4h multi-timeframe
 
 ---

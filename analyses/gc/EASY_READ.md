@@ -27,6 +27,11 @@ Time windows mirror NQ literally (NY-anchored: 9:30 AM through 15:45 ET). This i
 
 (NQ numbers are approximate, sourced from each NQ analysis's `data/aggregate.csv`.)
 
+## Session retests (NEW — added 2026-05-12)
+
+- [`london-candle-hit-stats/`](london-candle-hit-stats/) — 6 candles 3:00-4:15 ET. **Strongest GC London candle is 3:45 at 88.29% retest +15** — peaks in the same slot as NQ/ES London but ~6pp weaker. Sweep rates roughly uniform (28-32% by +45) across the session.
+- [`asia-candle-hit-stats/`](asia-candle-hit-stats/) — 6 candles 8:00-9:15 PM ET. **GC Asia 8:45 PM ET = 96.41% retest +15, 47.53% sweep +45 — the strongest single-candle magnet in the entire repo.** Likely Shanghai Gold Exchange morning session flow (8:45 PM ET = ~9:45 AM Beijing). The 9:00 PM candle is conversely the weakest in the block (75% +15) — post-SGE-open directional commit window.
+
 ## What's NOT yet covered (future batches)
 
 NQ has these; GC does not yet:
@@ -34,7 +39,7 @@ NQ has these; GC does not yet:
 - Daily-patterns v1+v2 (27 years of daily history)
 - Weekly-patterns v1+v2
 - Pre-market range break-and-go
-- Session retests (London, Asia, Globex 6pm)
+- Globex 6pm re-open
 - 9:30 followthrough chain (followthrough, retest-conditional, setup-b)
 - Multi-timeframe candles (9am-1h, 6am-4h)
 

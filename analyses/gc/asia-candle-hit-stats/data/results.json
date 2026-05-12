@@ -1,0 +1,91 @@
+{
+  "theme": "GC Asia session candle retest stats \u2014 replication of NQ/ES session series on Gold Futures",
+  "symbol": "COMEX:GC1!",
+  "timeframe": "15m",
+  "sample_size_days": "222-223",
+  "as_of_date": "2026-05-12",
+  "session_window": "8:00 - 10:00 PM ET (Asia killzone \u2014 Tokyo + Shanghai Gold Exchange morning)",
+  "subject_candles": "Six 15-minute candles, sequential",
+  "forward_windows": "+15 / +30 / +45 min after subject candle closes",
+  "description": "Probability the high OR low of the subject candle gets touched by a later candle's wick.",
+  "rows": [
+    {
+      "candle": "8:00 PM",
+      "n": 223,
+      "either_plus_15_pct": 79.82,
+      "either_plus_30_pct": 91.48,
+      "either_plus_45_pct": 94.17,
+      "both_plus_15_pct": 7.62,
+      "both_plus_30_pct": 15.7,
+      "both_plus_45_pct": 22.87,
+      "high_any_plus_45_pct": 65.02,
+      "low_any_plus_45_pct": 52.02,
+      "neither_plus_45_pct": 5.83
+    },
+    {
+      "candle": "8:15 PM",
+      "n": 223,
+      "either_plus_15_pct": 82.51,
+      "either_plus_30_pct": 92.83,
+      "either_plus_45_pct": 97.31,
+      "both_plus_15_pct": 6.73,
+      "both_plus_30_pct": 23.32,
+      "both_plus_45_pct": 38.12,
+      "high_any_plus_45_pct": 74.44,
+      "low_any_plus_45_pct": 60.99,
+      "neither_plus_45_pct": 2.69
+    },
+    {
+      "candle": "8:30 PM",
+      "n": 223,
+      "either_plus_15_pct": 87.44,
+      "either_plus_30_pct": 95.96,
+      "either_plus_45_pct": 96.86,
+      "both_plus_15_pct": 9.87,
+      "both_plus_30_pct": 36.32,
+      "both_plus_45_pct": 44.84,
+      "high_any_plus_45_pct": 76.23,
+      "low_any_plus_45_pct": 65.47,
+      "neither_plus_45_pct": 3.14
+    },
+    {
+      "candle": "8:45 PM",
+      "n": 223,
+      "either_plus_15_pct": 96.41,
+      "either_plus_30_pct": 97.76,
+      "either_plus_45_pct": 98.65,
+      "both_plus_15_pct": 29.15,
+      "both_plus_30_pct": 40.81,
+      "both_plus_45_pct": 47.53,
+      "high_any_plus_45_pct": 73.54,
+      "low_any_plus_45_pct": 72.65,
+      "neither_plus_45_pct": 1.35
+    },
+    {
+      "candle": "9:00 PM",
+      "n": 223,
+      "either_plus_15_pct": 74.89,
+      "either_plus_30_pct": 89.69,
+      "either_plus_45_pct": 94.62,
+      "both_plus_15_pct": 3.14,
+      "both_plus_30_pct": 14.35,
+      "both_plus_45_pct": 21.08,
+      "high_any_plus_45_pct": 60.54,
+      "low_any_plus_45_pct": 55.16,
+      "neither_plus_45_pct": 5.38
+    },
+    {
+      "candle": "9:15 PM",
+      "n": 222,
+      "either_plus_15_pct": 90.09,
+      "either_plus_30_pct": 98.2,
+      "either_plus_45_pct": 98.65,
+      "both_plus_15_pct": 17.12,
+      "both_plus_30_pct": 29.28,
+      "both_plus_45_pct": 36.49,
+      "high_any_plus_45_pct": 70.27,
+      "low_any_plus_45_pct": 64.86,
+      "neither_plus_45_pct": 1.35
+    }
+  ]
+}
