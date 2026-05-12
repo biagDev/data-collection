@@ -1,0 +1,228 @@
+{
+  "symbol": "CME_MINI:NQ1!",
+  "timeframe": "15m",
+  "candle_studied": "11:00-11:15 ET",
+  "windows": {
+    "by_11_30": "11:15-11:30 (next 1 candle after subject closes)",
+    "by_11_45": "11:15-11:45 (next 2 candles)",
+    "by_12_00": "11:15-12:00 (next 3 candles)"
+  },
+  "as_of_date": "2026-05-11",
+  "data_source": "TradingView Desktop chart, NQ1! continuous front-month",
+  "sample_size_days": 222,
+  "aggregate": {
+    "total_days": 222,
+    "by_11_30": {
+      "either_side": {
+        "count": 199,
+        "pct": 89.64
+      },
+      "both_sides": {
+        "count": 20,
+        "pct": 9.01
+      },
+      "high_only": {
+        "count": 94,
+        "pct": 42.34
+      },
+      "low_only": {
+        "count": 85,
+        "pct": 38.29
+      },
+      "neither": {
+        "count": 23,
+        "pct": 10.36
+      },
+      "high_any": {
+        "count": 114,
+        "pct": 51.35
+      },
+      "low_any": {
+        "count": 105,
+        "pct": 47.3
+      }
+    },
+    "by_11_45": {
+      "either_side": {
+        "count": 214,
+        "pct": 96.4
+      },
+      "both_sides": {
+        "count": 59,
+        "pct": 26.58
+      },
+      "high_only": {
+        "count": 83,
+        "pct": 37.39
+      },
+      "low_only": {
+        "count": 72,
+        "pct": 32.43
+      },
+      "neither": {
+        "count": 8,
+        "pct": 3.6
+      },
+      "high_any": {
+        "count": 142,
+        "pct": 63.96
+      },
+      "low_any": {
+        "count": 131,
+        "pct": 59.01
+      }
+    },
+    "by_12_00": {
+      "either_side": {
+        "count": 220,
+        "pct": 99.1
+      },
+      "both_sides": {
+        "count": 74,
+        "pct": 33.33
+      },
+      "high_only": {
+        "count": 80,
+        "pct": 36.04
+      },
+      "low_only": {
+        "count": 66,
+        "pct": 29.73
+      },
+      "neither": {
+        "count": 2,
+        "pct": 0.9
+      },
+      "high_any": {
+        "count": 154,
+        "pct": 69.37
+      },
+      "low_any": {
+        "count": 140,
+        "pct": 63.06
+      }
+    }
+  },
+  "by_day_of_week": {
+    "Mon": {
+      "n": 45,
+      "by_11_30": {
+        "either_pct": 86.67,
+        "both_pct": 13.33,
+        "high_only": 19,
+        "low_only": 14,
+        "neither": 6
+      },
+      "by_11_45": {
+        "either_pct": 95.56,
+        "both_pct": 31.11,
+        "high_only": 20,
+        "low_only": 9,
+        "neither": 2
+      },
+      "by_12_00": {
+        "either_pct": 97.78,
+        "both_pct": 35.56,
+        "high_only": 20,
+        "low_only": 8,
+        "neither": 1
+      }
+    },
+    "Tue": {
+      "n": 45,
+      "by_11_30": {
+        "either_pct": 84.44,
+        "both_pct": 6.67,
+        "high_only": 21,
+        "low_only": 14,
+        "neither": 7
+      },
+      "by_11_45": {
+        "either_pct": 95.56,
+        "both_pct": 26.67,
+        "high_only": 15,
+        "low_only": 16,
+        "neither": 2
+      },
+      "by_12_00": {
+        "either_pct": 97.78,
+        "both_pct": 31.11,
+        "high_only": 16,
+        "low_only": 14,
+        "neither": 1
+      }
+    },
+    "Wed": {
+      "n": 45,
+      "by_11_30": {
+        "either_pct": 93.33,
+        "both_pct": 8.89,
+        "high_only": 15,
+        "low_only": 23,
+        "neither": 3
+      },
+      "by_11_45": {
+        "either_pct": 97.78,
+        "both_pct": 26.67,
+        "high_only": 14,
+        "low_only": 18,
+        "neither": 1
+      },
+      "by_12_00": {
+        "either_pct": 100.0,
+        "both_pct": 35.56,
+        "high_only": 13,
+        "low_only": 16,
+        "neither": 0
+      }
+    },
+    "Thu": {
+      "n": 43,
+      "by_11_30": {
+        "either_pct": 95.35,
+        "both_pct": 6.98,
+        "high_only": 22,
+        "low_only": 16,
+        "neither": 2
+      },
+      "by_11_45": {
+        "either_pct": 97.67,
+        "both_pct": 20.93,
+        "high_only": 19,
+        "low_only": 14,
+        "neither": 1
+      },
+      "by_12_00": {
+        "either_pct": 100.0,
+        "both_pct": 30.23,
+        "high_only": 16,
+        "low_only": 14,
+        "neither": 0
+      }
+    },
+    "Fri": {
+      "n": 44,
+      "by_11_30": {
+        "either_pct": 88.64,
+        "both_pct": 9.09,
+        "high_only": 17,
+        "low_only": 18,
+        "neither": 5
+      },
+      "by_11_45": {
+        "either_pct": 95.45,
+        "both_pct": 27.27,
+        "high_only": 15,
+        "low_only": 15,
+        "neither": 2
+      },
+      "by_12_00": {
+        "either_pct": 100.0,
+        "both_pct": 34.09,
+        "high_only": 15,
+        "low_only": 14,
+        "neither": 0
+      }
+    }
+  }
+}

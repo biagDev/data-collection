@@ -19,7 +19,7 @@ Every analysis ships with three layers:
 
 ## Analyses
 
-**Current scope: ~47 analyses across NQ (27) + ES (20) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
+**Current scope: ~55 analyses across NQ (35) + ES (20) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
 
 ### NQ Opening-range candle hit-rate series
 
@@ -31,6 +31,19 @@ For each of the first six 15-minute candles of the NQ regular session, we measur
 - [analyses/1015-candle-hit-stats](analyses/1015-candle-hit-stats) — 10:15-10:30 ET candle, by 10:45 / 11:00 / 11:15
 - [analyses/1030-candle-hit-stats](analyses/1030-candle-hit-stats) — 10:30-10:45 ET candle, by 11:00 / 11:15 / 11:30
 - [analyses/1045-candle-hit-stats](analyses/1045-candle-hit-stats) — 10:45-11:00 ET candle, by 11:15 / 11:30 / 11:45
+
+### NQ afternoon / power-hour candle hit-rate series
+
+Same methodology as the opening-range series, extended into the NY lunch zone and power hour. Sample = 214-222 trading days. **Headline: midday retest rates stay high (96-99% by +45 min, similar to morning); the 15:45 candle is dramatically different — only 84% retest by +45 because cash close at 16:00 kills liquidity and trend continuation dominates.**
+
+- [analyses/1100-candle-hit-stats](analyses/1100-candle-hit-stats) — 11:00-11:15 ET candle, by 11:30 / 11:45 / 12:00. 99% retest by +45.
+- [analyses/1130-candle-hit-stats](analyses/1130-candle-hit-stats) — 11:30-11:45 ET candle, by 12:00 / 12:15 / 12:30. 98% retest by +45.
+- [analyses/1200-candle-hit-stats](analyses/1200-candle-hit-stats) — 12:00-12:15 ET candle, by 12:30 / 12:45 / 13:00. 98% retest by +45.
+- [analyses/1230-candle-hit-stats](analyses/1230-candle-hit-stats) — 12:30-12:45 ET candle, by 13:00 / 13:15 / 13:30. 96% retest by +45, highest lunch-zone sweep rate (35%).
+- [analyses/1300-candle-hit-stats](analyses/1300-candle-hit-stats) — 13:00-13:15 ET candle, by 13:30 / 13:45 / 14:00. 99.5% retest by +45.
+- [analyses/1400-candle-hit-stats](analyses/1400-candle-hit-stats) — 14:00-14:15 ET candle, by 14:30 / 14:45 / 15:00. 99.5% retest by +45.
+- [analyses/1500-candle-hit-stats](analyses/1500-candle-hit-stats) — 15:00-15:15 ET candle, by 15:30 / 15:45 / 16:00. 99% retest by +45, **41% sweep rate** — highest of any candle in the repo (power-hour two-sided volatility).
+- [analyses/1545-candle-hit-stats](analyses/1545-candle-hit-stats) — 15:45-16:00 ET candle, by 16:15 / 16:30 / 16:45. Only 84% retest by +45 — cash close breaks the pattern.
 
 ### NQ multi-timeframe candle hit-rate
 
