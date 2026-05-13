@@ -1,0 +1,53 @@
+{
+  "theme": "ES consecutive-bar (streak) continuation/reversal stats",
+  "symbol": "CME_MINI:ES1!",
+  "timeframe": "15m",
+  "n_total_bars": 18971,
+  "as_of_date": "2026-05-12",
+  "description": "For each 15-min bar, given the prior streak of consecutive same-color bars, what's the probability the next bar continues (same color) vs reverses (opposite color)?",
+  "exclusions": "Doji bars (close == open) are excluded from both numerator and denominator.",
+  "rows": [
+    {
+      "streak_length": "1",
+      "n": 9625,
+      "continue_pct": 49.26,
+      "reverse_pct": 50.74,
+      "continue_count": 4741,
+      "reverse_count": 4884
+    },
+    {
+      "streak_length": "2",
+      "n": 4813,
+      "continue_pct": 49.82,
+      "reverse_pct": 50.18,
+      "continue_count": 2398,
+      "reverse_count": 2415
+    },
+    {
+      "streak_length": "3",
+      "n": 2323,
+      "continue_pct": 49.03,
+      "reverse_pct": 50.97,
+      "continue_count": 1139,
+      "reverse_count": 1184
+    },
+    {
+      "streak_length": "4",
+      "n": 1157,
+      "continue_pct": 49.18,
+      "reverse_pct": 50.82,
+      "continue_count": 569,
+      "reverse_count": 588
+    },
+    {
+      "streak_length": "5+",
+      "n": 1053,
+      "continue_pct": 45.68,
+      "reverse_pct": 54.32,
+      "continue_count": 481,
+      "reverse_count": 572
+    }
+  ],
+  "total_continue_pct": 49.17,
+  "total_reverse_pct": 50.83
+}

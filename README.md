@@ -19,7 +19,7 @@ Every analysis ships with three layers:
 
 ## Analyses
 
-**Current scope: ~73 analyses across NQ (35) + ES (20) + GC (18) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
+**Current scope: ~76 analyses across NQ (36) + ES (21) + GC (19) + Globex preliminary.** Most use 15-minute NQ1!/ES1! futures data with 219-232 day samples (~11 months). Daily/weekly stats use 27 years of history. Top-level groupings below; full inventory in [docs/INVENTORY.md](docs/INVENTORY.md) — start there if you want the bird's-eye view.
 
 ### NQ Opening-range candle hit-rate series
 

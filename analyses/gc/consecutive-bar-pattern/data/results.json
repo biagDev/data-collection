@@ -1,0 +1,53 @@
+{
+  "theme": "GC consecutive-bar (streak) continuation/reversal stats",
+  "symbol": "COMEX:GC1!",
+  "timeframe": "15m",
+  "n_total_bars": 19933,
+  "as_of_date": "2026-05-12",
+  "description": "For each 15-min bar, given the prior streak of consecutive same-color bars, what's the probability the next bar continues (same color) vs reverses (opposite color)?",
+  "exclusions": "Doji bars (close == open) are excluded from both numerator and denominator.",
+  "rows": [
+    {
+      "streak_length": "1",
+      "n": 10194,
+      "continue_pct": 49.22,
+      "reverse_pct": 50.78,
+      "continue_count": 5017,
+      "reverse_count": 5177
+    },
+    {
+      "streak_length": "2",
+      "n": 5056,
+      "continue_pct": 47.75,
+      "reverse_pct": 52.25,
+      "continue_count": 2414,
+      "reverse_count": 2642
+    },
+    {
+      "streak_length": "3",
+      "n": 2481,
+      "continue_pct": 50.14,
+      "reverse_pct": 49.86,
+      "continue_count": 1244,
+      "reverse_count": 1237
+    },
+    {
+      "streak_length": "4",
+      "n": 1131,
+      "continue_pct": 47.21,
+      "reverse_pct": 52.79,
+      "continue_count": 534,
+      "reverse_count": 597
+    },
+    {
+      "streak_length": "5+",
+      "n": 1071,
+      "continue_pct": 49.21,
+      "reverse_pct": 50.79,
+      "continue_count": 527,
+      "reverse_count": 544
+    }
+  ],
+  "total_continue_pct": 48.84,
+  "total_reverse_pct": 51.16
+}
