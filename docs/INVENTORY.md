@@ -1,6 +1,6 @@
 # Repo Inventory
 
-Complete index of every analysis in `analyses/`, organized by topic. **76 analyses total.**
+Complete index of every analysis in `analyses/`, organized by topic. **79 analyses total.**
 
 ## NQ analyses (35)
 

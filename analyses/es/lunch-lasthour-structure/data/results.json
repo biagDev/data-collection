@@ -1,0 +1,58 @@
+{
+  "theme": "ES lunch / last-hour intraday structure",
+  "symbol": "CME_MINI:ES1!",
+  "timeframe": "15m",
+  "n_days": 215,
+  "as_of_date": "2026-05-12",
+  "morning_bias": {
+    "green_count": 111,
+    "green_pct": 51.63,
+    "red_count": 103,
+    "red_pct": 47.91
+  },
+  "lunch_outcome": {
+    "continues_morning_count": 107,
+    "continues_morning_pct": 49.77,
+    "reverses_morning_count": 105,
+    "reverses_morning_pct": 48.84
+  },
+  "last_hour": {
+    "green_count": 110,
+    "green_pct": 51.16,
+    "red_count": 100,
+    "red_pct": 46.51,
+    "by_dow": [
+      {
+        "day": "Mon",
+        "green_count": 24,
+        "n": 42,
+        "green_pct": 57.14
+      },
+      {
+        "day": "Tue",
+        "green_count": 20,
+        "n": 46,
+        "green_pct": 43.48
+      },
+      {
+        "day": "Wed",
+        "green_count": 26,
+        "n": 44,
+        "green_pct": 59.09
+      },
+      {
+        "day": "Thu",
+        "green_count": 25,
+        "n": 41,
+        "green_pct": 60.98
+      },
+      {
+        "day": "Fri",
+        "green_count": 15,
+        "n": 42,
+        "green_pct": 35.71
+      }
+    ]
+  },
+  "close_auction_range_share_pct": 20.75
+}
