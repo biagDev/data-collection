@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Phase A placeholder. The real leaderboard lands in Phase C.
+// This page reads the generated data file only to prove the pipeline is wired.
+import meta from '../data/meta.json';
+---
+
+<Base title="Retest Stats — Dashboard">
+  <section class="rounded-lg border border-[--color-border] bg-[--color-surface] p-8">
+    <h1 class="text-2xl font-semibold tracking-tight">Trading-Stats Dashboard</h1>
+    <p class="mt-2 max-w-2xl text-[--color-text-dim]">
+      Retest probabilities, session-anchor magnetism, and intraday structure across NQ, ES,
+      and GC futures — built as a static snapshot from the
+      <a href="https://github.com/biagDev/data-collection" class="text-[--color-accent] underline">data-collection</a>
+      repo.
+    </p>
+
+    <div class="mt-6 inline-flex items-center gap-2 rounded border border-[--color-border] bg-[--color-surface-2] px-3 py-2 text-sm">
+      <span class="text-[--color-accent]">●</span>
+      <span>Phase A scaffold live — pipeline build: <span class="tabular">{meta.builtAt}</span></span>
+    </div>
+
+    <ul class="mt-6 space-y-1 text-sm text-[--color-text-dim]">
+      <li>Analyses discovered by pipeline: <span class="tabular text-[--color-text]">{meta.analysisCount}</span></li>
+      <li>Next: Phase B — normalize all <span class="tabular text-[--color-text]">analyses/**</span> into one schema.</li>
+    </ul>
+  </section>
+</Base>

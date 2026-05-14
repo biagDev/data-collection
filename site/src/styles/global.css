@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* Dark-mode-default, trader-friendly theme.
+   Tailwind v4 theme tokens. */
+@theme {
+  --color-bg: #0c0e12;
+  --color-surface: #14171d;
+  --color-surface-2: #1c2029;
+  --color-border: #2a2f3a;
+  --color-text: #e6e8ec;
+  --color-text-dim: #9aa1ac;
+  --color-accent: #f5b301;       /* gold — the repo's signature asset */
+  --color-pos: #2ecc71;
+  --color-neg: #e74c3c;
+  --color-nq: #6ab7ff;
+  --color-es: #b388ff;
+  --color-gc: #f5b301;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Numeric cells use the mono font for clean column alignment. */
+.tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
