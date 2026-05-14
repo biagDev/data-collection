@@ -16,20 +16,21 @@ const base = import.meta.env.BASE_URL;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <title>{title}</title>
   </head>
-  <body class="bg-[--color-bg] text-[--color-text]">
-    <header class="border-b border-[--color-border] bg-[--color-surface]">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <a href={base} class="flex items-center gap-2 font-semibold tracking-tight">
-          <span class="text-[--color-accent]">◆</span>
+  <body class="bg-[var(--color-bg)] text-[var(--color-text)]">
+    <header class="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3">
+        <a href={base} class="flex shrink-0 items-center gap-2 font-semibold tracking-tight whitespace-nowrap">
+          <span class="text-[var(--color-accent)]">◆</span>
           <span>Retest Stats</span>
         </a>
-        <nav class="flex gap-4 text-sm text-[--color-text-dim]">
-          <a href={base} class="hover:text-[--color-text]">Leaderboard</a>
-          <a href={`${base}/analyses`} class="hover:text-[--color-text]">Analyses</a>
-          <a href={`${base}/compare`} class="hover:text-[--color-text]">Compare</a>
-          <a href={`${base}/methodology`} class="hover:text-[--color-text]">Methodology</a>
+        <nav class="flex flex-wrap gap-x-4 gap-y-1 text-sm text-[var(--color-text-dim)] sm:ml-auto">
+          <a href={base} class="whitespace-nowrap hover:text-[var(--color-text)]">Leaderboard</a>
+          <a href={`${base}/analyses`} class="whitespace-nowrap hover:text-[var(--color-text)]">Analyses</a>
+          <a href={`${base}/compare`} class="whitespace-nowrap hover:text-[var(--color-text)]">Compare</a>
+          <a href={`${base}/methodology`} class="whitespace-nowrap hover:text-[var(--color-text)]">Methodology</a>
         </nav>
       </div>
     </header>
@@ -38,9 +39,9 @@ const base = import.meta.env.BASE_URL;
       <slot />
     </main>
 
-    <footer class="mt-16 border-t border-[--color-border] px-4 py-6 text-center text-xs text-[--color-text-dim]">
+    <footer class="mt-16 border-t border-[var(--color-border)] px-4 py-6 text-center text-xs text-[var(--color-text-dim)]">
       Built from the
-      <a href="https://github.com/biagDev/data-collection" class="underline hover:text-[--color-text]">data-collection</a>
+      <a href="https://github.com/biagDev/data-collection" class="underline hover:text-[var(--color-text)]">data-collection</a>
       repo. Data sourced from local TradingView Desktop — static snapshot, rebuilt on push.
     </footer>
   </body>

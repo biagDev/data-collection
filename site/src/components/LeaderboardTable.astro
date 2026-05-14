@@ -27,7 +27,7 @@ const biasColor = (b: string | null) =>
       {['All', 'NQ', 'ES', 'GC'].map((a) => (
         <button
           data-asset-filter={a}
-          class="rounded border border-[--color-border] bg-[--color-surface-2] px-2.5 py-1 hover:border-[--color-accent] data-[active]:border-[--color-accent] data-[active]:text-[--color-accent]"
+          class="rounded border border-[var(--color-border)] bg-[var(--color-surface-2)] px-2.5 py-1 hover:border-[var(--color-accent)] data-[active]:border-[var(--color-accent)] data-[active]:text-[var(--color-accent)]"
           data-active={a === 'All' ? '' : undefined}
         >
           {a}
@@ -37,44 +37,44 @@ const biasColor = (b: string | null) =>
 
     <select
       id="lb-session"
-      class="rounded border border-[--color-border] bg-[--color-surface-2] px-2 py-1"
+      class="rounded border border-[var(--color-border)] bg-[var(--color-surface-2)] px-2 py-1"
       aria-label="Filter by session"
     >
       <option value="All">All sessions</option>
       {sessions.map((s) => <option value={s}>{s}</option>)}
     </select>
 
-    <label class="flex items-center gap-1.5 text-[--color-text-dim]">
+    <label class="flex items-center gap-1.5 text-[var(--color-text-dim)]">
       <input type="checkbox" id="lb-hide-prelim" checked />
       Hide preliminary (n &lt; 100)
     </label>
 
-    <span class="ml-auto text-[--color-text-dim]">
-      <span id="lb-count" class="tabular text-[--color-text]">{leaderboard.length}</span> candles
+    <span class="ml-auto text-[var(--color-text-dim)]">
+      <span id="lb-count" class="tabular text-[var(--color-text)]">{leaderboard.length}</span> candles
     </span>
   </div>
 
   <!-- Leaderboard table -->
-  <div class="overflow-x-auto rounded-lg border border-[--color-border]">
+  <div class="overflow-x-auto rounded-lg border border-[var(--color-border)]">
     <table class="w-full border-collapse text-sm">
-      <thead class="bg-[--color-surface-2] text-[--color-text-dim]">
+      <thead class="bg-[var(--color-surface-2)] text-[var(--color-text-dim)]">
         <tr>
           <th class="px-3 py-2 text-left font-medium">#</th>
           <th class="px-3 py-2 text-left font-medium">Asset</th>
           <th class="px-3 py-2 text-left font-medium">Session</th>
           <th class="px-3 py-2 text-left font-medium">Candle</th>
-          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="n">n</th>
-          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="retest15" data-default>Retest&nbsp;+15</th>
-          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="retest30">Retest&nbsp;+30</th>
-          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="retest45">Retest&nbsp;+45</th>
-          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="sweep45">Sweep&nbsp;+45</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[var(--color-text)]" data-sort="n">n</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[var(--color-text)]" data-sort="retest15" data-default>Retest&nbsp;+15</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[var(--color-text)]" data-sort="retest30">Retest&nbsp;+30</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[var(--color-text)]" data-sort="retest45">Retest&nbsp;+45</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[var(--color-text)]" data-sort="sweep45">Sweep&nbsp;+45</th>
           <th class="px-3 py-2 text-left font-medium">Bias</th>
         </tr>
       </thead>
       <tbody id="lb-body">
         {leaderboard.map((r) => (
           <tr
-            class="border-t border-[--color-border] hover:bg-[--color-surface-2]"
+            class="border-t border-[var(--color-border)] hover:bg-[var(--color-surface-2)]"
             data-asset={r.asset}
             data-session={r.sessionLabel}
             data-n={r.n ?? 0}
@@ -84,18 +84,18 @@ const biasColor = (b: string | null) =>
             data-sweep45={r.sweep45 ?? -1}
             data-prelim={(r.n ?? 0) < 100 ? '1' : '0'}
           >
-            <td class="lb-rank px-3 py-2 tabular text-[--color-text-dim]">{r.rank}</td>
+            <td class="lb-rank px-3 py-2 tabular text-[var(--color-text-dim)]">{r.rank}</td>
             <td class="px-3 py-2"><AssetChip asset={r.asset} size="sm" /></td>
-            <td class="px-3 py-2 text-[--color-text-dim]">{r.sessionLabel}</td>
+            <td class="px-3 py-2 text-[var(--color-text-dim)]">{r.sessionLabel}</td>
             <td class="px-3 py-2">
-              <a href={`${base}/analyses/${r.slug}`} class="tabular hover:text-[--color-accent] hover:underline">
+              <a href={`${base}/analyses/${r.slug}`} class="tabular hover:text-[var(--color-accent)] hover:underline">
                 {r.candleLabel}
               </a>
             </td>
             <td class="px-3 py-2 text-right tabular">
               {r.n ?? '—'}
               {(r.n ?? 0) < 100 && (
-                <span class="ml-1 rounded bg-[--color-surface-2] px-1 text-[10px] text-[--color-text-dim]">prelim</span>
+                <span class="ml-1 rounded bg-[var(--color-surface-2)] px-1 text-[10px] text-[var(--color-text-dim)]">prelim</span>
               )}
             </td>
             {[r.retest15, r.retest30, r.retest45].map((v) => (
@@ -109,7 +109,7 @@ const biasColor = (b: string | null) =>
                 </div>
               </td>
             ))}
-            <td class="px-3 py-2 text-right tabular text-[--color-text-dim]">{pct(r.sweep45)}</td>
+            <td class="px-3 py-2 text-right tabular text-[var(--color-text-dim)]">{pct(r.sweep45)}</td>
             <td class="px-3 py-2">
               {r.bias && (
                 <span class="text-xs" style={`color:${biasColor(r.bias)}`}>{r.bias}</span>
@@ -120,7 +120,7 @@ const biasColor = (b: string | null) =>
       </tbody>
     </table>
   </div>
-  <p class="text-xs text-[--color-text-dim]">
+  <p class="text-xs text-[var(--color-text-dim)]">
     Click a numeric column header to sort. "Retest +15" = % of days the candle's high or low
     was retested within 15 min. "Sweep +45" = % where both sides were retested within 45 min.
   </p>

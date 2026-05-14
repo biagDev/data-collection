@@ -16,9 +16,9 @@ const sessions = [...new Set(compare.map((g) => g.sessionLabel))].sort(
 <Base title="Retest Stats — Cross-Market Compare">
   <section class="mb-6">
     <h1 class="text-2xl font-semibold tracking-tight">Cross-Market Compare</h1>
-    <p class="mt-1 max-w-2xl text-sm text-[--color-text-dim]">
+    <p class="mt-1 max-w-2xl text-sm text-[var(--color-text-dim)]">
       Every candle window that exists on two or more assets, lined up side by side.
-      The <span class="text-[--color-text]">spread</span> badge is the gap between the
+      The <span class="text-[var(--color-text)]">spread</span> badge is the gap between the
       highest and lowest retest&nbsp;+15 in the group — bigger spread means the markets
       disagree more about that window.
     </p>
@@ -26,18 +26,18 @@ const sessions = [...new Set(compare.map((g) => g.sessionLabel))].sort(
 
   <!-- Session filter -->
   <div class="mb-4 flex flex-wrap gap-1 text-sm" id="cmp-filter">
-    <button data-session="All" data-active class="rounded border border-[--color-border] bg-[--color-surface-2] px-2.5 py-1 hover:border-[--color-accent] data-[active]:border-[--color-accent] data-[active]:text-[--color-accent]">All</button>
+    <button data-session="All" data-active class="rounded border border-[var(--color-border)] bg-[var(--color-surface-2)] px-2.5 py-1 hover:border-[var(--color-accent)] data-[active]:border-[var(--color-accent)] data-[active]:text-[var(--color-accent)]">All</button>
     {sessions.map((s) => (
-      <button data-session={s} class="rounded border border-[--color-border] bg-[--color-surface-2] px-2.5 py-1 hover:border-[--color-accent] data-[active]:border-[--color-accent] data-[active]:text-[--color-accent]">{s}</button>
+      <button data-session={s} class="rounded border border-[var(--color-border)] bg-[var(--color-surface-2)] px-2.5 py-1 hover:border-[var(--color-accent)] data-[active]:border-[var(--color-accent)] data-[active]:text-[var(--color-accent)]">{s}</button>
     ))}
   </div>
 
   <div class="grid gap-3 md:grid-cols-2" id="cmp-grid">
     {compare.map((g) => (
-      <div class="cmp-card rounded-lg border border-[--color-border] bg-[--color-surface] p-4" data-session={g.sessionLabel}>
+      <div class="cmp-card rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4" data-session={g.sessionLabel}>
         <div class="flex items-baseline justify-between">
           <div>
-            <span class="text-[11px] uppercase tracking-wide text-[--color-text-dim]">{g.sessionLabel}</span>
+            <span class="text-[11px] uppercase tracking-wide text-[var(--color-text-dim)]">{g.sessionLabel}</span>
             <span class="ml-1 tabular font-semibold">{g.candleLabel} ET</span>
           </div>
           <span
@@ -48,7 +48,7 @@ const sessions = [...new Set(compare.map((g) => g.sessionLabel))].sort(
           </span>
         </div>
         <table class="mt-2 w-full border-collapse text-sm">
-          <thead class="text-[--color-text-dim]">
+          <thead class="text-[var(--color-text-dim)]">
             <tr>
               <th class="py-1 text-left font-medium">Asset</th>
               <th class="py-1 text-right font-medium">Retest +15</th>
@@ -58,15 +58,15 @@ const sessions = [...new Set(compare.map((g) => g.sessionLabel))].sort(
           </thead>
           <tbody>
             {g.rows.map((r) => (
-              <tr class="border-t border-[--color-border]">
+              <tr class="border-t border-[var(--color-border)]">
                 <td class="py-1.5">
-                  <a href={`${base}/analyses/${r.slug}`} class="hover:text-[--color-accent]">
+                  <a href={`${base}/analyses/${r.slug}`} class="hover:text-[var(--color-accent)]">
                     <AssetChip asset={r.asset} size="sm" />
                   </a>
                 </td>
                 <td class="py-1.5 text-right tabular">{pct(r.retest15)}</td>
-                <td class="py-1.5 text-right tabular text-[--color-text-dim]">{pct(r.retest45)}</td>
-                <td class="py-1.5 text-right tabular text-[--color-text-dim]">{pct(r.sweep45)}</td>
+                <td class="py-1.5 text-right tabular text-[var(--color-text-dim)]">{pct(r.retest45)}</td>
+                <td class="py-1.5 text-right tabular text-[var(--color-text-dim)]">{pct(r.sweep45)}</td>
               </tr>
             ))}
           </tbody>

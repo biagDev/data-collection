@@ -28,7 +28,7 @@ const truncate = (s: string, n = 150) => (s && s.length > n ? s.slice(0, n).trim
 <Base title="Retest Stats — All Analyses">
   <section class="mb-6">
     <h1 class="text-2xl font-semibold tracking-tight">All Analyses</h1>
-    <p class="mt-1 text-sm text-[--color-text-dim]">
+    <p class="mt-1 text-sm text-[var(--color-text-dim)]">
       {analyses.length} analyses across NQ, ES and GC. Click any card for the full write-up,
       data tables and Pine source.
     </p>
@@ -40,22 +40,22 @@ const truncate = (s: string, n = 150) => (s && s.length > n ? s.slice(0, n).trim
       {['All', 'NQ', 'ES', 'GC'].map((a) => (
         <button
           data-asset-filter={a}
-          class="rounded border border-[--color-border] bg-[--color-surface-2] px-2.5 py-1 hover:border-[--color-accent] data-[active]:border-[--color-accent] data-[active]:text-[--color-accent]"
+          class="rounded border border-[var(--color-border)] bg-[var(--color-surface-2)] px-2.5 py-1 hover:border-[var(--color-accent)] data-[active]:border-[var(--color-accent)] data-[active]:text-[var(--color-accent)]"
           data-active={a === 'All' ? '' : undefined}
         >
           {a}
         </button>
       ))}
     </div>
-    <select id="cat-filter" class="rounded border border-[--color-border] bg-[--color-surface-2] px-2 py-1" aria-label="Filter by category">
+    <select id="cat-filter" class="rounded border border-[var(--color-border)] bg-[var(--color-surface-2)] px-2 py-1" aria-label="Filter by category">
       <option value="All">All categories</option>
       {categories.map((c) => {
         const label = analyses.find((a) => a.category === c)?.categoryLabel ?? c;
         return <option value={c}>{label}</option>;
       })}
     </select>
-    <span class="ml-auto text-[--color-text-dim]">
-      <span id="ana-count" class="tabular text-[--color-text]">{analyses.length}</span> shown
+    <span class="ml-auto text-[var(--color-text-dim)]">
+      <span id="ana-count" class="tabular text-[var(--color-text)]">{analyses.length}</span> shown
     </span>
   </div>
 
@@ -64,17 +64,17 @@ const truncate = (s: string, n = 150) => (s && s.length > n ? s.slice(0, n).trim
     {analyses.map((a) => (
       <a
         href={`${base}/analyses/${a.slug}`}
-        class="ana-card group flex flex-col rounded-lg border border-[--color-border] bg-[--color-surface] p-4 hover:border-[--color-accent]"
+        class="ana-card group flex flex-col rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)]"
         data-asset={a.asset}
         data-category={a.category}
       >
         <div class="flex items-center gap-2">
           <AssetChip asset={a.asset} size="sm" />
-          <span class="text-[11px] uppercase tracking-wide text-[--color-text-dim]">{a.categoryLabel}</span>
+          <span class="text-[11px] uppercase tracking-wide text-[var(--color-text-dim)]">{a.categoryLabel}</span>
         </div>
-        <div class="mt-1.5 font-semibold leading-tight group-hover:text-[--color-accent]">{a.title}</div>
-        <p class="mt-1 flex-1 text-xs leading-snug text-[--color-text-dim]">{truncate(a.headline)}</p>
-        <div class="mt-2 flex items-center justify-between text-[11px] text-[--color-text-dim]">
+        <div class="mt-1.5 font-semibold leading-tight group-hover:text-[var(--color-accent)]">{a.title}</div>
+        <p class="mt-1 flex-1 text-xs leading-snug text-[var(--color-text-dim)]">{truncate(a.headline)}</p>
+        <div class="mt-2 flex items-center justify-between text-[11px] text-[var(--color-text-dim)]">
           <span class="tabular">{a.sampleLabel}</span>
           <span class="tabular">{a.asOf}</span>
         </div>
@@ -82,7 +82,7 @@ const truncate = (s: string, n = 150) => (s && s.length > n ? s.slice(0, n).trim
     ))}
   </div>
 
-  <p id="ana-empty" class="mt-6 hidden text-center text-sm text-[--color-text-dim]">
+  <p id="ana-empty" class="mt-6 hidden text-center text-sm text-[var(--color-text-dim)]">
     No analyses match these filters.
   </p>
 </Base>

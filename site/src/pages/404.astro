@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<Base title="Not found — Retest Stats">
+  <section class="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-10 text-center">
+    <div class="text-5xl text-[var(--color-accent)]">◆</div>
+    <h1 class="mt-3 text-2xl font-semibold tracking-tight">404 — Page not found</h1>
+    <p class="mt-2 text-sm text-[var(--color-text-dim)]">
+      That page isn't part of the dashboard.
+    </p>
+    <div class="mt-5 flex flex-wrap justify-center gap-2 text-sm">
+      <a href={base} class="rounded border border-[var(--color-border)] px-3 py-1.5 hover:border-[var(--color-accent)]">Leaderboard</a>
+      <a href={`${base}/analyses`} class="rounded border border-[var(--color-border)] px-3 py-1.5 hover:border-[var(--color-accent)]">All analyses</a>
+      <a href={`${base}/compare`} class="rounded border border-[var(--color-border)] px-3 py-1.5 hover:border-[var(--color-accent)]">Compare</a>
+    </div>
+  </section>
+</Base>
