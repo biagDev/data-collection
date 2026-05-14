@@ -1,0 +1,199 @@
+---
+// Server-renders the full ranked leaderboard. The client script below
+// progressively enhances it: filter = show/hide existing <tr> nodes,
+// sort = reorder existing nodes. No markup is duplicated in JS — it only
+// operates on the DOM the server already rendered, so the table works
+// fully without JS too.
+import AssetChip from './AssetChip.astro';
+import leaderboard from '../data/leaderboard.json';
+
+const base = import.meta.env.BASE_URL;
+
+// Unique sessions for the filter dropdown, in a sensible order.
+const sessionOrder = ['NY Session', 'NY Multi-TF', 'London', 'Asia', 'Globex 6PM', 'COMEX Open', 'LBMA Fix'];
+const sessions = [...new Set(leaderboard.map((r) => r.sessionLabel))].sort(
+  (a, b) => sessionOrder.indexOf(a) - sessionOrder.indexOf(b)
+);
+
+const pct = (v: number | null) => (v == null ? '—' : v.toFixed(2));
+const biasColor = (b: string | null) =>
+  b === 'high' ? 'var(--color-pos)' : b === 'low' ? 'var(--color-neg)' : 'var(--color-text-dim)';
+---
+
+<div class="space-y-3">
+  <!-- Filter bar -->
+  <div class="flex flex-wrap items-center gap-3 text-sm" id="lb-filters">
+    <div class="flex gap-1" role="group" aria-label="Filter by asset">
+      {['All', 'NQ', 'ES', 'GC'].map((a) => (
+        <button
+          data-asset-filter={a}
+          class="rounded border border-[--color-border] bg-[--color-surface-2] px-2.5 py-1 hover:border-[--color-accent] data-[active]:border-[--color-accent] data-[active]:text-[--color-accent]"
+          data-active={a === 'All' ? '' : undefined}
+        >
+          {a}
+        </button>
+      ))}
+    </div>
+
+    <select
+      id="lb-session"
+      class="rounded border border-[--color-border] bg-[--color-surface-2] px-2 py-1"
+      aria-label="Filter by session"
+    >
+      <option value="All">All sessions</option>
+      {sessions.map((s) => <option value={s}>{s}</option>)}
+    </select>
+
+    <label class="flex items-center gap-1.5 text-[--color-text-dim]">
+      <input type="checkbox" id="lb-hide-prelim" checked />
+      Hide preliminary (n &lt; 100)
+    </label>
+
+    <span class="ml-auto text-[--color-text-dim]">
+      <span id="lb-count" class="tabular text-[--color-text]">{leaderboard.length}</span> candles
+    </span>
+  </div>
+
+  <!-- Leaderboard table -->
+  <div class="overflow-x-auto rounded-lg border border-[--color-border]">
+    <table class="w-full border-collapse text-sm">
+      <thead class="bg-[--color-surface-2] text-[--color-text-dim]">
+        <tr>
+          <th class="px-3 py-2 text-left font-medium">#</th>
+          <th class="px-3 py-2 text-left font-medium">Asset</th>
+          <th class="px-3 py-2 text-left font-medium">Session</th>
+          <th class="px-3 py-2 text-left font-medium">Candle</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="n">n</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="retest15" data-default>Retest&nbsp;+15</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="retest30">Retest&nbsp;+30</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="retest45">Retest&nbsp;+45</th>
+          <th class="cursor-pointer px-3 py-2 text-right font-medium hover:text-[--color-text]" data-sort="sweep45">Sweep&nbsp;+45</th>
+          <th class="px-3 py-2 text-left font-medium">Bias</th>
+        </tr>
+      </thead>
+      <tbody id="lb-body">
+        {leaderboard.map((r) => (
+          <tr
+            class="border-t border-[--color-border] hover:bg-[--color-surface-2]"
+            data-asset={r.asset}
+            data-session={r.sessionLabel}
+            data-n={r.n ?? 0}
+            data-retest15={r.retest15 ?? -1}
+            data-retest30={r.retest30 ?? -1}
+            data-retest45={r.retest45 ?? -1}
+            data-sweep45={r.sweep45 ?? -1}
+            data-prelim={(r.n ?? 0) < 100 ? '1' : '0'}
+          >
+            <td class="lb-rank px-3 py-2 tabular text-[--color-text-dim]">{r.rank}</td>
+            <td class="px-3 py-2"><AssetChip asset={r.asset} size="sm" /></td>
+            <td class="px-3 py-2 text-[--color-text-dim]">{r.sessionLabel}</td>
+            <td class="px-3 py-2">
+              <a href={`${base}/analyses/${r.slug}`} class="tabular hover:text-[--color-accent] hover:underline">
+                {r.candleLabel}
+              </a>
+            </td>
+            <td class="px-3 py-2 text-right tabular">
+              {r.n ?? '—'}
+              {(r.n ?? 0) < 100 && (
+                <span class="ml-1 rounded bg-[--color-surface-2] px-1 text-[10px] text-[--color-text-dim]">prelim</span>
+              )}
+            </td>
+            {[r.retest15, r.retest30, r.retest45].map((v) => (
+              <td class="px-3 py-2 text-right">
+                <div class="relative">
+                  <div
+                    class="absolute inset-y-0 right-0 rounded-sm"
+                    style={`width:${v ?? 0}%; background:color-mix(in srgb, var(--color-accent) 16%, transparent)`}
+                  />
+                  <span class="relative tabular">{pct(v)}</span>
+                </div>
+              </td>
+            ))}
+            <td class="px-3 py-2 text-right tabular text-[--color-text-dim]">{pct(r.sweep45)}</td>
+            <td class="px-3 py-2">
+              {r.bias && (
+                <span class="text-xs" style={`color:${biasColor(r.bias)}`}>{r.bias}</span>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="text-xs text-[--color-text-dim]">
+    Click a numeric column header to sort. "Retest +15" = % of days the candle's high or low
+    was retested within 15 min. "Sweep +45" = % where both sides were retested within 45 min.
+  </p>
+</div>
+
+<script>
+  // Progressive enhancement: operate only on server-rendered DOM nodes.
+  const body = document.getElementById('lb-body');
+  if (body) {
+    const allRows = Array.from(body.querySelectorAll('tr'));
+    const countEl = document.getElementById('lb-count');
+    const sessionSel = document.getElementById('lb-session') as HTMLSelectElement;
+    const hidePrelim = document.getElementById('lb-hide-prelim') as HTMLInputElement;
+    const assetBtns = Array.from(document.querySelectorAll('[data-asset-filter]'));
+    const headers = Array.from(document.querySelectorAll('th[data-sort]'));
+
+    let assetFilter = 'All';
+    let sortKey = 'retest15';
+    let sortDir = -1; // -1 desc, 1 asc
+
+    const num = (row: Element, key: string) => Number(row.getAttribute('data-' + key) || -1);
+
+    function apply() {
+      const session = sessionSel.value;
+      const noPrelim = hidePrelim.checked;
+
+      // Filter
+      let visible = allRows.filter((row) => {
+        if (assetFilter !== 'All' && row.getAttribute('data-asset') !== assetFilter) return false;
+        if (session !== 'All' && row.getAttribute('data-session') !== session) return false;
+        if (noPrelim && row.getAttribute('data-prelim') === '1') return false;
+        return true;
+      });
+
+      // Sort
+      visible.sort((a, b) => (num(a, sortKey) - num(b, sortKey)) * sortDir);
+
+      // Re-attach in order; hide the rest; renumber rank.
+      allRows.forEach((r) => (r.hidden = true));
+      visible.forEach((row, i) => {
+        row.hidden = false;
+        const rankCell = row.querySelector('.lb-rank');
+        if (rankCell) rankCell.textContent = String(i + 1);
+        body.appendChild(row);
+      });
+      if (countEl) countEl.textContent = String(visible.length);
+    }
+
+    assetBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        assetFilter = btn.getAttribute('data-asset-filter') || 'All';
+        assetBtns.forEach((b) => b.removeAttribute('data-active'));
+        btn.setAttribute('data-active', '');
+        apply();
+      });
+    });
+    sessionSel.addEventListener('change', apply);
+    hidePrelim.addEventListener('change', apply);
+    headers.forEach((th) => {
+      th.addEventListener('click', () => {
+        const key = th.getAttribute('data-sort')!;
+        if (sortKey === key) sortDir *= -1;
+        else {
+          sortKey = key;
+          sortDir = -1;
+        }
+        headers.forEach((h) => (h.textContent = h.textContent!.replace(/ [↑↓]$/, '')));
+        th.textContent = th.textContent + (sortDir === -1 ? ' ↓' : ' ↑');
+        apply();
+      });
+    });
+
+    // Initial pass (applies the default "hide preliminary" filter).
+    apply();
+  }
+</script>

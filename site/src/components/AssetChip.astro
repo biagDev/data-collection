@@ -1,0 +1,15 @@
+---
+interface Props {
+  asset: 'NQ' | 'ES' | 'GC';
+  size?: 'sm' | 'md';
+}
+const { asset, size = 'md' } = Astro.props;
+const colorVar = { NQ: 'var(--color-nq)', ES: 'var(--color-es)', GC: 'var(--color-gc)' }[asset];
+const pad = size === 'sm' ? 'px-1.5 py-0.5 text-[10px]' : 'px-2 py-0.5 text-xs';
+---
+<span
+  class={`inline-block rounded font-semibold tabular ${pad}`}
+  style={`color:${colorVar}; background:color-mix(in srgb, ${colorVar} 14%, transparent); border:1px solid color-mix(in srgb, ${colorVar} 35%, transparent)`}
+>
+  {asset}
+</span>

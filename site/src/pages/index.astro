@@ -1,29 +1,67 @@
 ---
 import Base from '../layouts/Base.astro';
-
-// Phase A placeholder. The real leaderboard lands in Phase C.
-// This page reads the generated data file only to prove the pipeline is wired.
+import AssetChip from '../components/AssetChip.astro';
+import LeaderboardTable from '../components/LeaderboardTable.astro';
 import meta from '../data/meta.json';
+import leaderboard from '../data/leaderboard.json';
+
+const base = import.meta.env.BASE_URL;
+
+// Top record (highest retest +15 among non-preliminary candles).
+const ranked = [...leaderboard].filter((r) => (r.n ?? 0) >= 100);
+const top = ranked[0];
+const topSweep = [...ranked].sort((a, b) => (b.sweep45 ?? -1) - (a.sweep45 ?? -1))[0];
+
+const assetCounts = meta.byAsset ?? {};
 ---
 
-<Base title="Retest Stats — Dashboard">
-  <section class="rounded-lg border border-[--color-border] bg-[--color-surface] p-8">
-    <h1 class="text-2xl font-semibold tracking-tight">Trading-Stats Dashboard</h1>
-    <p class="mt-2 max-w-2xl text-[--color-text-dim]">
-      Retest probabilities, session-anchor magnetism, and intraday structure across NQ, ES,
-      and GC futures — built as a static snapshot from the
-      <a href="https://github.com/biagDev/data-collection" class="text-[--color-accent] underline">data-collection</a>
-      repo.
+<Base title="Retest Stats — Magnet Leaderboard">
+  <!-- Hero -->
+  <section class="mb-8">
+    <h1 class="text-2xl font-semibold tracking-tight">Candle Magnet Leaderboard</h1>
+    <p class="mt-1 max-w-2xl text-sm text-[--color-text-dim]">
+      Every 15-minute candle window across NQ, ES and GC futures, ranked by how reliably
+      price retraces to retest its high or low. A static snapshot of the
+      <a href="https://github.com/biagDev/data-collection" class="text-[--color-accent] hover:underline">data-collection</a>
+      research repo.
     </p>
 
-    <div class="mt-6 inline-flex items-center gap-2 rounded border border-[--color-border] bg-[--color-surface-2] px-3 py-2 text-sm">
-      <span class="text-[--color-accent]">●</span>
-      <span>Phase A scaffold live — pipeline build: <span class="tabular">{meta.builtAt}</span></span>
+    <!-- Record callouts -->
+    <div class="mt-5 grid gap-3 sm:grid-cols-2">
+      {top && (
+        <a href={`${base}/analyses/${top.slug}`} class="group rounded-lg border border-[--color-border] bg-[--color-surface] p-4 hover:border-[--color-accent]">
+          <div class="text-xs uppercase tracking-wide text-[--color-text-dim]">Strongest retest magnet</div>
+          <div class="mt-1 flex items-baseline gap-2">
+            <AssetChip asset={top.asset} size="sm" />
+            <span class="font-semibold group-hover:text-[--color-accent]">{top.sessionLabel} {top.candleLabel} ET</span>
+          </div>
+          <div class="mt-1 tabular text-2xl font-semibold text-[--color-accent]">{top.retest15?.toFixed(2)}%</div>
+          <div class="text-xs text-[--color-text-dim]">retested within 15 min · n={top.n}</div>
+        </a>
+      )}
+      {topSweep && (
+        <a href={`${base}/analyses/${topSweep.slug}`} class="group rounded-lg border border-[--color-border] bg-[--color-surface] p-4 hover:border-[--color-accent]">
+          <div class="text-xs uppercase tracking-wide text-[--color-text-dim]">Strongest full-sweep magnet</div>
+          <div class="mt-1 flex items-baseline gap-2">
+            <AssetChip asset={topSweep.asset} size="sm" />
+            <span class="font-semibold group-hover:text-[--color-accent]">{topSweep.sessionLabel} {topSweep.candleLabel} ET</span>
+          </div>
+          <div class="mt-1 tabular text-2xl font-semibold text-[--color-accent]">{topSweep.sweep45?.toFixed(2)}%</div>
+          <div class="text-xs text-[--color-text-dim]">both sides swept within 45 min · n={topSweep.n}</div>
+        </a>
+      )}
     </div>
 
-    <ul class="mt-6 space-y-1 text-sm text-[--color-text-dim]">
-      <li>Analyses discovered by pipeline: <span class="tabular text-[--color-text]">{meta.analysisCount}</span></li>
-      <li>Next: Phase B — normalize all <span class="tabular text-[--color-text]">analyses/**</span> into one schema.</li>
-    </ul>
+    <!-- Stat strip -->
+    <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-[--color-text-dim]">
+      <span><span class="tabular text-[--color-text]">{meta.analysisCount}</span> analyses</span>
+      <span><span class="tabular text-[--color-text]">{meta.leaderboardRows}</span> candle windows ranked</span>
+      <span>NQ <span class="tabular text-[--color-text]">{assetCounts.NQ ?? 0}</span></span>
+      <span>ES <span class="tabular text-[--color-text]">{assetCounts.ES ?? 0}</span></span>
+      <span>GC <span class="tabular text-[--color-text]">{assetCounts.GC ?? 0}</span></span>
+      <span>build <span class="tabular text-[--color-text]">{meta.builtAt}</span></span>
+    </div>
   </section>
+
+  <LeaderboardTable />
 </Base>
