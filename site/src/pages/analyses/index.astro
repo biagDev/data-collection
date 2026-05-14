@@ -1,0 +1,124 @@
+---
+import Base from '../../layouts/Base.astro';
+import AssetChip from '../../components/AssetChip.astro';
+import analyses from '../../data/analyses.json';
+
+const base = import.meta.env.BASE_URL;
+
+const categoryOrder = [
+  'candle-hit-stats',
+  'multi-tf-candle',
+  'session-retest',
+  'extended-stats',
+  'consecutive-bars',
+  'lunch-structure',
+  'pm-range',
+  'setup-chain',
+  'daily-patterns',
+  'weekly-patterns',
+  'other',
+];
+const categories = [...new Set(analyses.map((a) => a.category))].sort(
+  (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
+);
+
+const truncate = (s: string, n = 150) => (s && s.length > n ? s.slice(0, n).trimEnd() + '…' : s);
+---
+
+<Base title="Retest Stats — All Analyses">
+  <section class="mb-6">
+    <h1 class="text-2xl font-semibold tracking-tight">All Analyses</h1>
+    <p class="mt-1 text-sm text-[--color-text-dim]">
+      {analyses.length} analyses across NQ, ES and GC. Click any card for the full write-up,
+      data tables and Pine source.
+    </p>
+  </section>
+
+  <!-- Filter bar -->
+  <div class="mb-4 flex flex-wrap items-center gap-3 text-sm">
+    <div class="flex gap-1" role="group" aria-label="Filter by asset">
+      {['All', 'NQ', 'ES', 'GC'].map((a) => (
+        <button
+          data-asset-filter={a}
+          class="rounded border border-[--color-border] bg-[--color-surface-2] px-2.5 py-1 hover:border-[--color-accent] data-[active]:border-[--color-accent] data-[active]:text-[--color-accent]"
+          data-active={a === 'All' ? '' : undefined}
+        >
+          {a}
+        </button>
+      ))}
+    </div>
+    <select id="cat-filter" class="rounded border border-[--color-border] bg-[--color-surface-2] px-2 py-1" aria-label="Filter by category">
+      <option value="All">All categories</option>
+      {categories.map((c) => {
+        const label = analyses.find((a) => a.category === c)?.categoryLabel ?? c;
+        return <option value={c}>{label}</option>;
+      })}
+    </select>
+    <span class="ml-auto text-[--color-text-dim]">
+      <span id="ana-count" class="tabular text-[--color-text]">{analyses.length}</span> shown
+    </span>
+  </div>
+
+  <!-- Grid -->
+  <div id="ana-grid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {analyses.map((a) => (
+      <a
+        href={`${base}/analyses/${a.slug}`}
+        class="ana-card group flex flex-col rounded-lg border border-[--color-border] bg-[--color-surface] p-4 hover:border-[--color-accent]"
+        data-asset={a.asset}
+        data-category={a.category}
+      >
+        <div class="flex items-center gap-2">
+          <AssetChip asset={a.asset} size="sm" />
+          <span class="text-[11px] uppercase tracking-wide text-[--color-text-dim]">{a.categoryLabel}</span>
+        </div>
+        <div class="mt-1.5 font-semibold leading-tight group-hover:text-[--color-accent]">{a.title}</div>
+        <p class="mt-1 flex-1 text-xs leading-snug text-[--color-text-dim]">{truncate(a.headline)}</p>
+        <div class="mt-2 flex items-center justify-between text-[11px] text-[--color-text-dim]">
+          <span class="tabular">{a.sampleLabel}</span>
+          <span class="tabular">{a.asOf}</span>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <p id="ana-empty" class="mt-6 hidden text-center text-sm text-[--color-text-dim]">
+    No analyses match these filters.
+  </p>
+</Base>
+
+<script>
+  const grid = document.getElementById('ana-grid');
+  if (grid) {
+    const cards = Array.from(grid.querySelectorAll('.ana-card'));
+    const countEl = document.getElementById('ana-count');
+    const emptyEl = document.getElementById('ana-empty');
+    const catSel = document.getElementById('cat-filter') as HTMLSelectElement;
+    const assetBtns = Array.from(document.querySelectorAll('[data-asset-filter]'));
+    let assetFilter = 'All';
+
+    function apply() {
+      const cat = catSel.value;
+      let shown = 0;
+      cards.forEach((card) => {
+        const okAsset = assetFilter === 'All' || card.getAttribute('data-asset') === assetFilter;
+        const okCat = cat === 'All' || card.getAttribute('data-category') === cat;
+        const visible = okAsset && okCat;
+        (card as HTMLElement).hidden = !visible;
+        if (visible) shown++;
+      });
+      if (countEl) countEl.textContent = String(shown);
+      if (emptyEl) emptyEl.classList.toggle('hidden', shown !== 0);
+    }
+
+    assetBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        assetFilter = btn.getAttribute('data-asset-filter') || 'All';
+        assetBtns.forEach((b) => b.removeAttribute('data-active'));
+        btn.setAttribute('data-active', '');
+        apply();
+      });
+    });
+    catSel.addEventListener('change', apply);
+  }
+</script>

@@ -198,6 +198,36 @@ export function extractHeadline(json) {
   return '';
 }
 
+// Pull free-text annotations worth surfacing on the detail page.
+const NOTE_FIELDS = [
+  ['comparison_to_nq', 'Compared to NQ'],
+  ['comparison_to_ny_session', 'Compared to NY session'],
+  ['correction_note', 'Correction note'],
+  ['history_note', 'Data-history note'],
+  ['sample_size_warning', 'Sample-size warning'],
+  ['sample_size_caveat', 'Sample-size caveat'],
+  ['sample_size_caveats', 'Sample-size caveats'],
+  ['data_source_caveats', 'Data-source caveats'],
+  ['v1_bug_note', 'v1 bug note'],
+  ['method', 'Method'],
+  ['context', 'Context'],
+];
+
+export function extractNotes(json) {
+  const notes = [];
+  for (const [key, label] of NOTE_FIELDS) {
+    const v = json[key];
+    if (typeof v === 'string' && v.trim()) notes.push({ label, text: v.trim() });
+  }
+  // key_findings array: include the rest (the first is already the headline).
+  if (Array.isArray(json.key_findings) && json.key_findings.length > 1) {
+    for (const f of json.key_findings.slice(1)) {
+      if (typeof f === 'string') notes.push({ label: 'Key finding', text: f });
+    }
+  }
+  return notes;
+}
+
 // ----------------------------------------------------------------------------
 // Retest adapters -> candles[]
 // Each candle: { label, n, retest:{p15,p30,p45}, sweep:{p15,p30,p45},
@@ -401,6 +431,7 @@ export function buildRecord(id, json, paths) {
     sampleN: sample.n,
     sampleLabel: sample.label,
     headline: extractHeadline(json),
+    notes: extractNotes(json),
     paths,
   };
   if (isRetestCategory(category)) {
