@@ -1,0 +1,98 @@
+---
+import { resolve } from 'node:path';
+import Base from '../layouts/Base.astro';
+import { renderMarkdownFile } from '../lib/markdown.mjs';
+import meta from '../data/meta.json';
+
+const base = import.meta.env.BASE_URL;
+const GITHUB_BLOB = 'https://github.com/biagDev/data-collection/blob/main';
+const repoRoot = resolve(process.cwd(), '..');
+
+// Render the repo's AUDIT.md — the bug-fix log is self-contained and useful.
+const audit = await renderMarkdownFile(repoRoot, 'AUDIT.md', {
+  base,
+  githubBlobBase: GITHUB_BLOB,
+});
+
+const defs = [
+  ['Hit', "A later candle's wick traded back to the subject candle's high (≥ H) or low (≤ L)."],
+  ['Either side', 'The high OR the low (OR both) was retested. The broadest magnetism measure.'],
+  ['Both sides / Sweep', 'BOTH the high AND the low were retested — a full sweep of the candle.'],
+  ['High-only / Low-only', 'Exactly one extreme was retested, not the other.'],
+  ['High-any / Low-any', 'The high (or low) was retested, alone or as part of a sweep. High-any + Low-any − Sweep = Either side.'],
+  ['Neither', 'Price never came back to the candle\'s range — it kept going one way.'],
+  ['Bias', 'Whether High-any or Low-any is larger at +45 min — which side the candle "pulls" toward.'],
+  ['+15 / +30 / +45', 'Cumulative forward windows: 1, 2, or 3 fifteen-minute candles after the subject candle closes.'],
+];
+---
+
+<Base title="Retest Stats — Methodology">
+  <section class="mb-6">
+    <h1 class="text-2xl font-semibold tracking-tight">Methodology</h1>
+    <p class="mt-1 max-w-2xl text-sm text-[--color-text-dim]">
+      How the numbers behind this dashboard are produced, what the terms mean, and the
+      audit trail of corrections.
+    </p>
+  </section>
+
+  <!-- Provenance -->
+  <section class="rounded-lg border border-[--color-border] bg-[--color-surface] p-5">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-[--color-text-dim]">Data provenance</h2>
+    <p class="mt-2 text-sm">
+      Every statistic is computed by a Pine Script indicator running on a locally-running
+      TradingView Desktop chart, against continuous front-month futures
+      (<span class="tabular">NQ1!</span>, <span class="tabular">ES1!</span>,
+      <span class="tabular">GC1!</span>). The indicator tallies outcomes bar-by-bar over the
+      full loaded history, and the resulting tables are saved verbatim into the
+      <a href="https://github.com/biagDev/data-collection" class="text-[--color-accent] hover:underline">data-collection</a>
+      repo as <span class="tabular">results.json</span>. This dashboard is a static, read-only
+      view built from those committed files — it never re-pulls or alters the data.
+    </p>
+    <p class="mt-2 text-sm text-[--color-text-dim]">
+      Most intraday stats use ~11 months of 15-minute data (n ≈ 210–230 trading days).
+      Daily/weekly pattern stats use ~27 years of history. Samples flagged
+      <span class="rounded bg-[--color-surface-2] px-1 text-[11px]">prelim</span>
+      (n &lt; 100) are directional only.
+      Current build: <span class="tabular text-[--color-text]">{meta.builtAt}</span>,
+      {meta.analysisCount} analyses.
+    </p>
+  </section>
+
+  <!-- Definitions -->
+  <section class="mt-4 rounded-lg border border-[--color-border] bg-[--color-surface] p-5">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-[--color-text-dim]">Definitions</h2>
+    <dl class="mt-3 space-y-2.5">
+      {defs.map(([term, def]) => (
+        <div class="grid gap-1 sm:grid-cols-[160px_1fr]">
+          <dt class="text-sm font-semibold text-[--color-text]">{term}</dt>
+          <dd class="text-sm text-[--color-text-dim]">{def}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- How to read the leaderboard -->
+  <section class="mt-4 rounded-lg border border-[--color-border] bg-[--color-surface] p-5">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-[--color-text-dim]">Reading the leaderboard</h2>
+    <p class="mt-2 text-sm text-[--color-text-dim]">
+      The <a href={base} class="text-[--color-accent] hover:underline">Magnet Leaderboard</a>
+      flattens every retest analysis into one row per candle window and ranks them by
+      retest&nbsp;+15. A high retest rate means price reliably comes back to that candle's
+      range — useful for mean-reversion entries and target placement. A high sweep rate
+      means both extremes get taken — useful for straddle/fade setups. The
+      <a href={`${base}/compare`} class="text-[--color-accent] hover:underline">Compare</a>
+      view lines up the same window across NQ/ES/GC to surface where the markets diverge.
+    </p>
+  </section>
+
+  <!-- Audit trail (rendered from AUDIT.md) -->
+  {audit && (
+    <section class="mt-4">
+      <h2 class="mb-2 text-sm font-semibold uppercase tracking-wide text-[--color-text-dim]">
+        Audit &amp; corrections
+        <a href={`${GITHUB_BLOB}/AUDIT.md`} class="ml-2 font-normal normal-case text-[--color-text-dim] hover:text-[--color-accent]">(AUDIT.md →)</a>
+      </h2>
+      <article class="prose rounded-lg border border-[--color-border] bg-[--color-surface] p-5" set:html={audit.html} />
+    </section>
+  )}
+</Base>

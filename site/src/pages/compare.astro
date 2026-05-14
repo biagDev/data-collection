@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import AssetChip from '../components/AssetChip.astro';
+import compare from '../data/compare.json';
+
+const base = import.meta.env.BASE_URL;
+const pct = (v: number | null) => (v == null ? '—' : v.toFixed(2));
+
+// Group by session so the page reads in session order.
+const sessionOrder = ['NY Session', 'NY Multi-TF', 'London', 'Asia', 'Globex 6PM', 'COMEX Open', 'LBMA Fix'];
+const sessions = [...new Set(compare.map((g) => g.sessionLabel))].sort(
+  (a, b) => sessionOrder.indexOf(a) - sessionOrder.indexOf(b)
+);
+---
+
+<Base title="Retest Stats — Cross-Market Compare">
+  <section class="mb-6">
+    <h1 class="text-2xl font-semibold tracking-tight">Cross-Market Compare</h1>
+    <p class="mt-1 max-w-2xl text-sm text-[--color-text-dim]">
+      Every candle window that exists on two or more assets, lined up side by side.
+      The <span class="text-[--color-text]">spread</span> badge is the gap between the
+      highest and lowest retest&nbsp;+15 in the group — bigger spread means the markets
+      disagree more about that window.
+    </p>
+  </section>
+
+  <!-- Session filter -->
+  <div class="mb-4 flex flex-wrap gap-1 text-sm" id="cmp-filter">
+    <button data-session="All" data-active class="rounded border border-[--color-border] bg-[--color-surface-2] px-2.5 py-1 hover:border-[--color-accent] data-[active]:border-[--color-accent] data-[active]:text-[--color-accent]">All</button>
+    {sessions.map((s) => (
+      <button data-session={s} class="rounded border border-[--color-border] bg-[--color-surface-2] px-2.5 py-1 hover:border-[--color-accent] data-[active]:border-[--color-accent] data-[active]:text-[--color-accent]">{s}</button>
+    ))}
+  </div>
+
+  <div class="grid gap-3 md:grid-cols-2" id="cmp-grid">
+    {compare.map((g) => (
+      <div class="cmp-card rounded-lg border border-[--color-border] bg-[--color-surface] p-4" data-session={g.sessionLabel}>
+        <div class="flex items-baseline justify-between">
+          <div>
+            <span class="text-[11px] uppercase tracking-wide text-[--color-text-dim]">{g.sessionLabel}</span>
+            <span class="ml-1 tabular font-semibold">{g.candleLabel} ET</span>
+          </div>
+          <span
+            class="tabular rounded px-1.5 py-0.5 text-[11px]"
+            style={`color:var(--color-accent); background:color-mix(in srgb, var(--color-accent) 14%, transparent)`}
+          >
+            spread {g.spread15.toFixed(1)}pp
+          </span>
+        </div>
+        <table class="mt-2 w-full border-collapse text-sm">
+          <thead class="text-[--color-text-dim]">
+            <tr>
+              <th class="py-1 text-left font-medium">Asset</th>
+              <th class="py-1 text-right font-medium">Retest +15</th>
+              <th class="py-1 text-right font-medium">Retest +45</th>
+              <th class="py-1 text-right font-medium">Sweep +45</th>
+            </tr>
+          </thead>
+          <tbody>
+            {g.rows.map((r) => (
+              <tr class="border-t border-[--color-border]">
+                <td class="py-1.5">
+                  <a href={`${base}/analyses/${r.slug}`} class="hover:text-[--color-accent]">
+                    <AssetChip asset={r.asset} size="sm" />
+                  </a>
+                </td>
+                <td class="py-1.5 text-right tabular">{pct(r.retest15)}</td>
+                <td class="py-1.5 text-right tabular text-[--color-text-dim]">{pct(r.retest45)}</td>
+                <td class="py-1.5 text-right tabular text-[--color-text-dim]">{pct(r.sweep45)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ))}
+  </div>
+</Base>
+
+<script>
+  const grid = document.getElementById('cmp-grid');
+  if (grid) {
+    const cards = Array.from(grid.querySelectorAll('.cmp-card'));
+    const btns = Array.from(document.querySelectorAll('#cmp-filter button'));
+    btns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const s = btn.getAttribute('data-session');
+        btns.forEach((b) => b.removeAttribute('data-active'));
+        btn.setAttribute('data-active', '');
+        cards.forEach((card) => {
+          (card as HTMLElement).hidden = s !== 'All' && card.getAttribute('data-session') !== s;
+        });
+      });
+    });
+  }
+</script>
