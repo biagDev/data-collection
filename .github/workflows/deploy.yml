@@ -48,6 +48,11 @@ jobs:
         run: npm run validate
 
       - name: Build dashboard (normalize data + astro build)
+        env:
+          # Microsoft Clarity project ID — set as a repo Variable (not Secret),
+          # since it's exposed in client HTML anyway. Delete the variable to
+          # disable analytics on the next deploy.
+          PUBLIC_CLARITY_ID: ${{ vars.PUBLIC_CLARITY_ID }}
         run: npm run build
 
       - name: Upload Pages artifact
