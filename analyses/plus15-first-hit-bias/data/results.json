@@ -1,0 +1,1505 @@
+{
+  "generated_at": "2026-05-18",
+  "min_n_threshold": 100,
+  "neutral_edge_threshold": 3,
+  "total_buckets": 68,
+  "armable_buckets": 53,
+  "rows": [
+    {
+      "analysis_id": "es/asia-candle-hit-stats",
+      "label": "es/asia-candle-hit-stats 8:00 PM",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 46.7,
+        "low_only_pct": 30.4,
+        "high_any_pct": 50.66,
+        "low_any_pct": 34.36,
+        "both_sides_pct": 3.96
+      },
+      "first_hit_high_pct": 60.57,
+      "first_hit_n": 175,
+      "any_hit_edge": 16.3,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 21.14
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1130-candle-hit-stats",
+      "label": "11:30",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 45.95,
+        "low_only_pct": 31.08,
+        "high_any_pct": 56.31,
+        "low_any_pct": 41.44,
+        "both_sides_pct": 10.36
+      },
+      "first_hit_high_pct": 59.65,
+      "first_hit_n": 171,
+      "any_hit_edge": 14.87,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 19.3
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "asia-candle-hit-stats",
+      "label": "asia-candle-hit-stats 8:00 PM",
+      "n": 220,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 51.82,
+        "low_any_pct": 34.55,
+        "both_sides_pct": 5
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 17.27,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 17.27
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/london-candle-hit-stats",
+      "label": "es/london-candle-hit-stats 3:45",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 41.85,
+        "low_only_pct": 29.96,
+        "high_any_pct": 63.88,
+        "low_any_pct": 51.98,
+        "both_sides_pct": 22.03
+      },
+      "first_hit_high_pct": 58.28,
+      "first_hit_n": 163,
+      "any_hit_edge": 11.9,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 16.56
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1000-candle-hit-stats",
+      "label": "10:00",
+      "n": 232,
+      "plus15": {
+        "high_only_pct": 44.83,
+        "low_only_pct": 32.76,
+        "high_any_pct": 52.16,
+        "low_any_pct": 40.09,
+        "both_sides_pct": 7.33
+      },
+      "first_hit_high_pct": 57.78,
+      "first_hit_n": 180,
+      "any_hit_edge": 12.07,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 15.56
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/rth-afternoon-candle-hit-stats",
+      "label": "es/rth-afternoon-candle-hit-stats 11:30",
+      "n": 226,
+      "plus15": {
+        "high_only_pct": 46.9,
+        "low_only_pct": 34.51,
+        "high_any_pct": 54.87,
+        "low_any_pct": 42.48,
+        "both_sides_pct": 7.96
+      },
+      "first_hit_high_pct": 57.61,
+      "first_hit_n": 184,
+      "any_hit_edge": 12.39,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 15.22
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1500-candle-hit-stats",
+      "label": "gc/1500-candle-hit-stats",
+      "n": 215,
+      "plus15": {
+        "high_only_pct": 45.12,
+        "low_only_pct": 33.49,
+        "high_any_pct": 50.7,
+        "low_any_pct": 39.07,
+        "both_sides_pct": 5.58
+      },
+      "first_hit_high_pct": 57.4,
+      "first_hit_n": 169,
+      "any_hit_edge": 11.63,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 14.8
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1015-candle-hit-stats",
+      "label": "10:15",
+      "n": 232,
+      "plus15": {
+        "high_only_pct": 46.55,
+        "low_only_pct": 35.34,
+        "high_any_pct": 50.86,
+        "low_any_pct": 39.66,
+        "both_sides_pct": 4.31
+      },
+      "first_hit_high_pct": 56.84,
+      "first_hit_n": 190,
+      "any_hit_edge": 11.2,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 13.68
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/asia-candle-hit-stats",
+      "label": "es/asia-candle-hit-stats 8:45 PM",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 41.41,
+        "low_only_pct": 31.72,
+        "high_any_pct": 58.15,
+        "low_any_pct": 48.46,
+        "both_sides_pct": 16.74
+      },
+      "first_hit_high_pct": 56.63,
+      "first_hit_n": 166,
+      "any_hit_edge": 9.69,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 13.26
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1100-candle-hit-stats",
+      "label": "gc/1100-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 44.59,
+        "low_only_pct": 34.23,
+        "high_any_pct": 50.9,
+        "low_any_pct": 40.54,
+        "both_sides_pct": 6.31
+      },
+      "first_hit_high_pct": 56.57,
+      "first_hit_n": 175,
+      "any_hit_edge": 10.36,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 13.14
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1015-candle-hit-stats",
+      "label": "gc/1015-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 42.79,
+        "low_only_pct": 32.88,
+        "high_any_pct": 50.9,
+        "low_any_pct": 40.99,
+        "both_sides_pct": 8.11
+      },
+      "first_hit_high_pct": 56.55,
+      "first_hit_n": 168,
+      "any_hit_edge": 9.91,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 13.1
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1400-candle-hit-stats",
+      "label": "gc/1400-candle-hit-stats",
+      "n": 215,
+      "plus15": {
+        "high_only_pct": 40.93,
+        "low_only_pct": 31.63,
+        "high_any_pct": 46.98,
+        "low_any_pct": 37.67,
+        "both_sides_pct": 6.05
+      },
+      "first_hit_high_pct": 56.41,
+      "first_hit_n": 156,
+      "any_hit_edge": 9.31,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 12.82
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/asia-candle-hit-stats",
+      "label": "es/asia-candle-hit-stats 8:30 PM",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 42.73,
+        "low_only_pct": 33.48,
+        "high_any_pct": 50.66,
+        "low_any_pct": 41.41,
+        "both_sides_pct": 7.93
+      },
+      "first_hit_high_pct": 56.07,
+      "first_hit_n": 173,
+      "any_hit_edge": 9.25,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 12.14
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "9am-1h-candle-hit-stats",
+      "label": "9am-1h-candle-hit-stats",
+      "n": 232,
+      "plus15": {
+        "high_only_pct": 36.21,
+        "low_only_pct": 28.45,
+        "high_any_pct": 37.07,
+        "low_any_pct": 29.31,
+        "both_sides_pct": 0.86
+      },
+      "first_hit_high_pct": 56,
+      "first_hit_n": 150,
+      "any_hit_edge": 7.76,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 12
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1045-candle-hit-stats",
+      "label": "10:45",
+      "n": 232,
+      "plus15": {
+        "high_only_pct": 41.81,
+        "low_only_pct": 33.19,
+        "high_any_pct": 49.57,
+        "low_any_pct": 40.95,
+        "both_sides_pct": 7.76
+      },
+      "first_hit_high_pct": 55.75,
+      "first_hit_n": 174,
+      "any_hit_edge": 8.62,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 11.5
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "asia-candle-hit-stats",
+      "label": "asia-candle-hit-stats 9:15 PM",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 56.16,
+        "low_any_pct": 44.75,
+        "both_sides_pct": 11.87
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 11.41,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 11.41
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/asia-candle-hit-stats",
+      "label": "es/asia-candle-hit-stats 9:15 PM",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 43.61,
+        "low_only_pct": 34.8,
+        "high_any_pct": 56.39,
+        "low_any_pct": 47.58,
+        "both_sides_pct": 12.78
+      },
+      "first_hit_high_pct": 55.62,
+      "first_hit_n": 178,
+      "any_hit_edge": 8.81,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 11.24
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "945-candle-hit-stats",
+      "label": "09:45",
+      "n": 232,
+      "plus15": {
+        "high_only_pct": 44.83,
+        "low_only_pct": 35.78,
+        "high_any_pct": 50.43,
+        "low_any_pct": 41.38,
+        "both_sides_pct": 5.6
+      },
+      "first_hit_high_pct": 55.61,
+      "first_hit_n": 187,
+      "any_hit_edge": 9.05,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 11.22
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/london-candle-hit-stats",
+      "label": "es/london-candle-hit-stats 3:30",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 44.05,
+        "low_only_pct": 35.24,
+        "high_any_pct": 51.1,
+        "low_any_pct": 42.29,
+        "both_sides_pct": 7.05
+      },
+      "first_hit_high_pct": 55.56,
+      "first_hit_n": 180,
+      "any_hit_edge": 8.81,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 11.12
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "asia-candle-hit-stats",
+      "label": "asia-candle-hit-stats 8:45 PM",
+      "n": 220,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 56.82,
+        "low_any_pct": 45.91,
+        "both_sides_pct": 13.64
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 10.91,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 10.91
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "6am-4h-candle-hit-stats",
+      "label": "6am-4h-candle-hit-stats",
+      "n": 232,
+      "plus15": {
+        "high_only_pct": 36.21,
+        "low_only_pct": 29.31,
+        "high_any_pct": 37.93,
+        "low_any_pct": 31.03,
+        "both_sides_pct": 1.72
+      },
+      "first_hit_high_pct": 55.27,
+      "first_hit_n": 152,
+      "any_hit_edge": 6.9,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 10.54
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/rth-afternoon-candle-hit-stats",
+      "label": "es/rth-afternoon-candle-hit-stats 12:00",
+      "n": 226,
+      "plus15": {
+        "high_only_pct": 42.48,
+        "low_only_pct": 34.51,
+        "high_any_pct": 52.65,
+        "low_any_pct": 44.69,
+        "both_sides_pct": 10.18
+      },
+      "first_hit_high_pct": 55.18,
+      "first_hit_n": 174,
+      "any_hit_edge": 7.96,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 10.36
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/rth-afternoon-candle-hit-stats",
+      "label": "es/rth-afternoon-candle-hit-stats 14:00",
+      "n": 218,
+      "plus15": {
+        "high_only_pct": 41.74,
+        "low_only_pct": 34.4,
+        "high_any_pct": 51.83,
+        "low_any_pct": 44.5,
+        "both_sides_pct": 10.09
+      },
+      "first_hit_high_pct": 54.82,
+      "first_hit_n": 166,
+      "any_hit_edge": 7.33,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 9.64
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1400-candle-hit-stats",
+      "label": "14:00",
+      "n": 214,
+      "plus15": {
+        "high_only_pct": 41.12,
+        "low_only_pct": 34.11,
+        "high_any_pct": 50,
+        "low_any_pct": 42.99,
+        "both_sides_pct": 8.88
+      },
+      "first_hit_high_pct": 54.66,
+      "first_hit_n": 161,
+      "any_hit_edge": 7.01,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 9.32
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1045-candle-hit-stats",
+      "label": "gc/1045-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 43.24,
+        "low_only_pct": 36.04,
+        "high_any_pct": 53.15,
+        "low_any_pct": 45.95,
+        "both_sides_pct": 9.91
+      },
+      "first_hit_high_pct": 54.54,
+      "first_hit_n": 176,
+      "any_hit_edge": 7.2,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 9.08
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1130-candle-hit-stats",
+      "label": "gc/1130-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 43.24,
+        "low_only_pct": 36.04,
+        "high_any_pct": 48.2,
+        "low_any_pct": 40.99,
+        "both_sides_pct": 4.95
+      },
+      "first_hit_high_pct": 54.54,
+      "first_hit_n": 176,
+      "any_hit_edge": 7.21,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 9.08
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/945-candle-hit-stats",
+      "label": "es/945-candle-hit-stats",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 52.51,
+        "low_any_pct": 43.84,
+        "both_sides_pct": 8.22
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 8.67,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 8.67
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1200-candle-hit-stats",
+      "label": "12:00",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 42.79,
+        "low_only_pct": 36.04,
+        "high_any_pct": 50.45,
+        "low_any_pct": 43.69,
+        "both_sides_pct": 7.66
+      },
+      "first_hit_high_pct": 54.28,
+      "first_hit_n": 175,
+      "any_hit_edge": 6.76,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 8.56
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/930-candle-hit-stats",
+      "label": "gc/930-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 40.54,
+        "low_only_pct": 34.23,
+        "high_any_pct": 45.95,
+        "low_any_pct": 39.64,
+        "both_sides_pct": 5.41
+      },
+      "first_hit_high_pct": 54.22,
+      "first_hit_n": 166,
+      "any_hit_edge": 6.31,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 8.44
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/rth-afternoon-candle-hit-stats",
+      "label": "es/rth-afternoon-candle-hit-stats 13:00",
+      "n": 221,
+      "plus15": {
+        "high_only_pct": 43.89,
+        "low_only_pct": 37.1,
+        "high_any_pct": 52.04,
+        "low_any_pct": 45.25,
+        "both_sides_pct": 8.14
+      },
+      "first_hit_high_pct": 54.19,
+      "first_hit_n": 179,
+      "any_hit_edge": 6.79,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 8.38
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1230-candle-hit-stats",
+      "label": "gc/1230-candle-hit-stats",
+      "n": 220,
+      "plus15": {
+        "high_only_pct": 38.64,
+        "low_only_pct": 32.73,
+        "high_any_pct": 47.27,
+        "low_any_pct": 41.36,
+        "both_sides_pct": 8.64
+      },
+      "first_hit_high_pct": 54.14,
+      "first_hit_n": 157,
+      "any_hit_edge": 5.91,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 8.28
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1000-candle-hit-stats",
+      "label": "gc/1000-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 38.74,
+        "low_only_pct": 33.33,
+        "high_any_pct": 46.85,
+        "low_any_pct": 41.44,
+        "both_sides_pct": 8.11
+      },
+      "first_hit_high_pct": 53.75,
+      "first_hit_n": 160,
+      "any_hit_edge": 5.41,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 7.5
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1200-candle-hit-stats",
+      "label": "gc/1200-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 36.94,
+        "low_only_pct": 42.79,
+        "high_any_pct": 42.34,
+        "low_any_pct": 48.2,
+        "both_sides_pct": 5.41
+      },
+      "first_hit_high_pct": 46.33,
+      "first_hit_n": 177,
+      "any_hit_edge": -5.86,
+      "any_hit_side": "low",
+      "prior": {
+        "source": "first_hit",
+        "side": "low",
+        "edge": -7.34
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/1015-candle-hit-stats",
+      "label": "es/1015-candle-hit-stats",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 53.88,
+        "low_any_pct": 46.58,
+        "both_sides_pct": 10.05
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 7.3,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 7.3
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "london-candle-hit-stats",
+      "label": "london-candle-hit-stats 3:45",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 61.64,
+        "low_any_pct": 54.34,
+        "both_sides_pct": 21
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 7.3,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 7.3
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/1000-candle-hit-stats",
+      "label": "es/1000-candle-hit-stats",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 51.14,
+        "low_any_pct": 44.29,
+        "both_sides_pct": 7.31
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 6.85,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 6.85
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/asia-candle-hit-stats",
+      "label": "es/asia-candle-hit-stats 9:00 PM",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 37.89,
+        "low_only_pct": 33.04,
+        "high_any_pct": 46.26,
+        "low_any_pct": 41.41,
+        "both_sides_pct": 8.37
+      },
+      "first_hit_high_pct": 53.42,
+      "first_hit_n": 161,
+      "any_hit_edge": 4.85,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 6.84
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "london-candle-hit-stats",
+      "label": "london-candle-hit-stats 4:15",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 43.84,
+        "low_any_pct": 50.23,
+        "both_sides_pct": 8.68
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": -6.39,
+      "any_hit_side": "low",
+      "prior": {
+        "source": "any_hit",
+        "side": "low",
+        "edge": -6.39
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "asia-candle-hit-stats",
+      "label": "asia-candle-hit-stats 8:30 PM",
+      "n": 220,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 47.27,
+        "low_any_pct": 40.91,
+        "both_sides_pct": 6.36
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 6.36,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 6.36
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/945-candle-hit-stats",
+      "label": "gc/945-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 43.24,
+        "low_only_pct": 38.74,
+        "high_any_pct": 51.35,
+        "low_any_pct": 46.85,
+        "both_sides_pct": 8.11
+      },
+      "first_hit_high_pct": 52.74,
+      "first_hit_n": 182,
+      "any_hit_edge": 4.5,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 5.48
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "london-candle-hit-stats",
+      "label": "london-candle-hit-stats 3:30",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 49.77,
+        "low_any_pct": 44.29,
+        "both_sides_pct": 6.85
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 5.48,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 5.48
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1030-candle-hit-stats",
+      "label": "10:30",
+      "n": 232,
+      "plus15": {
+        "high_only_pct": 37.5,
+        "low_only_pct": 41.81,
+        "high_any_pct": 47.41,
+        "low_any_pct": 51.72,
+        "both_sides_pct": 9.91
+      },
+      "first_hit_high_pct": 47.28,
+      "first_hit_n": 184,
+      "any_hit_edge": -4.31,
+      "any_hit_side": "low",
+      "prior": {
+        "source": "first_hit",
+        "side": "low",
+        "edge": -5.44
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/london-candle-hit-stats",
+      "label": "es/london-candle-hit-stats 4:00",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 42.73,
+        "low_only_pct": 38.33,
+        "high_any_pct": 50.22,
+        "low_any_pct": 45.81,
+        "both_sides_pct": 7.49
+      },
+      "first_hit_high_pct": 52.71,
+      "first_hit_n": 184,
+      "any_hit_edge": 4.41,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 5.42
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1300-candle-hit-stats",
+      "label": "13:00",
+      "n": 214,
+      "plus15": {
+        "high_only_pct": 41.59,
+        "low_only_pct": 37.38,
+        "high_any_pct": 50,
+        "low_any_pct": 45.79,
+        "both_sides_pct": 8.41
+      },
+      "first_hit_high_pct": 52.67,
+      "first_hit_n": 169,
+      "any_hit_edge": 4.21,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 5.34
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1030-candle-hit-stats",
+      "label": "gc/1030-candle-hit-stats",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 41.44,
+        "low_only_pct": 37.39,
+        "high_any_pct": 47.75,
+        "low_any_pct": 43.69,
+        "both_sides_pct": 6.31
+      },
+      "first_hit_high_pct": 52.57,
+      "first_hit_n": 175,
+      "any_hit_edge": 4.06,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 5.14
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1100-candle-hit-stats",
+      "label": "11:00",
+      "n": 222,
+      "plus15": {
+        "high_only_pct": 42.34,
+        "low_only_pct": 38.29,
+        "high_any_pct": 51.35,
+        "low_any_pct": 47.3,
+        "both_sides_pct": 9.01
+      },
+      "first_hit_high_pct": 52.51,
+      "first_hit_n": 179,
+      "any_hit_edge": 4.05,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 5.02
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/930-candle-hit-stats",
+      "label": "es/930-candle-hit-stats",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 52.51,
+        "low_any_pct": 47.49,
+        "both_sides_pct": 9.13
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 5.02,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 5.02
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "930-candle-hit-stats",
+      "label": "09:30",
+      "n": 232,
+      "plus15": {
+        "high_only_pct": 43.97,
+        "low_only_pct": 40.09,
+        "high_any_pct": 50,
+        "low_any_pct": 46.12,
+        "both_sides_pct": 6.03
+      },
+      "first_hit_high_pct": 52.31,
+      "first_hit_n": 195,
+      "any_hit_edge": 3.88,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 4.62
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/1045-candle-hit-stats",
+      "label": "es/1045-candle-hit-stats",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 49.32,
+        "low_any_pct": 45.21,
+        "both_sides_pct": 8.68
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 4.11,
+      "any_hit_side": "high",
+      "prior": {
+        "source": "any_hit",
+        "side": "high",
+        "edge": 4.11
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/1030-candle-hit-stats",
+      "label": "es/1030-candle-hit-stats",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 47.03,
+        "low_any_pct": 50.68,
+        "both_sides_pct": 10.96
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": -3.65,
+      "any_hit_side": "low",
+      "prior": {
+        "source": "any_hit",
+        "side": "low",
+        "edge": -3.65
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "gc/1545-candle-hit-stats",
+      "label": "gc/1545-candle-hit-stats",
+      "n": 215,
+      "plus15": {
+        "high_only_pct": 30.7,
+        "low_only_pct": 33.02,
+        "high_any_pct": 38.14,
+        "low_any_pct": 40.47,
+        "both_sides_pct": 7.44
+      },
+      "first_hit_high_pct": 48.18,
+      "first_hit_n": 137,
+      "any_hit_edge": -2.33,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "low",
+        "edge": -3.64
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "1545-candle-hit-stats",
+      "label": "15:45",
+      "n": 214,
+      "plus15": {
+        "high_only_pct": 35.98,
+        "low_only_pct": 33.64,
+        "high_any_pct": 41.12,
+        "low_any_pct": 38.79,
+        "both_sides_pct": 5.14
+      },
+      "first_hit_high_pct": 51.68,
+      "first_hit_n": 149,
+      "any_hit_edge": 2.33,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 3.36
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/london-candle-hit-stats",
+      "label": "es/london-candle-hit-stats 3:00",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 36.56,
+        "low_only_pct": 34.36,
+        "high_any_pct": 48.9,
+        "low_any_pct": 46.7,
+        "both_sides_pct": 12.33
+      },
+      "first_hit_high_pct": 51.55,
+      "first_hit_n": 161,
+      "any_hit_edge": 2.2,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "high",
+        "edge": 3.1
+      },
+      "armable": true
+    },
+    {
+      "analysis_id": "es/rth-afternoon-candle-hit-stats",
+      "label": "es/rth-afternoon-candle-hit-stats 15:45",
+      "n": 218,
+      "plus15": {
+        "high_only_pct": 33.03,
+        "low_only_pct": 31.19,
+        "high_any_pct": 38.99,
+        "low_any_pct": 37.16,
+        "both_sides_pct": 5.96
+      },
+      "first_hit_high_pct": 51.43,
+      "first_hit_n": 140,
+      "any_hit_edge": 1.83,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": 2.86
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "london-candle-hit-stats",
+      "label": "london-candle-hit-stats 3:15",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 46.58,
+        "low_any_pct": 43.84,
+        "both_sides_pct": 5.94
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 2.74,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "any_hit",
+        "side": "balanced",
+        "edge": 2.74
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "london-candle-hit-stats",
+      "label": "london-candle-hit-stats 4:00",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 46.12,
+        "low_any_pct": 43.38,
+        "both_sides_pct": 4.57
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 2.74,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "any_hit",
+        "side": "balanced",
+        "edge": 2.74
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "es/london-candle-hit-stats",
+      "label": "es/london-candle-hit-stats 4:15",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 40.09,
+        "low_only_pct": 42.29,
+        "high_any_pct": 48.46,
+        "low_any_pct": 50.66,
+        "both_sides_pct": 8.37
+      },
+      "first_hit_high_pct": 48.66,
+      "first_hit_n": 187,
+      "any_hit_edge": -2.2,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": -2.68
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "asia-candle-hit-stats",
+      "label": "asia-candle-hit-stats 9:00 PM",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 42.47,
+        "low_any_pct": 40.18,
+        "both_sides_pct": 7.31
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 2.29,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "any_hit",
+        "side": "balanced",
+        "edge": 2.29
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "es/london-candle-hit-stats",
+      "label": "es/london-candle-hit-stats 3:15",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 39.65,
+        "low_only_pct": 37.89,
+        "high_any_pct": 47.58,
+        "low_any_pct": 45.81,
+        "both_sides_pct": 7.93
+      },
+      "first_hit_high_pct": 51.13,
+      "first_hit_n": 176,
+      "any_hit_edge": 1.77,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": 2.26
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "es/rth-afternoon-candle-hit-stats",
+      "label": "es/rth-afternoon-candle-hit-stats 15:00",
+      "n": 218,
+      "plus15": {
+        "high_only_pct": 39.45,
+        "low_only_pct": 41.28,
+        "high_any_pct": 44.95,
+        "low_any_pct": 46.79,
+        "both_sides_pct": 5.5
+      },
+      "first_hit_high_pct": 48.87,
+      "first_hit_n": 176,
+      "any_hit_edge": -1.84,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": -2.26
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "es/rth-afternoon-candle-hit-stats",
+      "label": "es/rth-afternoon-candle-hit-stats 11:00",
+      "n": 226,
+      "plus15": {
+        "high_only_pct": 39.82,
+        "low_only_pct": 41.59,
+        "high_any_pct": 50.44,
+        "low_any_pct": 52.21,
+        "both_sides_pct": 10.62
+      },
+      "first_hit_high_pct": 48.91,
+      "first_hit_n": 184,
+      "any_hit_edge": -1.77,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": -2.18
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "es/asia-candle-hit-stats",
+      "label": "es/asia-candle-hit-stats 8:15 PM",
+      "n": 227,
+      "plus15": {
+        "high_only_pct": 35.68,
+        "low_only_pct": 34.36,
+        "high_any_pct": 48.46,
+        "low_any_pct": 47.14,
+        "both_sides_pct": 12.78
+      },
+      "first_hit_high_pct": 50.94,
+      "first_hit_n": 159,
+      "any_hit_edge": 1.32,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": 1.88
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "1230-candle-hit-stats",
+      "label": "12:30",
+      "n": 214,
+      "plus15": {
+        "high_only_pct": 37.85,
+        "low_only_pct": 39.25,
+        "high_any_pct": 48.13,
+        "low_any_pct": 49.53,
+        "both_sides_pct": 10.28
+      },
+      "first_hit_high_pct": 49.09,
+      "first_hit_n": 165,
+      "any_hit_edge": -1.4,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": -1.82
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "gc/1300-candle-hit-stats",
+      "label": "gc/1300-candle-hit-stats",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": 36.07,
+        "low_only_pct": 35.16,
+        "high_any_pct": 50.68,
+        "low_any_pct": 49.77,
+        "both_sides_pct": 14.61
+      },
+      "first_hit_high_pct": 50.64,
+      "first_hit_n": 156,
+      "any_hit_edge": 0.91,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": 1.28
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "es/rth-afternoon-candle-hit-stats",
+      "label": "es/rth-afternoon-candle-hit-stats 12:30",
+      "n": 226,
+      "plus15": {
+        "high_only_pct": 38.05,
+        "low_only_pct": 37.17,
+        "high_any_pct": 49.56,
+        "low_any_pct": 48.67,
+        "both_sides_pct": 11.5
+      },
+      "first_hit_high_pct": 50.58,
+      "first_hit_n": 170,
+      "any_hit_edge": 0.89,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": 1.16
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "asia-candle-hit-stats",
+      "label": "asia-candle-hit-stats 8:15 PM",
+      "n": 220,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 46.82,
+        "low_any_pct": 45.91,
+        "both_sides_pct": 10
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 0.91,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "any_hit",
+        "side": "balanced",
+        "edge": 0.91
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "london-candle-hit-stats",
+      "label": "london-candle-hit-stats 3:00",
+      "n": 219,
+      "plus15": {
+        "high_only_pct": null,
+        "low_only_pct": null,
+        "high_any_pct": 44.29,
+        "low_any_pct": 43.38,
+        "both_sides_pct": 8.22
+      },
+      "first_hit_high_pct": null,
+      "first_hit_n": null,
+      "any_hit_edge": 0.91,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "any_hit",
+        "side": "balanced",
+        "edge": 0.91
+      },
+      "armable": false
+    },
+    {
+      "analysis_id": "1500-candle-hit-stats",
+      "label": "15:00",
+      "n": 214,
+      "plus15": {
+        "high_only_pct": 40.65,
+        "low_only_pct": 41.12,
+        "high_any_pct": 47.66,
+        "low_any_pct": 48.13,
+        "both_sides_pct": 7.01
+      },
+      "first_hit_high_pct": 49.71,
+      "first_hit_n": 175,
+      "any_hit_edge": -0.47,
+      "any_hit_side": "balanced",
+      "prior": {
+        "source": "first_hit",
+        "side": "balanced",
+        "edge": -0.58
+      },
+      "armable": false
+    }
+  ]
+}

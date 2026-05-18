@@ -1,0 +1,85 @@
+{
+  "theme": "ES RTH afternoon candle retest — DIRECTIONAL (with first-hit breakdown)",
+  "symbol": "CME_MINI:ES1!",
+  "timeframe": "15m",
+  "sample_size_days": "218-226 (varies by candle)",
+  "as_of_date": "2026-05-17",
+  "session_window": "11:00 AM - 4:00 PM ET",
+  "subject_candles": "Eight 15-minute candles spanning the RTH afternoon hours that were previously missing from ES coverage",
+  "forward_windows": "+15 / +30 / +45 min after subject candle closes",
+  "data_source": "TradingView Desktop chart, ES1! continuous front-month, collected via 'ES RTH+London Retest — Directional' Pine indicator",
+
+  "either_side_retest": {
+    "description": "Probability the high OR low of the subject candle gets touched by a later candle's wick.",
+    "rows": [
+      { "candle": "11:00", "n": 226, "by_plus_15": 81.41 },
+      { "candle": "11:30", "n": 226, "by_plus_15": 89.37 },
+      { "candle": "12:00", "n": 226, "by_plus_15": 87.16 },
+      { "candle": "12:30", "n": 226, "by_plus_15": 86.72 },
+      { "candle": "13:00", "n": 221, "by_plus_15": 89.13 },
+      { "candle": "14:00", "n": 218, "by_plus_15": 86.23 },
+      { "candle": "15:00", "n": 218, "by_plus_15": 86.23 },
+      { "candle": "15:45", "n": 218, "by_plus_15": 70.18 }
+    ]
+  },
+
+  "both_sides_sweep": {
+    "description": "Probability BOTH the high AND the low of the subject candle get touched (full sweep) inside +15.",
+    "rows": [
+      { "candle": "11:00", "n": 226, "by_plus_15": 10.62 },
+      { "candle": "11:30", "n": 226, "by_plus_15": 7.96 },
+      { "candle": "12:00", "n": 226, "by_plus_15": 10.18 },
+      { "candle": "12:30", "n": 226, "by_plus_15": 11.50 },
+      { "candle": "13:00", "n": 221, "by_plus_15": 8.14 },
+      { "candle": "14:00", "n": 218, "by_plus_15": 10.09 },
+      { "candle": "15:00", "n": 218, "by_plus_15": 5.50 },
+      { "candle": "15:45", "n": 218, "by_plus_15": 5.96 }
+    ]
+  },
+
+  "directional_split": {
+    "description": "Per-side breakdown. hi_any/lo_any = side was touched at all. hi_only/lo_only = side was touched without the opposite side (cleanest first-hit signal).",
+    "rows": [
+      { "candle": "11:00", "n": 226,
+        "hi_only_plus_15": 39.82, "lo_only_plus_15": 41.59, "both_plus_15": 10.62,
+        "hi_any_plus_15": 50.44, "lo_any_plus_15": 52.21,
+        "hi_any_plus_30": 61.95, "lo_any_plus_30": 63.27,
+        "hi_any_plus_45": 67.26, "lo_any_plus_45": 68.58 },
+      { "candle": "11:30", "n": 226,
+        "hi_only_plus_15": 46.90, "lo_only_plus_15": 34.51, "both_plus_15": 7.96,
+        "hi_any_plus_15": 54.87, "lo_any_plus_15": 42.48,
+        "hi_any_plus_30": 65.49, "lo_any_plus_30": 51.77,
+        "hi_any_plus_45": 69.91, "lo_any_plus_45": 57.52 },
+      { "candle": "12:00", "n": 226,
+        "hi_only_plus_15": 42.48, "lo_only_plus_15": 34.51, "both_plus_15": 10.18,
+        "hi_any_plus_15": 52.65, "lo_any_plus_15": 44.69,
+        "hi_any_plus_30": 64.60, "lo_any_plus_30": 57.08,
+        "hi_any_plus_45": 71.24, "lo_any_plus_45": 64.60 },
+      { "candle": "12:30", "n": 226,
+        "hi_only_plus_15": 38.05, "lo_only_plus_15": 37.17, "both_plus_15": 11.50,
+        "hi_any_plus_15": 49.56, "lo_any_plus_15": 48.67,
+        "hi_any_plus_30": 60.18, "lo_any_plus_30": 60.62,
+        "hi_any_plus_45": 68.14, "lo_any_plus_45": 66.81 },
+      { "candle": "13:00", "n": 221,
+        "hi_only_plus_15": 43.89, "lo_only_plus_15": 37.10, "both_plus_15": 8.14,
+        "hi_any_plus_15": 52.04, "lo_any_plus_15": 45.25,
+        "hi_any_plus_30": 68.33, "lo_any_plus_30": 55.20,
+        "hi_any_plus_45": 76.92, "lo_any_plus_45": 59.73 },
+      { "candle": "14:00", "n": 218,
+        "hi_only_plus_15": 41.74, "lo_only_plus_15": 34.40, "both_plus_15": 10.09,
+        "hi_any_plus_15": 51.83, "lo_any_plus_15": 44.50,
+        "hi_any_plus_30": 62.84, "lo_any_plus_30": 56.42,
+        "hi_any_plus_45": 70.18, "lo_any_plus_45": 60.09 },
+      { "candle": "15:00", "n": 218,
+        "hi_only_plus_15": 39.45, "lo_only_plus_15": 41.28, "both_plus_15": 5.50,
+        "hi_any_plus_15": 44.95, "lo_any_plus_15": 46.79,
+        "hi_any_plus_30": 56.42, "lo_any_plus_30": 57.80,
+        "hi_any_plus_45": 69.72, "lo_any_plus_45": 67.89 },
+      { "candle": "15:45", "n": 218,
+        "hi_only_plus_15": 33.03, "lo_only_plus_15": 31.19, "both_plus_15": 5.96,
+        "hi_any_plus_15": 38.99, "lo_any_plus_15": 37.16,
+        "hi_any_plus_30": 44.50, "lo_any_plus_30": 42.20,
+        "hi_any_plus_45": 47.71, "lo_any_plus_45": 44.04 }
+    ]
+  }
+}

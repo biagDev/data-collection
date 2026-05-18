@@ -1,0 +1,129 @@
+//@version=5
+// Magnet Entry — Phase 2 (Features)
+// For each 15m candle close (the "magnet"), record snapshot-time price action
+// features + the first-touch outcome within the next 30 30-second bars (=15 min).
+// Output: on-chart table (rolling buffer), read via data_get_pine_tables.
+// See analyses/plus15-entry-features/README.md for collection workflow.
+indicator("Magnet Entry — Phase 2 (Features)", overlay=true, max_labels_count=500)
+
+maxEvents   = input.int(120, "Max events in table", minval=10, maxval=400)
+emaFastLen  = input.int(20,  "EMA fast (15m)")
+emaSlowLen  = input.int(50,  "EMA slow (15m)")
+atrLen      = input.int(14,  "ATR length (15m)")
+tz          = input.string("America/New_York", "Timezone")
+
+htf = "15"
+[h15, l15, c15, o15, t15] = request.security(syminfo.tickerid, htf, [high, low, close, open, time], lookahead=barmerge.lookahead_off)
+ema15_fast = request.security(syminfo.tickerid, htf, ta.ema(close, emaFastLen), lookahead=barmerge.lookahead_off)
+ema15_slow = request.security(syminfo.tickerid, htf, ta.ema(close, emaSlowLen), lookahead=barmerge.lookahead_off)
+atr15      = request.security(syminfo.tickerid, htf, ta.atr(atrLen),            lookahead=barmerge.lookahead_off)
+[pdh, pdl] = request.security(syminfo.tickerid, "D", [high[1], low[1]], lookahead=barmerge.lookahead_off)
+v30 = ta.vwap(hlc3)
+
+isNew15mBar = timeframe.change("15")
+
+var int    w_magTime    = na
+var float  w_magH       = na
+var float  w_magL       = na
+var float  w_magC       = na
+var float  w_magVwap    = na
+var float  w_magEmaF    = na
+var float  w_magEmaS    = na
+var float  w_magAtr     = na
+var float  w_magPdh     = na
+var float  w_magPdl     = na
+var int    w_bars       = na
+var int    w_firstBar   = na
+var string w_firstSide  = na
+var float  w_drivePx    = na
+
+var array<int>    a_time     = array.new<int>()
+var array<int>    a_bucket   = array.new<int>()
+var array<float>  a_magH     = array.new<float>()
+var array<float>  a_magL     = array.new<float>()
+var array<float>  a_magC     = array.new<float>()
+var array<float>  a_atr      = array.new<float>()
+var array<string> a_firstSide = array.new<string>()
+var array<int>    a_firstBar = array.new<int>()
+var array<float>  a_drive    = array.new<float>()
+var array<float>  a_closeLoc = array.new<float>()
+var array<int>    a_vwapSide = array.new<int>()
+var array<int>    a_htfTrend = array.new<int>()
+var array<float>  a_distPdh  = array.new<float>()
+var array<float>  a_distPdl  = array.new<float>()
+
+push(t, bk, mh, ml, mc, atrv, fs, fb, dr, cl, vs, ht, dph, dpl) =>
+    if array.size(a_time) >= maxEvents
+        array.shift(a_time), array.shift(a_bucket), array.shift(a_magH), array.shift(a_magL)
+        array.shift(a_magC), array.shift(a_atr), array.shift(a_firstSide), array.shift(a_firstBar)
+        array.shift(a_drive), array.shift(a_closeLoc), array.shift(a_vwapSide), array.shift(a_htfTrend)
+        array.shift(a_distPdh), array.shift(a_distPdl)
+    array.push(a_time, t), array.push(a_bucket, bk), array.push(a_magH, mh), array.push(a_magL, ml)
+    array.push(a_magC, mc), array.push(a_atr, atrv), array.push(a_firstSide, fs), array.push(a_firstBar, fb)
+    array.push(a_drive, dr), array.push(a_closeLoc, cl), array.push(a_vwapSide, vs), array.push(a_htfTrend, ht)
+    array.push(a_distPdh, dph), array.push(a_distPdl, dpl)
+
+if isNew15mBar
+    if not na(w_magTime)
+        rng     = w_magH - w_magL
+        closeLoc= rng > 0 ? (w_magC - w_magL) / rng : 0.5
+        vwapSide= not na(w_magVwap) ? (w_magC > w_magVwap ? 1 : -1) : 0
+        htfTrend= not na(w_magEmaF) and not na(w_magEmaS) ? (w_magEmaF > w_magEmaS ? 1 : (w_magEmaF < w_magEmaS ? -1 : 0)) : 0
+        distPdh = (not na(w_magAtr) and w_magAtr > 0 and not na(w_magPdh)) ? (w_magPdh - w_magC) / w_magAtr : na
+        distPdl = (not na(w_magAtr) and w_magAtr > 0 and not na(w_magPdl)) ? (w_magC - w_magPdl) / w_magAtr : na
+        bucket  = hour(w_magTime, tz) * 100 + minute(w_magTime, tz)
+        drive   = (not na(w_drivePx) and not na(w_magAtr) and w_magAtr > 0) ? (w_drivePx - w_magC) / w_magAtr : na
+        firstSide = na(w_firstSide) ? "none" : w_firstSide
+        firstBar  = na(w_firstBar) ? 0 : w_firstBar
+        push(w_magTime, bucket, w_magH, w_magL, w_magC, w_magAtr, firstSide, firstBar, drive, closeLoc, vwapSide, htfTrend, distPdh, distPdl)
+    w_magTime := t15, w_magH := h15, w_magL := l15, w_magC := c15
+    w_magVwap := v30[1], w_magEmaF := ema15_fast, w_magEmaS := ema15_slow
+    w_magAtr := atr15, w_magPdh := pdh, w_magPdl := pdl
+    w_bars := 0, w_firstBar := na, w_firstSide := na, w_drivePx := na
+
+if not na(w_magTime) and not na(w_bars) and w_bars < 30
+    w_bars += 1
+    if na(w_firstSide)
+        hitH = high >= w_magH
+        hitL = low  <= w_magL
+        if hitH and hitL
+            w_firstSide := "ambiguous", w_firstBar := w_bars
+        else if hitH
+            w_firstSide := "high", w_firstBar := w_bars
+        else if hitL
+            w_firstSide := "low",  w_firstBar := w_bars
+    if w_bars == 3
+        w_drivePx := close
+
+var table tbl = table.new(position.top_right, columns=14, rows=maxEvents + 1, bgcolor=color.new(color.black, 70), border_width=1, frame_width=1)
+f_cell(col, row, txt) =>
+    table.cell(tbl, col, row, txt, text_color=color.white, text_size=size.tiny)
+
+if barstate.islast
+    table.clear(tbl, 0, 0, 13, maxEvents)
+    f_cell(0, 0, "time_et"), f_cell(1, 0, "bkt"), f_cell(2, 0, "magH"), f_cell(3, 0, "magL")
+    f_cell(4, 0, "magC"), f_cell(5, 0, "atr"), f_cell(6, 0, "first"), f_cell(7, 0, "fBar")
+    f_cell(8, 0, "drv"), f_cell(9, 0, "clLoc"), f_cell(10, 0, "vwap"), f_cell(11, 0, "htf")
+    f_cell(12, 0, "dPdh"), f_cell(13, 0, "dPdl")
+    n = array.size(a_time)
+    if n > 0
+        for i = 0 to n - 1
+            r = i + 1
+            f_cell(0,  r, str.format_time(array.get(a_time, i), "yyyy-MM-dd HH:mm", tz))
+            f_cell(1,  r, str.tostring(array.get(a_bucket, i)))
+            f_cell(2,  r, str.tostring(array.get(a_magH, i), "#.##"))
+            f_cell(3,  r, str.tostring(array.get(a_magL, i), "#.##"))
+            f_cell(4,  r, str.tostring(array.get(a_magC, i), "#.##"))
+            atrv = array.get(a_atr, i)
+            f_cell(5,  r, na(atrv) ? "" : str.tostring(atrv, "#.##"))
+            f_cell(6,  r, array.get(a_firstSide, i))
+            f_cell(7,  r, str.tostring(array.get(a_firstBar, i)))
+            dr = array.get(a_drive, i)
+            f_cell(8,  r, na(dr) ? "" : str.tostring(dr, "#.###"))
+            f_cell(9,  r, str.tostring(array.get(a_closeLoc, i), "#.##"))
+            f_cell(10, r, str.tostring(array.get(a_vwapSide, i)))
+            f_cell(11, r, str.tostring(array.get(a_htfTrend, i)))
+            dph = array.get(a_distPdh, i)
+            f_cell(12, r, na(dph) ? "" : str.tostring(dph, "#.##"))
+            dpl = array.get(a_distPdl, i)
+            f_cell(13, r, na(dpl) ? "" : str.tostring(dpl, "#.##"))

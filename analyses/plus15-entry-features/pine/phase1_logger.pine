@@ -1,0 +1,185 @@
+//@version=6
+// ============================================================================
+// Magnet Entry — Phase 1 (Logger)
+//
+// Original user script — preserved here because the TradingView "Magnet Entry
+// — Phase 1" saved-script slot was inadvertently overwritten when Phase 3 was
+// pushed via the editor. To restore in TradingView: open Pine editor, paste
+// this source, save with the desired name.
+//
+// Behavior: sweep + reclaim entry inside a single trade window after a
+// reference candle. Emits machine-readable SIG / DAY labels with outcome.
+// ============================================================================
+indicator("Magnet Entry — Phase 1 (Logger)", overlay = true, max_lines_count = 100, max_labels_count = 200)
+
+g_win = "Window"
+ref_session   = input.session("0930-0945",        "Reference candle (15 min)",          group = g_win)
+trade_session = input.session("0945-1000",        "Trade window (15 min after candle)", group = g_win)
+tz            = input.string ("America/New_York", "Timezone",
+     options = ["America/New_York","America/Chicago","Europe/London","Asia/Tokyo","UTC"],
+     group   = g_win)
+bias_str      = input.string ("high",             "Bias direction",
+     options = ["high","low","balanced"],
+     group   = g_win)
+
+g_ent = "Entry"
+sweep_buffer_ticks  = input.int  (8,    "Sweep buffer (ticks beyond extreme)",       minval = 1, maxval = 50, group = g_ent)
+reclaim_window_bars = input.int  (6,    "Bars allowed to reclaim after sweep",        minval = 1, maxval = 20, group = g_ent)
+late_cutoff_min     = input.int  (3,    "Block entries in last N minutes of window",  minval = 0, maxval = 10, group = g_ent)
+require_in_zone     = input.bool (true, "Require entry on the cheap side of midline")
+
+g_dsp = "Display"
+emit_labels  = input.bool(true, "Emit machine-readable signal labels", group = g_dsp)
+emit_day_markers = input.bool(true, "Emit one DAY label per trade window end (diagnostic)", group = g_dsp)
+
+sweep_buffer = sweep_buffer_ticks * syminfo.mintick
+
+in_ref   = not na(time(timeframe.period, ref_session,   tz))
+in_trade = not na(time(timeframe.period, trade_session, tz))
+
+trade_just_started = in_trade   and not in_trade[1]
+trade_just_ended   = in_trade[1] and not in_trade
+
+var float ref_h = na
+var float ref_l = na
+
+if in_ref and not in_ref[1]
+    ref_h := high
+    ref_l := low
+else if in_ref
+    ref_h := math.max(ref_h, high)
+    ref_l := math.min(ref_l, low)
+
+var float rangeHigh   = na
+var float rangeLow    = na
+var float rangeMid    = na
+var int   windowStart = na
+
+var bool  tradeTaken  = false
+var bool  tradeActive = false
+var bool  highTagged  = false
+var bool  lowTagged   = false
+var bool  lowSwept    = false
+var bool  highSwept   = false
+var float sweepLow    = na
+var float sweepHigh   = na
+var int   sweepBarIdx = na
+
+var float entryPrice      = na
+var float stopPrice       = na
+var float targetPrice     = na
+var int   entryTimeMs     = na
+var float entrySweepTicks = na
+var bool  emittedThisWin  = false
+
+if trade_just_started
+    rangeHigh   := ref_h
+    rangeLow    := ref_l
+    rangeMid    := (ref_h + ref_l) / 2.0
+    windowStart := time
+    tradeTaken  := false
+    tradeActive := false
+    highTagged  := false
+    lowTagged   := false
+    lowSwept    := false
+    highSwept   := false
+    sweepLow    := na
+    sweepHigh   := na
+    sweepBarIdx := na
+    entryPrice      := na
+    stopPrice       := na
+    targetPrice     := na
+    entryTimeMs     := na
+    entrySweepTicks := na
+    emittedThisWin  := false
+
+if in_trade and not na(rangeHigh)
+    if high >= rangeHigh
+        highTagged := true
+    if low <= rangeLow
+        lowTagged := true
+
+sweep_thresh_low  = rangeLow  - sweep_buffer
+sweep_thresh_high = rangeHigh + sweep_buffer
+
+if in_trade and not na(rangeLow)
+    if low <= sweep_thresh_low
+        if not lowSwept
+            lowSwept    := true
+            sweepLow    := low
+            sweepBarIdx := bar_index
+        else
+            sweepLow := math.min(sweepLow, low)
+    if high >= sweep_thresh_high
+        if not highSwept
+            highSwept   := true
+            sweepHigh   := high
+            sweepBarIdx := bar_index
+        else
+            sweepHigh := math.max(sweepHigh, high)
+
+bars_since_sweep = na(sweepBarIdx) ? 999 : bar_index - sweepBarIdx
+within_reclaim   = bars_since_sweep <= reclaim_window_bars
+
+reclaim_long  = lowSwept  and close > rangeLow  and within_reclaim
+reclaim_short = highSwept and close < rangeHigh and within_reclaim
+
+allow_long  = bias_str == "high" or bias_str == "balanced"
+allow_short = bias_str == "low"  or bias_str == "balanced"
+
+minutes_elapsed = na(windowStart) ? 999.0 : (time - windowStart) / 60000.0
+time_ok = minutes_elapsed < (15 - late_cutoff_min)
+
+zone_ok_long  = not require_in_zone or close < rangeMid
+zone_ok_short = not require_in_zone or close > rangeMid
+
+can_signal = in_trade and not tradeTaken and not tradeActive and time_ok and barstate.isconfirmed
+
+buy_signal  = can_signal and allow_long  and not highTagged and reclaim_long  and zone_ok_long
+sell_signal = can_signal and allow_short and not lowTagged  and reclaim_short and zone_ok_short
+
+if buy_signal
+    tradeActive     := true
+    tradeTaken      := true
+    entryPrice      := close
+    stopPrice       := sweepLow  - syminfo.mintick
+    targetPrice     := rangeHigh
+    entryTimeMs     := time
+    entrySweepTicks := (rangeLow - sweepLow) / syminfo.mintick
+
+if sell_signal
+    tradeActive     := true
+    tradeTaken      := true
+    entryPrice      := close
+    stopPrice       := sweepHigh + syminfo.mintick
+    targetPrice     := rangeLow
+    entryTimeMs     := time
+    entrySweepTicks := (sweepHigh - rangeHigh) / syminfo.mintick
+
+if tradeActive
+    is_long    = entryPrice < targetPrice
+    hit_target = is_long ? high >= targetPrice : low  <= targetPrice
+    hit_stop   = is_long ? low  <= stopPrice   : high >= stopPrice
+    outcome    = hit_target ? "target" : hit_stop ? "stop" : trade_just_ended ? "timeout" : ""
+    if outcome != ""
+        tradeActive := false
+        if emit_labels and not emittedThisWin
+            emittedThisWin := true
+            side         = is_long ? "L" : "S"
+            duration_sec = (time - entryTimeMs) / 1000
+            txt = "SIG|" + side +
+                  "|t=" + str.format_time(entryTimeMs, "yyyy-MM-dd'T'HH:mm:ss", tz) +
+                  "|e=" + str.tostring(entryPrice, "#.##") +
+                  "|sd=" + str.tostring(entrySweepTicks, "#.#") +
+                  "|o=" + outcome +
+                  "|d=" + str.tostring(duration_sec, "#")
+            label.new(bar_index, high, txt, style = label.style_label_down,
+                 color = color.new(color.yellow, 0), textcolor = color.black, size = size.tiny)
+
+if trade_just_ended and emit_day_markers and not emittedThisWin
+    daytxt = "DAY|" + str.format_time(time, "yyyy-MM-dd", tz) + "|nosignal"
+    label.new(bar_index, low, daytxt, style = label.style_none,
+         color = color.new(color.gray, 100), textcolor = color.gray, size = size.tiny)
+
+plotshape(buy_signal,  "Buy",  shape.triangleup,   location.belowbar, color.new(color.green, 0), size = size.small, text = "BUY")
+plotshape(sell_signal, "Sell", shape.triangledown, location.abovebar, color.new(color.red,   0), size = size.small, text = "SELL")

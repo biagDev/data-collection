@@ -1,15 +1,71 @@
 {
-  "theme": "ES London session candle retest",
+  "theme": "ES London session candle retest — DIRECTIONAL (with first-hit breakdown)",
   "symbol": "CME_MINI:ES1!",
-  "n_per_candle": 219,
-  "as_of_date": "2026-05-04",
-  "rows": [
-    { "candle_et": "3:00", "either_plus_15": 84.02, "either_plus_45": 96.35, "both_plus_45": 28.77 },
-    { "candle_et": "3:15", "either_plus_15": 85.84, "either_plus_45": 99.54, "both_plus_45": 34.25 },
-    { "candle_et": "3:30", "either_plus_15": 86.76, "either_plus_45": 97.72, "both_plus_45": 35.16 },
-    { "candle_et": "3:45", "either_plus_15": 93.61, "either_plus_45": 99.09, "both_plus_45": 38.81 },
-    { "candle_et": "4:00", "either_plus_15": 88.13, "either_plus_45": 96.80, "both_plus_45": 29.68 },
-    { "candle_et": "4:15", "either_plus_15": 91.32, "either_plus_45": 98.17, "both_plus_45": 31.96 }
-  ],
-  "comparison_to_nq": "ES London 3:45 (93.61/99.09/38.81) vs NQ (94.98/99.09/40.64) — virtually identical, confirming London 3:45 is the strongest single-candle magnet across both equity indices."
+  "timeframe": "15m",
+  "sample_size_days": 227,
+  "as_of_date": "2026-05-17",
+  "session_window": "3:00 AM - 4:30 AM ET (London open killzone)",
+  "subject_candles": "Six 15-minute candles from 3:00-4:15 AM ET",
+  "forward_windows": "+15 / +30 / +45 min after subject candle closes",
+  "data_source": "TradingView Desktop chart, ES1! continuous front-month, collected via 'ES RTH+London Retest — Directional' Pine indicator",
+
+  "either_side_retest": {
+    "description": "Probability the high OR low of the subject candle gets touched by a later candle's wick.",
+    "rows": [
+      { "candle": "3:00", "n": 227, "by_plus_15": 83.27 },
+      { "candle": "3:15", "n": 227, "by_plus_15": 85.47 },
+      { "candle": "3:30", "n": 227, "by_plus_15": 86.34 },
+      { "candle": "3:45", "n": 227, "by_plus_15": 93.83 },
+      { "candle": "4:00", "n": 227, "by_plus_15": 88.54 },
+      { "candle": "4:15", "n": 227, "by_plus_15": 90.74 }
+    ]
+  },
+
+  "both_sides_sweep": {
+    "description": "Probability BOTH the high AND the low of the subject candle get touched (full sweep).",
+    "rows": [
+      { "candle": "3:00", "n": 227, "by_plus_15": 12.33 },
+      { "candle": "3:15", "n": 227, "by_plus_15": 7.93 },
+      { "candle": "3:30", "n": 227, "by_plus_15": 7.05 },
+      { "candle": "3:45", "n": 227, "by_plus_15": 22.03 },
+      { "candle": "4:00", "n": 227, "by_plus_15": 7.49 },
+      { "candle": "4:15", "n": 227, "by_plus_15": 8.37 }
+    ]
+  },
+
+  "directional_split": {
+    "description": "Per-side breakdown. hi_any/lo_any = side was touched at all. hi_only/lo_only = side was touched without the opposite side (cleanest first-hit signal).",
+    "rows": [
+      { "candle": "3:00", "n": 227,
+        "hi_only_plus_15": 36.56, "lo_only_plus_15": 34.36, "both_plus_15": 12.33,
+        "hi_any_plus_15": 48.90, "lo_any_plus_15": 46.70,
+        "hi_any_plus_30": 59.47, "lo_any_plus_30": 55.07,
+        "hi_any_plus_45": 66.08, "lo_any_plus_45": 59.91 },
+      { "candle": "3:15", "n": 227,
+        "hi_only_plus_15": 39.65, "lo_only_plus_15": 37.89, "both_plus_15": 7.93,
+        "hi_any_plus_15": 47.58, "lo_any_plus_15": 45.81,
+        "hi_any_plus_30": 59.91, "lo_any_plus_30": 57.27,
+        "hi_any_plus_45": 69.16, "lo_any_plus_45": 64.76 },
+      { "candle": "3:30", "n": 227,
+        "hi_only_plus_15": 44.05, "lo_only_plus_15": 35.24, "both_plus_15": 7.05,
+        "hi_any_plus_15": 51.10, "lo_any_plus_15": 42.29,
+        "hi_any_plus_30": 66.52, "lo_any_plus_30": 57.27,
+        "hi_any_plus_45": 70.93, "lo_any_plus_45": 62.56 },
+      { "candle": "3:45", "n": 227,
+        "hi_only_plus_15": 41.85, "lo_only_plus_15": 29.96, "both_plus_15": 22.03,
+        "hi_any_plus_15": 63.88, "lo_any_plus_15": 51.98,
+        "hi_any_plus_30": 70.04, "lo_any_plus_30": 59.91,
+        "hi_any_plus_45": 74.89, "lo_any_plus_45": 63.44 },
+      { "candle": "4:00", "n": 227,
+        "hi_only_plus_15": 42.73, "lo_only_plus_15": 38.33, "both_plus_15": 7.49,
+        "hi_any_plus_15": 50.22, "lo_any_plus_15": 45.81,
+        "hi_any_plus_30": 59.91, "lo_any_plus_30": 55.51,
+        "hi_any_plus_45": 63.88, "lo_any_plus_45": 61.67 },
+      { "candle": "4:15", "n": 227,
+        "hi_only_plus_15": 40.09, "lo_only_plus_15": 42.29, "both_plus_15": 8.37,
+        "hi_any_plus_15": 48.46, "lo_any_plus_15": 50.66,
+        "hi_any_plus_30": 55.95, "lo_any_plus_30": 60.79,
+        "hi_any_plus_45": 65.20, "lo_any_plus_45": 65.20 }
+    ]
+  }
 }

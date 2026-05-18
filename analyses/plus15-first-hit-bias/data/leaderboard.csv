@@ -1,0 +1,69 @@
+analysis_id,label,n,armable,high_only_15,low_only_15,high_any_15,low_any_15,both_15,first_hit_high_pct,first_hit_n,any_hit_edge,any_hit_side,prior_source,prior_side,prior_edge
+es/asia-candle-hit-stats,"es/asia-candle-hit-stats 8:00 PM",227,true,46.7,30.4,50.66,34.36,3.96,60.57,175,16.3,high,first_hit,high,21.14
+1130-candle-hit-stats,"11:30",222,true,45.95,31.08,56.31,41.44,10.36,59.65,171,14.87,high,first_hit,high,19.3
+asia-candle-hit-stats,"asia-candle-hit-stats 8:00 PM",220,true,,,51.82,34.55,5,,,17.27,high,any_hit,high,17.27
+es/london-candle-hit-stats,"es/london-candle-hit-stats 3:45",227,true,41.85,29.96,63.88,51.98,22.03,58.28,163,11.9,high,first_hit,high,16.56
+1000-candle-hit-stats,"10:00",232,true,44.83,32.76,52.16,40.09,7.33,57.78,180,12.07,high,first_hit,high,15.56
+es/rth-afternoon-candle-hit-stats,"es/rth-afternoon-candle-hit-stats 11:30",226,true,46.9,34.51,54.87,42.48,7.96,57.61,184,12.39,high,first_hit,high,15.22
+gc/1500-candle-hit-stats,"gc/1500-candle-hit-stats",215,true,45.12,33.49,50.7,39.07,5.58,57.4,169,11.63,high,first_hit,high,14.8
+1015-candle-hit-stats,"10:15",232,true,46.55,35.34,50.86,39.66,4.31,56.84,190,11.2,high,first_hit,high,13.68
+es/asia-candle-hit-stats,"es/asia-candle-hit-stats 8:45 PM",227,true,41.41,31.72,58.15,48.46,16.74,56.63,166,9.69,high,first_hit,high,13.26
+gc/1100-candle-hit-stats,"gc/1100-candle-hit-stats",222,true,44.59,34.23,50.9,40.54,6.31,56.57,175,10.36,high,first_hit,high,13.14
+gc/1015-candle-hit-stats,"gc/1015-candle-hit-stats",222,true,42.79,32.88,50.9,40.99,8.11,56.55,168,9.91,high,first_hit,high,13.1
+gc/1400-candle-hit-stats,"gc/1400-candle-hit-stats",215,true,40.93,31.63,46.98,37.67,6.05,56.41,156,9.31,high,first_hit,high,12.82
+es/asia-candle-hit-stats,"es/asia-candle-hit-stats 8:30 PM",227,true,42.73,33.48,50.66,41.41,7.93,56.07,173,9.25,high,first_hit,high,12.14
+9am-1h-candle-hit-stats,"9am-1h-candle-hit-stats",232,true,36.21,28.45,37.07,29.31,0.86,56,150,7.76,high,first_hit,high,12
+1045-candle-hit-stats,"10:45",232,true,41.81,33.19,49.57,40.95,7.76,55.75,174,8.62,high,first_hit,high,11.5
+asia-candle-hit-stats,"asia-candle-hit-stats 9:15 PM",219,true,,,56.16,44.75,11.87,,,11.41,high,any_hit,high,11.41
+es/asia-candle-hit-stats,"es/asia-candle-hit-stats 9:15 PM",227,true,43.61,34.8,56.39,47.58,12.78,55.62,178,8.81,high,first_hit,high,11.24
+945-candle-hit-stats,"09:45",232,true,44.83,35.78,50.43,41.38,5.6,55.61,187,9.05,high,first_hit,high,11.22
+es/london-candle-hit-stats,"es/london-candle-hit-stats 3:30",227,true,44.05,35.24,51.1,42.29,7.05,55.56,180,8.81,high,first_hit,high,11.12
+asia-candle-hit-stats,"asia-candle-hit-stats 8:45 PM",220,true,,,56.82,45.91,13.64,,,10.91,high,any_hit,high,10.91
+6am-4h-candle-hit-stats,"6am-4h-candle-hit-stats",232,true,36.21,29.31,37.93,31.03,1.72,55.27,152,6.9,high,first_hit,high,10.54
+es/rth-afternoon-candle-hit-stats,"es/rth-afternoon-candle-hit-stats 12:00",226,true,42.48,34.51,52.65,44.69,10.18,55.18,174,7.96,high,first_hit,high,10.36
+es/rth-afternoon-candle-hit-stats,"es/rth-afternoon-candle-hit-stats 14:00",218,true,41.74,34.4,51.83,44.5,10.09,54.82,166,7.33,high,first_hit,high,9.64
+1400-candle-hit-stats,"14:00",214,true,41.12,34.11,50,42.99,8.88,54.66,161,7.01,high,first_hit,high,9.32
+gc/1045-candle-hit-stats,"gc/1045-candle-hit-stats",222,true,43.24,36.04,53.15,45.95,9.91,54.54,176,7.2,high,first_hit,high,9.08
+gc/1130-candle-hit-stats,"gc/1130-candle-hit-stats",222,true,43.24,36.04,48.2,40.99,4.95,54.54,176,7.21,high,first_hit,high,9.08
+es/945-candle-hit-stats,"es/945-candle-hit-stats",219,true,,,52.51,43.84,8.22,,,8.67,high,any_hit,high,8.67
+1200-candle-hit-stats,"12:00",222,true,42.79,36.04,50.45,43.69,7.66,54.28,175,6.76,high,first_hit,high,8.56
+gc/930-candle-hit-stats,"gc/930-candle-hit-stats",222,true,40.54,34.23,45.95,39.64,5.41,54.22,166,6.31,high,first_hit,high,8.44
+es/rth-afternoon-candle-hit-stats,"es/rth-afternoon-candle-hit-stats 13:00",221,true,43.89,37.1,52.04,45.25,8.14,54.19,179,6.79,high,first_hit,high,8.38
+gc/1230-candle-hit-stats,"gc/1230-candle-hit-stats",220,true,38.64,32.73,47.27,41.36,8.64,54.14,157,5.91,high,first_hit,high,8.28
+gc/1000-candle-hit-stats,"gc/1000-candle-hit-stats",222,true,38.74,33.33,46.85,41.44,8.11,53.75,160,5.41,high,first_hit,high,7.5
+gc/1200-candle-hit-stats,"gc/1200-candle-hit-stats",222,true,36.94,42.79,42.34,48.2,5.41,46.33,177,-5.86,low,first_hit,low,-7.34
+es/1015-candle-hit-stats,"es/1015-candle-hit-stats",219,true,,,53.88,46.58,10.05,,,7.3,high,any_hit,high,7.3
+london-candle-hit-stats,"london-candle-hit-stats 3:45",219,true,,,61.64,54.34,21,,,7.3,high,any_hit,high,7.3
+es/1000-candle-hit-stats,"es/1000-candle-hit-stats",219,true,,,51.14,44.29,7.31,,,6.85,high,any_hit,high,6.85
+es/asia-candle-hit-stats,"es/asia-candle-hit-stats 9:00 PM",227,true,37.89,33.04,46.26,41.41,8.37,53.42,161,4.85,high,first_hit,high,6.84
+london-candle-hit-stats,"london-candle-hit-stats 4:15",219,true,,,43.84,50.23,8.68,,,-6.39,low,any_hit,low,-6.39
+asia-candle-hit-stats,"asia-candle-hit-stats 8:30 PM",220,true,,,47.27,40.91,6.36,,,6.36,high,any_hit,high,6.36
+gc/945-candle-hit-stats,"gc/945-candle-hit-stats",222,true,43.24,38.74,51.35,46.85,8.11,52.74,182,4.5,high,first_hit,high,5.48
+london-candle-hit-stats,"london-candle-hit-stats 3:30",219,true,,,49.77,44.29,6.85,,,5.48,high,any_hit,high,5.48
+1030-candle-hit-stats,"10:30",232,true,37.5,41.81,47.41,51.72,9.91,47.28,184,-4.31,low,first_hit,low,-5.44
+es/london-candle-hit-stats,"es/london-candle-hit-stats 4:00",227,true,42.73,38.33,50.22,45.81,7.49,52.71,184,4.41,high,first_hit,high,5.42
+1300-candle-hit-stats,"13:00",214,true,41.59,37.38,50,45.79,8.41,52.67,169,4.21,high,first_hit,high,5.34
+gc/1030-candle-hit-stats,"gc/1030-candle-hit-stats",222,true,41.44,37.39,47.75,43.69,6.31,52.57,175,4.06,high,first_hit,high,5.14
+1100-candle-hit-stats,"11:00",222,true,42.34,38.29,51.35,47.3,9.01,52.51,179,4.05,high,first_hit,high,5.02
+es/930-candle-hit-stats,"es/930-candle-hit-stats",219,true,,,52.51,47.49,9.13,,,5.02,high,any_hit,high,5.02
+930-candle-hit-stats,"09:30",232,true,43.97,40.09,50,46.12,6.03,52.31,195,3.88,high,first_hit,high,4.62
+es/1045-candle-hit-stats,"es/1045-candle-hit-stats",219,true,,,49.32,45.21,8.68,,,4.11,high,any_hit,high,4.11
+es/1030-candle-hit-stats,"es/1030-candle-hit-stats",219,true,,,47.03,50.68,10.96,,,-3.65,low,any_hit,low,-3.65
+gc/1545-candle-hit-stats,"gc/1545-candle-hit-stats",215,true,30.7,33.02,38.14,40.47,7.44,48.18,137,-2.33,balanced,first_hit,low,-3.64
+1545-candle-hit-stats,"15:45",214,true,35.98,33.64,41.12,38.79,5.14,51.68,149,2.33,balanced,first_hit,high,3.36
+es/london-candle-hit-stats,"es/london-candle-hit-stats 3:00",227,true,36.56,34.36,48.9,46.7,12.33,51.55,161,2.2,balanced,first_hit,high,3.1
+es/rth-afternoon-candle-hit-stats,"es/rth-afternoon-candle-hit-stats 15:45",218,false,33.03,31.19,38.99,37.16,5.96,51.43,140,1.83,balanced,first_hit,balanced,2.86
+london-candle-hit-stats,"london-candle-hit-stats 3:15",219,false,,,46.58,43.84,5.94,,,2.74,balanced,any_hit,balanced,2.74
+london-candle-hit-stats,"london-candle-hit-stats 4:00",219,false,,,46.12,43.38,4.57,,,2.74,balanced,any_hit,balanced,2.74
+es/london-candle-hit-stats,"es/london-candle-hit-stats 4:15",227,false,40.09,42.29,48.46,50.66,8.37,48.66,187,-2.2,balanced,first_hit,balanced,-2.68
+asia-candle-hit-stats,"asia-candle-hit-stats 9:00 PM",219,false,,,42.47,40.18,7.31,,,2.29,balanced,any_hit,balanced,2.29
+es/london-candle-hit-stats,"es/london-candle-hit-stats 3:15",227,false,39.65,37.89,47.58,45.81,7.93,51.13,176,1.77,balanced,first_hit,balanced,2.26
+es/rth-afternoon-candle-hit-stats,"es/rth-afternoon-candle-hit-stats 15:00",218,false,39.45,41.28,44.95,46.79,5.5,48.87,176,-1.84,balanced,first_hit,balanced,-2.26
+es/rth-afternoon-candle-hit-stats,"es/rth-afternoon-candle-hit-stats 11:00",226,false,39.82,41.59,50.44,52.21,10.62,48.91,184,-1.77,balanced,first_hit,balanced,-2.18
+es/asia-candle-hit-stats,"es/asia-candle-hit-stats 8:15 PM",227,false,35.68,34.36,48.46,47.14,12.78,50.94,159,1.32,balanced,first_hit,balanced,1.88
+1230-candle-hit-stats,"12:30",214,false,37.85,39.25,48.13,49.53,10.28,49.09,165,-1.4,balanced,first_hit,balanced,-1.82
+gc/1300-candle-hit-stats,"gc/1300-candle-hit-stats",219,false,36.07,35.16,50.68,49.77,14.61,50.64,156,0.91,balanced,first_hit,balanced,1.28
+es/rth-afternoon-candle-hit-stats,"es/rth-afternoon-candle-hit-stats 12:30",226,false,38.05,37.17,49.56,48.67,11.5,50.58,170,0.89,balanced,first_hit,balanced,1.16
+asia-candle-hit-stats,"asia-candle-hit-stats 8:15 PM",220,false,,,46.82,45.91,10,,,0.91,balanced,any_hit,balanced,0.91
+london-candle-hit-stats,"london-candle-hit-stats 3:00",219,false,,,44.29,43.38,8.22,,,0.91,balanced,any_hit,balanced,0.91
+1500-candle-hit-stats,"15:00",214,false,40.65,41.12,47.66,48.13,7.01,49.71,175,-0.47,balanced,first_hit,balanced,-0.58

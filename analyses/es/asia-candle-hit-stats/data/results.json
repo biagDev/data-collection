@@ -1,15 +1,80 @@
 {
-  "theme": "ES Asia session candle retest",
+  "theme": "ES Asia session candle retest — DIRECTIONAL (with first-hit breakdown)",
   "symbol": "CME_MINI:ES1!",
-  "n_per_candle": "219-220",
-  "as_of_date": "2026-05-04",
-  "rows": [
-    { "candle_et": "8:00_PM", "either_plus_15": 80.91, "either_plus_45": 95.91, "both_plus_45": 24.09 },
-    { "candle_et": "8:15_PM", "either_plus_15": 83.64, "either_plus_45": 97.27, "both_plus_45": 34.09 },
-    { "candle_et": "8:30_PM", "either_plus_15": 85.00, "either_plus_45": 98.64, "both_plus_45": 28.64 },
-    { "candle_et": "8:45_PM", "either_plus_15": 90.00, "either_plus_45": 99.55, "both_plus_45": 33.18 },
-    { "candle_et": "9:00_PM", "either_plus_15": 78.54, "either_plus_45": 97.26, "both_plus_45": 27.40 },
-    { "candle_et": "9:15_PM", "either_plus_15": 91.78, "either_plus_45": 99.54, "both_plus_45": 36.07 }
-  ],
-  "comparison_to_nq": "ES Asia 8:45 (90 / 99.55 / 33.18) vs NQ (89.09 / 98.18 / 32.73). Almost identical. ES 9:15 (91.78) slightly stronger than NQ (89.04). Asia patterns highly consistent across both equity indices."
+  "timeframe": "15m",
+  "sample_size_days": 227,
+  "as_of_date": "2026-05-17",
+  "session_window": "8:00 PM - 9:30 PM ET",
+  "subject_candles": "Six 15-minute candles from 8:00-9:15 PM ET",
+  "forward_windows": "+15 / +30 / +45 min after subject candle closes",
+  "data_source": "TradingView Desktop chart, ES1! continuous front-month, collected via 'ES Asia Retest — Directional' Pine indicator",
+
+  "either_side_retest": {
+    "description": "Probability the high OR low of the subject candle gets touched by a later candle's wick.",
+    "rows": [
+      { "candle": "8:00 PM", "n": 227, "by_plus_15": 81.06, "by_plus_45": 95.59 },
+      { "candle": "8:15 PM", "n": 227, "by_plus_15": 82.82, "by_plus_45": 97.36 },
+      { "candle": "8:30 PM", "n": 227, "by_plus_15": 84.14, "by_plus_45": 99.12 },
+      { "candle": "8:45 PM", "n": 227, "by_plus_15": 89.87, "by_plus_45": 99.56 },
+      { "candle": "9:00 PM", "n": 227, "by_plus_15": 79.30, "by_plus_45": 99.12 },
+      { "candle": "9:15 PM", "n": 227, "by_plus_15": 91.19, "by_plus_45": 99.56 }
+    ]
+  },
+
+  "both_sides_sweep": {
+    "description": "Probability BOTH the high AND the low of the subject candle get touched (full sweep).",
+    "rows": [
+      { "candle": "8:00 PM", "n": 227, "by_plus_15": 3.96, "by_plus_45": 23.79 },
+      { "candle": "8:15 PM", "n": 227, "by_plus_15": 12.78, "by_plus_45": 32.60 },
+      { "candle": "8:30 PM", "n": 227, "by_plus_15": 7.93, "by_plus_45": 26.87 },
+      { "candle": "8:45 PM", "n": 227, "by_plus_15": 16.74, "by_plus_45": 32.60 },
+      { "candle": "9:00 PM", "n": 227, "by_plus_15": 8.37, "by_plus_45": 23.79 },
+      { "candle": "9:15 PM", "n": 227, "by_plus_15": 12.78, "by_plus_45": 35.68 }
+    ]
+  },
+
+  "directional_split": {
+    "description": "Per-side breakdown of retest rates. hi_any / lo_any = side was touched at all. hi_only / lo_only = side was touched without the opposite side (cleanest first-hit signal).",
+    "rows": [
+      { "candle": "8:00 PM", "n": 227,
+        "hi_only_plus_15": 46.70, "lo_only_plus_15": 30.40, "both_plus_15": 3.96,
+        "hi_any_plus_15": 50.66, "lo_any_plus_15": 34.36,
+        "hi_any_plus_30": 61.23, "lo_any_plus_30": 47.58,
+        "hi_any_plus_45": 66.96, "lo_any_plus_45": 53.74 },
+      { "candle": "8:15 PM", "n": 227,
+        "hi_only_plus_15": 35.68, "lo_only_plus_15": 34.36, "both_plus_15": 12.78,
+        "hi_any_plus_15": 48.46, "lo_any_plus_15": 47.14,
+        "hi_any_plus_30": 62.11, "lo_any_plus_30": 55.51,
+        "hi_any_plus_45": 69.16, "lo_any_plus_45": 61.23 },
+      { "candle": "8:30 PM", "n": 227,
+        "hi_only_plus_15": 42.73, "lo_only_plus_15": 33.48, "both_plus_15": 7.93,
+        "hi_any_plus_15": 50.66, "lo_any_plus_15": 41.41,
+        "hi_any_plus_30": 63.44, "lo_any_plus_30": 54.19,
+        "hi_any_plus_45": 66.96, "lo_any_plus_45": 59.91 },
+      { "candle": "8:45 PM", "n": 227,
+        "hi_only_plus_15": 41.41, "lo_only_plus_15": 31.72, "both_plus_15": 16.74,
+        "hi_any_plus_15": 58.15, "lo_any_plus_15": 48.46,
+        "hi_any_plus_30": 65.20, "lo_any_plus_30": 56.39,
+        "hi_any_plus_45": 71.81, "lo_any_plus_45": 60.79 },
+      { "candle": "9:00 PM", "n": 227,
+        "hi_only_plus_15": 37.89, "lo_only_plus_15": 33.04, "both_plus_15": 8.37,
+        "hi_any_plus_15": 46.26, "lo_any_plus_15": 41.41,
+        "hi_any_plus_30": 63.44, "lo_any_plus_30": 48.90,
+        "hi_any_plus_45": 68.72, "lo_any_plus_45": 55.07 },
+      { "candle": "9:15 PM", "n": 227,
+        "hi_only_plus_15": 43.61, "lo_only_plus_15": 34.80, "both_plus_15": 12.78,
+        "hi_any_plus_15": 56.39, "lo_any_plus_15": 47.58,
+        "hi_any_plus_30": 69.16, "lo_any_plus_30": 57.27,
+        "hi_any_plus_45": 73.57, "lo_any_plus_45": 62.11 }
+    ]
+  },
+
+  "comparison_to_nq": {
+    "summary": "ES Asia shows the same HIGH-side lean as NQ across all 6 subject candles, ~1-3 pts lower in magnitude. Consistent with cross-index behavior seen in RTH.",
+    "edges_hi_any_minus_lo_any_plus_15": {
+      "ES_8:00_PM": 16.30, "NQ_8:00_PM": 17.27,
+      "ES_8:45_PM": 9.69,  "NQ_8:45_PM": 10.91,
+      "ES_9:15_PM": 8.81,  "NQ_9:15_PM": 11.41
+    }
+  }
 }

@@ -1,0 +1,159 @@
+//@version=5
+// ============================================================================
+// ES Asia Candle Retest — Directional
+//
+// Replicates the NQ Asia analysis on ES1!, including the per-side direction
+// (hi_only / lo_only / both / hi_any / lo_any) that the existing
+// analyses/es/asia-candle-hit-stats/data/results.json is missing.
+//
+// Subject candles: 8:00, 8:15, 8:30, 8:45, 9:00, 9:15 PM ET (six 15m candles).
+// Forward windows: +15, +30, +45 minutes after the subject closes.
+//
+// HOW TO RUN
+//   - Set chart symbol to CME_MINI:ES1!
+//   - Set chart timeframe to 15 minutes
+//   - Apply this indicator
+//   - Load as much history as TV will give you (scroll back)
+//   - Read the table via data_get_pine_tables, save into results.json with
+//     a "directional_split" block matching the NQ shape.
+// ============================================================================
+indicator("ES Asia Retest — Directional", overlay=true, max_labels_count=50)
+
+i_show = input.bool(true, "Show stats table")
+
+h = hour(time, "America/New_York")
+m = minute(time, "America/New_York")
+clockTime = h * 100 + m
+
+// Subject candle clock-times in HHMM (24h)
+times  = array.from(2000, 2015, 2030, 2045, 2100, 2115)
+labels = array.from("8:00 PM", "8:15 PM", "8:30 PM", "8:45 PM", "9:00 PM", "9:15 PM")
+
+// Per-subject in-progress state (na = inactive)
+var array<float> subjH       = array.new<float>(6, na)
+var array<float> subjL       = array.new<float>(6, na)
+var array<int>   barsForward = array.new<int>(6, 0)
+var array<bool>  hitH_15     = array.new<bool>(6, false)
+var array<bool>  hitL_15     = array.new<bool>(6, false)
+var array<bool>  hitH_30     = array.new<bool>(6, false)
+var array<bool>  hitL_30     = array.new<bool>(6, false)
+var array<bool>  hitH_45     = array.new<bool>(6, false)
+var array<bool>  hitL_45     = array.new<bool>(6, false)
+
+// Counters per subject (cumulative across all sessions in loaded history)
+var array<int> n_total = array.new<int>(6, 0)
+var array<int> ho_15 = array.new<int>(6, 0)
+var array<int> lo_15 = array.new<int>(6, 0)
+var array<int> b_15  = array.new<int>(6, 0)
+var array<int> ho_30 = array.new<int>(6, 0)
+var array<int> lo_30 = array.new<int>(6, 0)
+var array<int> b_30  = array.new<int>(6, 0)
+var array<int> ho_45 = array.new<int>(6, 0)
+var array<int> lo_45 = array.new<int>(6, 0)
+var array<int> b_45  = array.new<int>(6, 0)
+
+if barstate.isconfirmed
+    for i = 0 to 5
+        int subjTime = array.get(times, i)
+        // Initialize subject on its own bar (subject candle opens at subjTime)
+        if clockTime == subjTime
+            array.set(subjH, i, high)
+            array.set(subjL, i, low)
+            array.set(barsForward, i, 0)
+            array.set(hitH_15, i, false)
+            array.set(hitL_15, i, false)
+            array.set(hitH_30, i, false)
+            array.set(hitL_30, i, false)
+            array.set(hitH_45, i, false)
+            array.set(hitL_45, i, false)
+        else if not na(array.get(subjH, i))
+            int bf = array.get(barsForward, i) + 1
+            array.set(barsForward, i, bf)
+            float sH = array.get(subjH, i)
+            float sL = array.get(subjL, i)
+            bool hH = high >= sH
+            bool hL = low  <= sL
+            if bf == 1
+                array.set(hitH_15, i, hH)
+                array.set(hitL_15, i, hL)
+                array.set(hitH_30, i, hH)
+                array.set(hitL_30, i, hL)
+                array.set(hitH_45, i, hH)
+                array.set(hitL_45, i, hL)
+            if bf == 2
+                array.set(hitH_30, i, array.get(hitH_30, i) or hH)
+                array.set(hitL_30, i, array.get(hitL_30, i) or hL)
+                array.set(hitH_45, i, array.get(hitH_45, i) or hH)
+                array.set(hitL_45, i, array.get(hitL_45, i) or hL)
+            if bf == 3
+                array.set(hitH_45, i, array.get(hitH_45, i) or hH)
+                array.set(hitL_45, i, array.get(hitL_45, i) or hL)
+                // Tally outcomes
+                array.set(n_total, i, array.get(n_total, i) + 1)
+                bool h15 = array.get(hitH_15, i)
+                bool l15 = array.get(hitL_15, i)
+                bool h30 = array.get(hitH_30, i)
+                bool l30 = array.get(hitL_30, i)
+                bool h45 = array.get(hitH_45, i)
+                bool l45 = array.get(hitL_45, i)
+                if h15 and not l15
+                    array.set(ho_15, i, array.get(ho_15, i) + 1)
+                if l15 and not h15
+                    array.set(lo_15, i, array.get(lo_15, i) + 1)
+                if h15 and l15
+                    array.set(b_15, i, array.get(b_15, i) + 1)
+                if h30 and not l30
+                    array.set(ho_30, i, array.get(ho_30, i) + 1)
+                if l30 and not h30
+                    array.set(lo_30, i, array.get(lo_30, i) + 1)
+                if h30 and l30
+                    array.set(b_30, i, array.get(b_30, i) + 1)
+                if h45 and not l45
+                    array.set(ho_45, i, array.get(ho_45, i) + 1)
+                if l45 and not h45
+                    array.set(lo_45, i, array.get(lo_45, i) + 1)
+                if h45 and l45
+                    array.set(b_45, i, array.get(b_45, i) + 1)
+                // Reset subject for next session
+                array.set(subjH, i, na)
+                array.set(subjL, i, na)
+
+// ---- Results table ---------------------------------------------------------
+var table tbl = table.new(position.top_right, columns=11, rows=8, bgcolor=color.new(color.black, 70), border_width=1)
+if i_show and barstate.islast
+    table.cell(tbl, 0,  0, "candle",     text_color=color.white)
+    table.cell(tbl, 1,  0, "n",          text_color=color.white)
+    table.cell(tbl, 2,  0, "hi_only_15", text_color=color.white)
+    table.cell(tbl, 3,  0, "lo_only_15", text_color=color.white)
+    table.cell(tbl, 4,  0, "both_15",    text_color=color.white)
+    table.cell(tbl, 5,  0, "hi_any_15",  text_color=color.white)
+    table.cell(tbl, 6,  0, "lo_any_15",  text_color=color.white)
+    table.cell(tbl, 7,  0, "hi_any_30",  text_color=color.white)
+    table.cell(tbl, 8,  0, "lo_any_30",  text_color=color.white)
+    table.cell(tbl, 9,  0, "hi_any_45",  text_color=color.white)
+    table.cell(tbl, 10, 0, "lo_any_45",  text_color=color.white)
+    for i = 0 to 5
+        int r = i + 1
+        int n = array.get(n_total, i)
+        if n > 0
+            float nf = float(n)
+            float h15 = array.get(ho_15, i)
+            float l15 = array.get(lo_15, i)
+            float b15 = array.get(b_15, i)
+            float h30 = array.get(ho_30, i)
+            float l30 = array.get(lo_30, i)
+            float b30 = array.get(b_30, i)
+            float h45 = array.get(ho_45, i)
+            float l45 = array.get(lo_45, i)
+            float b45 = array.get(b_45, i)
+            table.cell(tbl, 0,  r, array.get(labels, i), text_color=color.white)
+            table.cell(tbl, 1,  r, str.tostring(n),                                  text_color=color.white)
+            table.cell(tbl, 2,  r, str.tostring(h15  / nf * 100, "#.##"),            text_color=color.white)
+            table.cell(tbl, 3,  r, str.tostring(l15  / nf * 100, "#.##"),            text_color=color.white)
+            table.cell(tbl, 4,  r, str.tostring(b15  / nf * 100, "#.##"),            text_color=color.white)
+            table.cell(tbl, 5,  r, str.tostring((h15 + b15) / nf * 100, "#.##"),     text_color=color.white)
+            table.cell(tbl, 6,  r, str.tostring((l15 + b15) / nf * 100, "#.##"),     text_color=color.white)
+            table.cell(tbl, 7,  r, str.tostring((h30 + b30) / nf * 100, "#.##"),     text_color=color.white)
+            table.cell(tbl, 8,  r, str.tostring((l30 + b30) / nf * 100, "#.##"),     text_color=color.white)
+            table.cell(tbl, 9,  r, str.tostring((h45 + b45) / nf * 100, "#.##"),     text_color=color.white)
+            table.cell(tbl, 10, r, str.tostring((l45 + b45) / nf * 100, "#.##"),     text_color=color.white)
