@@ -1,4 +1,4 @@
-# Magnet Compass — Entry System (current: v11)
+# Magnet Compass — Entry System (current: v12)
 
 End-to-end scalping system for the 15-minute magnet on a 30-second chart.
 
@@ -152,6 +152,7 @@ Additionally, all state mutations are gated to `barstate.isconfirmed`, so intra-
 | v9 | Reclassified TIMEOUT trades by end-of-window close vs entry (WIN if past entry, LOSS otherwise); removed timeouts row from stats table |
 | v10 | Added "Restrict to NY session only" toggle; gated lines/labels to priored buckets only (cleaner chart) |
 | v11 | Added NQ London 03:45; added ES London (03:00, 03:30, 03:45, 04:00) and ES RTH afternoon (11:30, 12:00, 13:00, 14:00) — 8 new ES priors total |
+| v12 | **Setup A — Sweep Fade scalp mode** (NQ scalper workflow). Optional `scalp_mode` toggle that REPLACES swing-target entry with: bias-side INVERTED (bias HIGH → SHORT at magH+buf, fade back toward midline), fixed point-based target/stop (default 12/12), resting limit entry, magnet-range gate (default ≥16pt), optional half-at-1R + BE + runner scale. Data backing: 78.92% midpoint MR (extended-stats #6) + +15 first-hit bias for timing. Stats table splits scalp wins/partials/losses separately from v11 swing counters. |
 
 ## Refining over time
 

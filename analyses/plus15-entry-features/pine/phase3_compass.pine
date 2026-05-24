@@ -1,17 +1,20 @@
 //@version=5
 // ============================================================================
-// Magnet Compass — Phase 3 (v4)
-// New in v4:
-//   - 12-hour AM/PM time format in the reference-candle table
-//   - H/L magnet lines anchored to the actual high/low bars of the reference
-//     candle (not floating from window start)
-//   - Background shading during the +15m execution window
-//   - "Nearest swing low/high" stop style (pivot left=1, right=1)
-//
-// Note on Styling: TradingView's Style tab is reserved for `plot()` outputs.
-// Colors used by `line.new()` / `label.new()` (everything we draw) can only
-// come from `input.color()` in the Inputs tab. They are grouped under the
-// "Style" group there, which is the closest TV allows.
+// Magnet Compass — Phase 3 (v12)
+// New in v12 — Setup A: Magnet Sweep Fade (scalp mode)
+//   - Optional scalp_mode that REPLACES the swing-target entry logic with:
+//       * Bias side INVERTED: bias HIGH → place SELL limit at magH+buf
+//         (we fade the tag back toward midline, not trade toward it).
+//       * Fixed point-based target/stop (default 12/12 NQ pts).
+//       * Resting limit entry (no market fill on first bar).
+//       * Optional scale-out: half at 1R → stop to BE → runner.
+//       * Magnet-range gate: skip buckets whose H-L is below threshold so
+//         the 12pt target stays a clean fade (not a chase past opposite extreme).
+//   - Data backing: 78.92% midpoint mean-reversion (extended-stats #6) +
+//     +15 first-hit bias for timing of which side tags first.
+//   - Stats split into wins / partial-wins / losses to keep scalp accounting
+//     separate from the swing-mode v11 tracker.
+//   - Swing-mode entry path (v11) is preserved; toggle scalp_mode to switch.
 // ============================================================================
 indicator("Magnet Compass — Phase 3", overlay=true, max_lines_count=500, max_labels_count=500)
 
@@ -39,6 +42,15 @@ i_show_stats    = input.bool  (true, "Show rolling stats table",       group="Di
 i_show_buckets  = input.bool  (true, "Show reference-candle list",     group="Display")
 i_stats_pos     = input.string("top_right", "Stats table position", options=["top_left","top_center","top_right","middle_left","middle_right","bottom_left","bottom_center","bottom_right"], group="Display")
 i_bucket_pos    = input.string("bottom_right", "Reference-list position", options=["top_left","top_center","top_right","middle_left","middle_right","bottom_left","bottom_center","bottom_right"], group="Display")
+
+// ---- Inputs: scalp mode (Setup A — Sweep Fade) ------------------------------
+i_scalp_mode       = input.bool (false, "Scalp mode (fade magnet sweep, fixed pts)", group="Scalp mode", tooltip="REPLACES swing-target entry. Bias side is INVERTED — bias HIGH means we SELL at the magnet high to fade the tag back toward midline. Data backing: 78.92% midpoint mean-reversion + +15 first-hit bias.")
+i_scalp_target_pts = input.float(12.0, "Target (points)",        minval=1.0, maxval=50.0, step=0.25, group="Scalp mode")
+i_scalp_stop_pts   = input.float(12.0, "Stop (points)",          minval=1.0, maxval=50.0, step=0.25, group="Scalp mode")
+i_scalp_buf_ticks  = input.int  (2,    "Limit offset beyond magnet (ticks)", minval=0, maxval=20, group="Scalp mode", tooltip="Limit price is placed buf*mintick beyond magH (for short) or below magL (for long). NQ mintick = 0.25, so 2 ticks = 0.5 pt.")
+i_scalp_min_range  = input.float(16.0, "Min magnet range required (points)", minval=0.0, maxval=100.0, step=1.0, group="Scalp mode", tooltip="Skip armed buckets whose magnet H-L is below this. Keeps the 12pt fade target inside the magnet structure rather than a blind chase past opposite extreme.")
+i_scalp_scale      = input.bool (false, "Scale: half at 1R, stop→BE, runner", group="Scalp mode")
+i_scalp_runner_pts = input.float(22.0, "Runner target (points)", minval=1.0, maxval=80.0, step=0.5, group="Scalp mode", tooltip="Only used when scale is on. After 1R partial and BE move, full target shifts here.")
 
 // ---- Inputs: style colors (Inputs tab — TV won't let line/label colors live in Style tab) ----
 i_col_magnet    = input.color(color.aqua,           "Magnet H/L lines",       group="Style")
@@ -306,6 +318,17 @@ var int s_entered = 0
 var int s_wins = 0
 var int s_losses = 0
 
+// ---- Scalp-mode state (Setup A) --------------------------------------------
+var float w_limitPx       = na
+var float w_1rPx          = na
+var bool  w_partial_taken = false
+var line  lnLimit         = na
+var int   s_scalp_armed    = 0
+var int   s_scalp_filled   = 0
+var int   s_scalp_wins     = 0    // full target hit (or runner if scale)
+var int   s_scalp_partials = 0    // partial taken then stopped at BE
+var int   s_scalp_losses   = 0    // stopped before 1R
+
 del_line(line ln) =>
     if not na(ln)
         line.delete(ln)
@@ -350,17 +373,31 @@ if barstate.isconfirmed
             float endPx = close[1]
             float diff = endPx - w_entryPx
             bool _isLong = w_armSide > 0
-            bool _win = _isLong ? diff > 0 : diff < 0
-            if _win
-                w_outcome := "WIN"
-                s_wins += 1
-                if i_show_outcome
-                    label.new(bar_index - 1, endPx, "WIN +" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+            // Partial already locked in +0.5R; runner flattening at endPx
+            // remains a WIN net unless endPx is enough worse to drown the partial.
+            bool _win = w_partial_taken or (_isLong ? diff > 0 : diff < 0)
+            if i_scalp_mode
+                if _win
+                    w_outcome := "WIN"
+                    s_scalp_wins += 1
+                    if i_show_outcome
+                        label.new(bar_index - 1, endPx, "WIN +" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+                else
+                    w_outcome := "LOSS"
+                    s_scalp_losses += 1
+                    if i_show_outcome
+                        label.new(bar_index - 1, endPx, "LOSS -" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_stop, textcolor=i_col_text, size=size.tiny)
             else
-                w_outcome := "LOSS"
-                s_losses += 1
-                if i_show_outcome
-                    label.new(bar_index - 1, endPx, "LOSS -" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_stop, textcolor=i_col_text, size=size.tiny)
+                if _isLong ? diff > 0 : diff < 0
+                    w_outcome := "WIN"
+                    s_wins += 1
+                    if i_show_outcome
+                        label.new(bar_index - 1, endPx, "WIN +" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+                else
+                    w_outcome := "LOSS"
+                    s_losses += 1
+                    if i_show_outcome
+                        label.new(bar_index - 1, endPx, "LOSS -" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_stop, textcolor=i_col_text, size=size.tiny)
         del_line(lnH)
         del_line(lnL)
         del_line(lnMid)
@@ -391,15 +428,34 @@ if barstate.isconfirmed
         in_mid_band   = w_clLoc >= i_mid_low and w_clLoc <= i_mid_high
         strong_enough = math.abs(w_liveScore) >= i_min_score
         w_armed   := has_prior and agree and in_mid_band and strong_enough
-        w_armSide := w_armed ? w_priorSign : 0
+        // Scalp-mode extra gate: magnet must be wide enough that 12pt fade
+        // doesn't blow past the opposite extreme.
+        if i_scalp_mode and w_armed
+            float rng_pts = w_magH - w_magL
+            if rng_pts < i_scalp_min_range
+                w_armed := false
+        // In scalp mode we FADE the bias side. Bias HIGH (priorSign=+1) means
+        // we expect HIGH to be tagged → place SELL limit there → armSide = -1.
+        w_armSide := w_armed ? (i_scalp_mode ? -w_priorSign : w_priorSign) : 0
         w_bars    := 0
         w_entered := false
         w_entryPx := na
         w_stopPx  := na
         w_tgtPx   := na
+        w_1rPx    := na
         w_entryBar := na
         w_outcome := w_armed ? na : "SKIP"
-        if w_armed
+        w_partial_taken := false
+        del_line(lnLimit)
+        // Pre-place the scalp limit at the magnet sweep level
+        if i_scalp_mode and w_armed
+            float buf = i_scalp_buf_ticks * syminfo.mintick
+            w_limitPx := w_armSide < 0 ? (w_magH + buf) : (w_magL - buf)
+            lnLimit := line.new(bar_index, w_limitPx, bar_index + 30, w_limitPx, color=i_col_entry, width=1, style=line.style_dotted)
+            s_scalp_armed += 1
+        else
+            w_limitPx := na
+        if w_armed and not i_scalp_mode
             s_armed += 1
 
         // ---- Draw magnet H/L lines anchored to actual high/low bars --------
@@ -422,8 +478,10 @@ if barstate.isconfirmed
 
         if i_show_label
             prior_side_txt = w_priorSign > 0 ? "HIGH" : w_priorSign < 0 ? "LOW" : "—"
-            arm_txt        = w_armed ? "ARM " + (w_armSide > 0 ? "↑HIGH" : "↓LOW") : "SKIP"
-            skip_reason    = not has_prior ? "no prior" : not agree ? "disagree" : not in_mid_band ? "edge band" : not strong_enough ? "weak score" : ""
+            verb           = i_scalp_mode ? "FADE " : "ARM "
+            arm_txt        = w_armed ? verb + (w_armSide > 0 ? "↑LONG" : "↓SHORT") : "SKIP"
+            small_range    = i_scalp_mode and has_prior and agree and in_mid_band and strong_enough and (w_magH - w_magL) < i_scalp_min_range
+            skip_reason    = not has_prior ? "no prior" : not agree ? "disagree" : not in_mid_band ? "edge band" : not strong_enough ? "weak score" : small_range ? "tight range" : ""
             vwap_txt = w_vwapSide > 0 ? "+1" : w_vwapSide < 0 ? "-1" : "0"
             htf_txt  = w_htfTrend > 0 ? "+1" : w_htfTrend < 0 ? "-1" : "0"
             score_txt = w_liveScore > 0 ? "+" + str.tostring(w_liveScore) : str.tostring(w_liveScore)
@@ -433,36 +491,96 @@ if barstate.isconfirmed
 
     else if not na(w_magTime)
         w_bars := na(w_bars) ? 1 : w_bars + 1
-        if w_armed and not w_entered and w_bars == 1
-            already_hit = w_armSide > 0 ? high >= w_magH : low <= w_magL
-            if not already_hit
-                w_entered  := true
-                w_entryPx  := open
-                w_entryBar := bar_index
-                target_px  = i_target_at_mid ? w_magMid : (w_armSide > 0 ? w_magH : w_magL)
-                w_stopPx   := calc_stop(w_armSide, w_magH, w_magL, w_magMid, w_magAtr, w_entryPx)
-                w_tgtPx    := target_px
-                s_entered  += 1
-                x2 = bar_index + (30 - w_bars)
-                lnEntry := line.new(bar_index, w_entryPx, x2, w_entryPx, color=i_col_entry, width=2)
-                lnStop  := line.new(bar_index, w_stopPx,  x2, w_stopPx,  color=i_col_stop,  width=1, style=line.style_dashed)
-                lnTgt   := line.new(bar_index, w_tgtPx,   x2, w_tgtPx,   color=i_col_target,width=1, style=line.style_dashed)
-                label.new(bar_index, w_entryPx, (w_armSide > 0 ? "▲ LONG" : "▼ SHORT") + " @" + str.tostring(w_entryPx, format.mintick), style=w_armSide > 0 ? label.style_label_up : label.style_label_down, color=w_armSide > 0 ? i_col_long : i_col_short, textcolor=i_col_text, size=size.small)
 
-        if w_entered and na(w_outcome)
-            is_long    = w_armSide > 0
-            hit_target = is_long ? high >= w_tgtPx  : low  <= w_tgtPx
-            hit_stop   = is_long ? low  <= w_stopPx : high >= w_stopPx
-            if hit_stop
-                w_outcome := "LOSS"
-                s_losses += 1
-                if i_show_outcome
-                    label.new(bar_index, w_stopPx, "LOSS -" + str.tostring(math.abs(w_stopPx - w_entryPx), format.mintick), style=label.style_label_left, color=i_col_stop, textcolor=i_col_text, size=size.tiny)
-            else if hit_target
-                w_outcome := "WIN"
-                s_wins += 1
-                if i_show_outcome
-                    label.new(bar_index, w_tgtPx, "WIN +" + str.tostring(math.abs(w_tgtPx - w_entryPx), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+        // ===== SCALP MODE branch (Setup A — Sweep Fade) =====
+        if i_scalp_mode
+            // ---- limit fill check ----
+            if w_armed and not w_entered and not na(w_limitPx)
+                bool is_short_fade = w_armSide < 0
+                bool filled = is_short_fade ? (high >= w_limitPx) : (low <= w_limitPx)
+                if filled
+                    w_entered  := true
+                    w_entryPx  := w_limitPx
+                    w_entryBar := bar_index
+                    float full_dist = i_scalp_scale ? i_scalp_runner_pts : i_scalp_target_pts
+                    w_stopPx := is_short_fade ? (w_entryPx + i_scalp_stop_pts) : (w_entryPx - i_scalp_stop_pts)
+                    w_tgtPx  := is_short_fade ? (w_entryPx - full_dist)        : (w_entryPx + full_dist)
+                    w_1rPx   := i_scalp_scale ? (is_short_fade ? (w_entryPx - i_scalp_target_pts) : (w_entryPx + i_scalp_target_pts)) : na
+                    s_scalp_filled += 1
+                    int x2 = bar_index + math.max(1, 30 - w_bars)
+                    lnEntry := line.new(bar_index, w_entryPx, x2, w_entryPx, color=i_col_entry, width=2)
+                    lnStop  := line.new(bar_index, w_stopPx,  x2, w_stopPx,  color=i_col_stop,  width=1, style=line.style_dashed)
+                    lnTgt   := line.new(bar_index, w_tgtPx,   x2, w_tgtPx,   color=i_col_target,width=1, style=line.style_dashed)
+                    label.new(bar_index, w_entryPx, (is_short_fade ? "▼ FADE SHORT" : "▲ FADE LONG") + " @" + str.tostring(w_entryPx, format.mintick), style=is_short_fade ? label.style_label_down : label.style_label_up, color=is_short_fade ? i_col_short : i_col_long, textcolor=i_col_text, size=size.small)
+
+            // ---- trade management ----
+            if w_entered and na(w_outcome)
+                bool is_long_s = w_armSide > 0
+                // Same-bar precedence: if a single 30s bar straddles both stop
+                // and target, count it as LOSS (conservative).
+                bool hit_stop_s   = is_long_s ? low  <= w_stopPx : high >= w_stopPx
+                bool hit_target_s = is_long_s ? high >= w_tgtPx  : low  <= w_tgtPx
+                bool hit_1r       = i_scalp_scale and not w_partial_taken and not na(w_1rPx) and (is_long_s ? high >= w_1rPx : low <= w_1rPx)
+
+                // Scale: take partial at 1R FIRST (before stop check),
+                // then move stop to BE for the remainder.
+                if hit_1r and not hit_stop_s
+                    w_partial_taken := true
+                    w_stopPx        := w_entryPx
+                    s_scalp_partials += 1
+                    if i_show_outcome
+                        label.new(bar_index, w_1rPx, "1R +" + str.tostring(i_scalp_target_pts, "#.#"), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+
+                if hit_stop_s
+                    // Stop after partial = BE for the runner (+0.5R net from partial → WIN classification)
+                    if w_partial_taken
+                        w_outcome := "WIN"
+                        s_scalp_wins += 1
+                        if i_show_outcome
+                            label.new(bar_index, w_stopPx, "BE (+" + str.tostring(i_scalp_target_pts / 2.0, "#.#") + "R net)", style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+                    else
+                        w_outcome := "LOSS"
+                        s_scalp_losses += 1
+                        if i_show_outcome
+                            label.new(bar_index, w_stopPx, "LOSS -" + str.tostring(math.abs(w_stopPx - w_entryPx), format.mintick), style=label.style_label_left, color=i_col_stop, textcolor=i_col_text, size=size.tiny)
+                else if hit_target_s
+                    w_outcome := "WIN"
+                    s_scalp_wins += 1
+                    if i_show_outcome
+                        label.new(bar_index, w_tgtPx, "WIN +" + str.tostring(math.abs(w_tgtPx - w_entryPx), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+
+        // ===== SWING MODE branch (v11 behavior, unchanged) =====
+        else
+            if w_armed and not w_entered and w_bars == 1
+                already_hit = w_armSide > 0 ? high >= w_magH : low <= w_magL
+                if not already_hit
+                    w_entered  := true
+                    w_entryPx  := open
+                    w_entryBar := bar_index
+                    target_px  = i_target_at_mid ? w_magMid : (w_armSide > 0 ? w_magH : w_magL)
+                    w_stopPx   := calc_stop(w_armSide, w_magH, w_magL, w_magMid, w_magAtr, w_entryPx)
+                    w_tgtPx    := target_px
+                    s_entered  += 1
+                    x2 = bar_index + (30 - w_bars)
+                    lnEntry := line.new(bar_index, w_entryPx, x2, w_entryPx, color=i_col_entry, width=2)
+                    lnStop  := line.new(bar_index, w_stopPx,  x2, w_stopPx,  color=i_col_stop,  width=1, style=line.style_dashed)
+                    lnTgt   := line.new(bar_index, w_tgtPx,   x2, w_tgtPx,   color=i_col_target,width=1, style=line.style_dashed)
+                    label.new(bar_index, w_entryPx, (w_armSide > 0 ? "▲ LONG" : "▼ SHORT") + " @" + str.tostring(w_entryPx, format.mintick), style=w_armSide > 0 ? label.style_label_up : label.style_label_down, color=w_armSide > 0 ? i_col_long : i_col_short, textcolor=i_col_text, size=size.small)
+
+            if w_entered and na(w_outcome)
+                is_long    = w_armSide > 0
+                hit_target = is_long ? high >= w_tgtPx  : low  <= w_tgtPx
+                hit_stop   = is_long ? low  <= w_stopPx : high >= w_stopPx
+                if hit_stop
+                    w_outcome := "LOSS"
+                    s_losses += 1
+                    if i_show_outcome
+                        label.new(bar_index, w_stopPx, "LOSS -" + str.tostring(math.abs(w_stopPx - w_entryPx), format.mintick), style=label.style_label_left, color=i_col_stop, textcolor=i_col_text, size=size.tiny)
+                else if hit_target
+                    w_outcome := "WIN"
+                    s_wins += 1
+                    if i_show_outcome
+                        label.new(bar_index, w_tgtPx, "WIN +" + str.tostring(math.abs(w_tgtPx - w_entryPx), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
 
 // =============================================================================
 // Execution-window background shading
@@ -476,25 +594,44 @@ bgcolor(i_show_window_bg and in_window ? i_col_window_bg : na)
 // =============================================================================
 // Stats table — user-positioned
 // =============================================================================
-var table stbl = table.new(get_pos(i_stats_pos), columns=2, rows=7, bgcolor=i_col_tbl_bg, border_width=1)
+var table stbl = table.new(get_pos(i_stats_pos), columns=2, rows=8, bgcolor=i_col_tbl_bg, border_width=1)
 if i_show_stats and barstate.islast
     table.set_position(stbl, get_pos(i_stats_pos))
-    int decided = s_wins + s_losses
-    float wr = decided > 0 ? (s_wins / float(decided)) * 100.0 : na
     table.cell(stbl, 0, 0, "Magnet Compass", text_color=i_col_text, text_size=size.small)
-    table.cell(stbl, 1, 0, "v11", text_color=color.gray, text_size=size.small)
-    table.cell(stbl, 0, 1, "stop",     text_color=i_col_text)
-    table.cell(stbl, 1, 1, i_stop_style, text_color=i_col_text)
-    table.cell(stbl, 0, 2, "armed",    text_color=i_col_text)
-    table.cell(stbl, 1, 2, str.tostring(s_armed), text_color=i_col_text)
-    table.cell(stbl, 0, 3, "entered",  text_color=i_col_text)
-    table.cell(stbl, 1, 3, str.tostring(s_entered), text_color=i_col_text)
-    table.cell(stbl, 0, 4, "wins",     text_color=i_col_target)
-    table.cell(stbl, 1, 4, str.tostring(s_wins),   text_color=i_col_target)
-    table.cell(stbl, 0, 5, "losses",   text_color=i_col_stop)
-    table.cell(stbl, 1, 5, str.tostring(s_losses), text_color=i_col_stop)
-    table.cell(stbl, 0, 6, "win%",     text_color=i_col_edge)
-    table.cell(stbl, 1, 6, na(wr) ? "—" : str.tostring(wr, "#.#") + "%", text_color=i_col_edge)
+    table.cell(stbl, 1, 0, i_scalp_mode ? "v12 SCALP" : "v12 swing", text_color=color.gray, text_size=size.small)
+    if i_scalp_mode
+        int s_decided = s_scalp_wins + s_scalp_losses
+        float s_wr = s_decided > 0 ? (s_scalp_wins / float(s_decided)) * 100.0 : na
+        string tgt_str = i_scalp_scale ? (str.tostring(i_scalp_target_pts, "#.#") + "→" + str.tostring(i_scalp_runner_pts, "#.#")) : str.tostring(i_scalp_target_pts, "#.#")
+        table.cell(stbl, 0, 1, "tgt / stop", text_color=i_col_text)
+        table.cell(stbl, 1, 1, tgt_str + " / " + str.tostring(i_scalp_stop_pts, "#.#") + "pt", text_color=i_col_text)
+        table.cell(stbl, 0, 2, "armed",    text_color=i_col_text)
+        table.cell(stbl, 1, 2, str.tostring(s_scalp_armed), text_color=i_col_text)
+        table.cell(stbl, 0, 3, "filled",   text_color=i_col_text)
+        table.cell(stbl, 1, 3, str.tostring(s_scalp_filled), text_color=i_col_text)
+        table.cell(stbl, 0, 4, "wins",     text_color=i_col_target)
+        table.cell(stbl, 1, 4, str.tostring(s_scalp_wins),   text_color=i_col_target)
+        table.cell(stbl, 0, 5, "partials", text_color=i_col_target)
+        table.cell(stbl, 1, 5, str.tostring(s_scalp_partials), text_color=i_col_target)
+        table.cell(stbl, 0, 6, "losses",   text_color=i_col_stop)
+        table.cell(stbl, 1, 6, str.tostring(s_scalp_losses), text_color=i_col_stop)
+        table.cell(stbl, 0, 7, "win%",     text_color=i_col_edge)
+        table.cell(stbl, 1, 7, na(s_wr) ? "—" : str.tostring(s_wr, "#.#") + "%", text_color=i_col_edge)
+    else
+        int decided = s_wins + s_losses
+        float wr = decided > 0 ? (s_wins / float(decided)) * 100.0 : na
+        table.cell(stbl, 0, 1, "stop",     text_color=i_col_text)
+        table.cell(stbl, 1, 1, i_stop_style, text_color=i_col_text)
+        table.cell(stbl, 0, 2, "armed",    text_color=i_col_text)
+        table.cell(stbl, 1, 2, str.tostring(s_armed), text_color=i_col_text)
+        table.cell(stbl, 0, 3, "entered",  text_color=i_col_text)
+        table.cell(stbl, 1, 3, str.tostring(s_entered), text_color=i_col_text)
+        table.cell(stbl, 0, 4, "wins",     text_color=i_col_target)
+        table.cell(stbl, 1, 4, str.tostring(s_wins),   text_color=i_col_target)
+        table.cell(stbl, 0, 5, "losses",   text_color=i_col_stop)
+        table.cell(stbl, 1, 5, str.tostring(s_losses), text_color=i_col_stop)
+        table.cell(stbl, 0, 6, "win%",     text_color=i_col_edge)
+        table.cell(stbl, 1, 6, na(wr) ? "—" : str.tostring(wr, "#.#") + "%", text_color=i_col_edge)
 
 // =============================================================================
 // Reference candles + trading windows (12-hour AM/PM)
