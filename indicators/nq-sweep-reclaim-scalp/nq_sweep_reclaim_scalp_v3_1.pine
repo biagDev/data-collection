@@ -1,0 +1,383 @@
+//@version=5
+// ============================================================================
+// NQ Sweep+Reclaim Scalp v3.1 — session-aware, 10/12 box
+//
+// Data-led updates from analyses/sweep-reclaim-features (n=357 v2 events):
+//   FIX  Box geometry → 10pt target / 12pt stop. Same expectancy as 10/8 but
+//        76% win vs 70% on filtered subset — fewer stop-outs, easier to ride.
+//   FIX  Sweep band 4-7 now applies ONLY to NY + London. Asia accepts any
+//        sweep depth (Asia all = 70% win at 10/12; Asia band filter
+//        excludes its good shallow / very-deep cells).
+//   DROP Reclaim lag ≥3 filter (conflicts with band; deep sweeps reclaim fast).
+//   DROP "Avoid medium ref range (12-22pt)" filter. New data shows medium
+//        range is fine; was -19pp in old data, the finding didn't hold.
+//   KEEP killzone whitelist (NY/London/Asia). Other + Globex excluded.
+//   KEEP min ref range ≥ 8pt, 2-bar reclaim, 10-bar time stop.
+//
+// IMPLEMENTATION NOTE: Pine v5 forbids functions modifying global vars, so the
+// per-session counter updates (s_wins_ny, etc.) are inlined as ternary
+// increments at each outcome point rather than wrapped in an inc_outcome() fn.
+// ============================================================================
+indicator("NQ Sweep+Reclaim Scalp v3.1", overlay=true, max_lines_count=500, max_labels_count=500)
+
+i_trade_ny     = input.bool(true, "Trade NY (09:30-15:45 ET)",   group="Sessions")
+i_trade_london = input.bool(true, "Trade London (03:00-05:00)",  group="Sessions")
+i_trade_asia   = input.bool(true, "Trade Asia (20:00-23:00)",    group="Sessions")
+
+i_sweep_buf_ticks  = input.int  (2,    "Sweep buffer (ticks beyond ref H/L)", minval=1, maxval=20, group="Setup")
+i_reclaim_bars     = input.int  (6,    "Bars allowed to reclaim after sweep", minval=1, maxval=20, group="Setup")
+i_late_cutoff_min  = input.int  (3,    "Block new entries in last N min of window", minval=0, maxval=10, group="Setup")
+i_min_ref_range    = input.float(8.0,  "Min reference candle range (pts)",     minval=0.0, maxval=100.0, step=0.5, group="Setup")
+
+i_apply_band_ny      = input.bool (true, "Require sweep band 4-7 in NY",     group="Band", tooltip="NY all = -0.22/trade. NY+band = +4.27/trade. Band is essential for NY.")
+i_apply_band_london  = input.bool (true, "Require sweep band 4-7 in London", group="Band")
+i_apply_band_asia    = input.bool (false,"Require sweep band 4-7 in Asia",   group="Band", tooltip="OFF by default. Asia unfiltered = +2.57/trade. Banding Asia loses its good shallow/very-deep cells.")
+i_band_min           = input.float(4.0,  "Sweep band MIN (pts)",  minval=0.0, maxval=20.0, step=0.5, group="Band")
+i_band_max           = input.float(7.0,  "Sweep band MAX (pts)",  minval=1.0, maxval=40.0, step=0.5, group="Band")
+
+i_target_pts       = input.float(10.0, "Target (points)",   minval=1.0, maxval=50.0, step=0.25, group="Exit", tooltip="10pt target hits in 1-3 min typically. 10/12 box: 76% win on killzone+band, +4.65/trade.")
+i_stop_pts         = input.float(12.0, "Stop (points)",     minval=1.0, maxval=50.0, step=0.25, group="Exit", tooltip="12pt stop matches the 30s NQ noise envelope. 8pt was getting noise-tagged on 62% of events.")
+i_time_stop_bars   = input.int  (10,   "Time stop (bars after entry)", minval=2, maxval=30, group="Exit")
+i_scale_enabled    = input.bool (false,"Scale: half at 1R, stop->BE, runner",  group="Exit")
+i_runner_pts       = input.float(18.0, "Runner target (points)", minval=1.0, maxval=80.0, step=0.5, group="Exit")
+
+i_show_refs        = input.bool (true, "Draw reference H/L extended lines", group="Display")
+i_show_window_bg   = input.bool (true, "Shade trade-window background",     group="Display")
+i_show_outcome     = input.bool (true, "Plot WIN/LOSS labels",              group="Display")
+i_show_stats       = input.bool (true, "Show rolling stats table",          group="Display")
+i_show_setup_label = input.bool (true, "Show setup info label per window",  group="Display")
+i_stats_pos        = input.string("top_right", "Stats table position", options=["top_left","top_center","top_right","middle_left","middle_right","bottom_left","bottom_center","bottom_right"], group="Display")
+
+i_col_ref     = input.color(color.aqua,                 "Reference H/L lines", group="Style")
+i_col_bg      = input.color(color.new(color.blue, 94),  "Window bg",           group="Style")
+i_col_entry   = input.color(color.yellow,               "Entry",               group="Style")
+i_col_stop    = input.color(color.red,                  "Stop / LOSS",         group="Style")
+i_col_target  = input.color(color.lime,                 "Target / WIN",        group="Style")
+i_col_long    = input.color(color.new(color.green, 0),  "LONG label",          group="Style")
+i_col_short   = input.color(color.new(color.red, 0),    "SHORT label",         group="Style")
+i_col_swept   = input.color(color.new(color.orange, 20),"Sweep marker",        group="Style")
+i_col_text    = input.color(color.white,                "Label text",          group="Style")
+i_col_tbl_bg  = input.color(color.new(color.black, 60), "Table bg",            group="Style")
+
+tz = "America/New_York"
+htf = "15"
+[h15, l15, c15, t15] = request.security(syminfo.tickerid, htf, [high[1], low[1], close[1], time[1]], lookahead=barmerge.lookahead_on)
+isNew15m = timeframe.change(htf)
+vwapSess = ta.vwap(hlc3)
+
+get_pos(string s) =>
+    switch s
+        "top_left" => position.top_left
+        "top_center" => position.top_center
+        "top_right" => position.top_right
+        "middle_left" => position.middle_left
+        "middle_right" => position.middle_right
+        "bottom_left" => position.bottom_left
+        "bottom_center" => position.bottom_center
+        "bottom_right" => position.bottom_right
+        => position.top_right
+
+session_of(int bkt) =>
+    bkt >= 930  and bkt <= 1545 ? "NY" :
+     bkt >= 300  and bkt <= 500  ? "London" :
+     bkt >= 2000 and bkt <= 2300 ? "Asia" :
+     bkt >= 1800 and bkt <= 1900 ? "Globex" : "Other"
+
+session_allowed(string sess) =>
+    (sess == "NY" and i_trade_ny) or (sess == "London" and i_trade_london) or (sess == "Asia" and i_trade_asia)
+
+band_required(string sess) =>
+    (sess == "NY" and i_apply_band_ny) or (sess == "London" and i_apply_band_london) or (sess == "Asia" and i_apply_band_asia)
+
+var float ref_h         = na
+var float ref_l         = na
+var float ref_mid       = na
+var int   ref_bkt       = na
+var string ref_sess     = "Other"
+var int   win_end_bar   = na
+
+var bool  win_armed     = false
+var bool  highTagged    = false
+var bool  lowTagged     = false
+var bool  lowSwept      = false
+var bool  highSwept     = false
+var float sweepLow      = na
+var float sweepHigh     = na
+var int   sweepBarIdx   = na
+
+var bool  tradeTaken    = false
+var bool  tradeActive   = false
+var bool  partial_taken = false
+var int   tradeSide     = 0
+var float entryPx       = na
+var float stopPx        = na
+var float tgtPx         = na
+var float r1Px          = na
+var int   entryBarIdx   = na
+
+var line lnRefH = na
+var line lnRefL = na
+var line lnEntry = na
+var line lnStop  = na
+var line lnTgt   = na
+var label setupLab = na
+
+var int s_armed     = 0
+var int s_filled    = 0
+var int s_skip_band = 0
+var int s_wins      = 0
+var int s_losses    = 0
+var int s_timestops = 0
+var int s_wins_ny   = 0
+var int s_los_ny    = 0
+var int s_wins_lon  = 0
+var int s_los_lon   = 0
+var int s_wins_asia = 0
+var int s_los_asia  = 0
+
+del_line(line l) =>
+    if not na(l)
+        line.delete(l)
+del_label(label l) =>
+    if not na(l)
+        label.delete(l)
+
+// Note: per-session counter updates are inlined via ternary increments
+// because Pine v5 doesn't allow functions to mutate global `var` state.
+
+if barstate.isconfirmed
+    if isNew15m
+        if tradeActive
+            float endPx = close[1]
+            float diff = endPx - entryPx
+            bool is_long = tradeSide > 0
+            bool _win = partial_taken or (is_long ? diff > 0 : diff < 0)
+            if _win
+                s_wins += 1
+                s_wins_ny   := s_wins_ny   + (ref_sess == "NY"     ? 1 : 0)
+                s_wins_lon  := s_wins_lon  + (ref_sess == "London" ? 1 : 0)
+                s_wins_asia := s_wins_asia + (ref_sess == "Asia"   ? 1 : 0)
+                if i_show_outcome
+                    label.new(bar_index - 1, endPx, "WIN +" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+            else
+                s_losses += 1
+                s_los_ny   := s_los_ny   + (ref_sess == "NY"     ? 1 : 0)
+                s_los_lon  := s_los_lon  + (ref_sess == "London" ? 1 : 0)
+                s_los_asia := s_los_asia + (ref_sess == "Asia"   ? 1 : 0)
+                if i_show_outcome
+                    label.new(bar_index - 1, endPx, "LOSS -" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_stop, textcolor=i_col_text, size=size.tiny)
+            tradeActive := false
+
+        del_line(lnRefH)
+        del_line(lnRefL)
+        del_line(lnEntry)
+        del_line(lnStop)
+        del_line(lnTgt)
+        del_label(setupLab)
+
+        ref_h    := h15
+        ref_l    := l15
+        ref_mid  := (ref_h + ref_l) / 2.0
+        ref_bkt  := hour(t15, tz) * 100 + minute(t15, tz)
+        ref_sess := session_of(ref_bkt)
+        win_end_bar := bar_index + 30
+
+        highTagged := false
+        lowTagged  := false
+        lowSwept   := false
+        highSwept  := false
+        sweepLow   := na
+        sweepHigh  := na
+        sweepBarIdx := na
+        tradeTaken := false
+        partial_taken := false
+        tradeSide  := 0
+        entryPx    := na
+        stopPx     := na
+        tgtPx      := na
+        r1Px       := na
+        entryBarIdx := na
+
+        float ref_rng = ref_h - ref_l
+        bool sess_ok  = session_allowed(ref_sess)
+        bool range_ok = ref_rng >= i_min_ref_range
+        bool armed = sess_ok and range_ok
+        win_armed := armed
+        if armed
+            s_armed += 1
+
+        if armed and i_show_refs
+            lnRefH := line.new(bar_index, ref_h, win_end_bar, ref_h, color=i_col_ref, width=2)
+            lnRefL := line.new(bar_index, ref_l, win_end_bar, ref_l, color=i_col_ref, width=2)
+        if armed and i_show_setup_label
+            string band_badge = band_required(ref_sess) ? " [band]" : " [open]"
+            string lbl = "Bkt " + str.tostring(ref_bkt) + "  " + ref_sess + band_badge + "  Rng " + str.tostring(ref_rng, "#.#") + "pt"
+            setupLab := label.new(bar_index, ref_h, lbl, style=label.style_label_lower_left, color=color.new(i_col_ref, 70), textcolor=i_col_text, size=size.small)
+
+    else if not na(ref_h) and bar_index <= win_end_bar
+        if high >= ref_h
+            highTagged := true
+        if low <= ref_l
+            lowTagged := true
+
+        float buf = i_sweep_buf_ticks * syminfo.mintick
+        if low <= ref_l - buf
+            if not lowSwept
+                lowSwept := true
+                sweepLow := low
+                sweepBarIdx := bar_index
+            else
+                sweepLow := math.min(sweepLow, low)
+        if high >= ref_h + buf
+            if not highSwept
+                highSwept := true
+                sweepHigh := high
+                sweepBarIdx := bar_index
+            else
+                sweepHigh := math.max(sweepHigh, high)
+
+        int bars_since_sweep = na(sweepBarIdx) ? 999 : bar_index - sweepBarIdx
+        bool within_reclaim = bars_since_sweep <= i_reclaim_bars
+
+        bool reclaim_long  = lowSwept  and close > ref_l and close[1] > ref_l and within_reclaim
+        bool reclaim_short = highSwept and close < ref_h and close[1] < ref_h and within_reclaim
+
+        int bars_left_in_window = win_end_bar - bar_index
+        bool time_ok = bars_left_in_window >= (i_late_cutoff_min * 2)
+
+        bool can_signal = win_armed and not tradeTaken and not tradeActive and time_ok
+
+        bool buy_signal_pre  = can_signal and reclaim_long  and not highTagged
+        bool sell_signal_pre = can_signal and reclaim_short and not lowTagged
+
+        if buy_signal_pre or sell_signal_pre
+            bool is_long = buy_signal_pre
+            float sweep_dep = is_long ? (ref_l - sweepLow) : (sweepHigh - ref_h)
+            bool band_ok = not band_required(ref_sess) or (sweep_dep >= i_band_min and sweep_dep < i_band_max)
+            if not band_ok
+                s_skip_band += 1
+                tradeTaken := true
+                if i_show_outcome
+                    label.new(bar_index, close, "SKIP band " + ref_sess + " (" + str.tostring(sweep_dep, "#.#") + "pt)", style=label.style_label_left, color=color.new(color.gray, 40), textcolor=i_col_text, size=size.tiny)
+            else
+                tradeTaken  := true
+                tradeActive := true
+                tradeSide   := is_long ? 1 : -1
+                entryPx     := close
+                entryBarIdx := bar_index
+                stopPx      := is_long ? (entryPx - i_stop_pts) : (entryPx + i_stop_pts)
+                float full_dist = i_scale_enabled ? i_runner_pts : i_target_pts
+                tgtPx       := is_long ? (entryPx + full_dist) : (entryPx - full_dist)
+                r1Px        := i_scale_enabled ? (is_long ? (entryPx + i_target_pts) : (entryPx - i_target_pts)) : na
+                s_filled    += 1
+                int x2 = win_end_bar
+                lnEntry := line.new(bar_index, entryPx, x2, entryPx, color=i_col_entry, width=2)
+                lnStop  := line.new(bar_index, stopPx,  x2, stopPx,  color=i_col_stop,  width=1, style=line.style_dashed)
+                lnTgt   := line.new(bar_index, tgtPx,   x2, tgtPx,   color=i_col_target,width=1, style=line.style_dashed)
+                bool vwap_below = not na(vwapSess) and close < vwapSess
+                string side_txt = is_long ? "LONG" : "SHORT"
+                string conf_txt = (ref_sess == "Asia" ? " *A" : "") + (vwap_below ? " *bV" : "")
+                label.new(bar_index, entryPx, side_txt + " @" + str.tostring(entryPx, format.mintick) + " sw=" + str.tostring(sweep_dep, "#.#") + "pt" + conf_txt, style=is_long ? label.style_label_up : label.style_label_down, color=is_long ? i_col_long : i_col_short, textcolor=i_col_text, size=size.small)
+
+        if tradeActive
+            bool is_long = tradeSide > 0
+            bool hit_stop   = is_long ? low  <= stopPx : high >= stopPx
+            bool hit_target = is_long ? high >= tgtPx  : low  <= tgtPx
+            bool hit_1r     = i_scale_enabled and not partial_taken and not na(r1Px) and (is_long ? high >= r1Px : low <= r1Px)
+
+            if hit_1r and not hit_stop
+                partial_taken := true
+                stopPx        := entryPx
+                if i_show_outcome
+                    label.new(bar_index, r1Px, "1R +" + str.tostring(i_target_pts, "#.#"), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+
+            if hit_stop
+                tradeActive := false
+                if partial_taken
+                    s_wins += 1
+                    s_wins_ny   := s_wins_ny   + (ref_sess == "NY"     ? 1 : 0)
+                    s_wins_lon  := s_wins_lon  + (ref_sess == "London" ? 1 : 0)
+                    s_wins_asia := s_wins_asia + (ref_sess == "Asia"   ? 1 : 0)
+                    if i_show_outcome
+                        label.new(bar_index, stopPx, "BE win", style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+                else
+                    s_losses += 1
+                    s_los_ny   := s_los_ny   + (ref_sess == "NY"     ? 1 : 0)
+                    s_los_lon  := s_los_lon  + (ref_sess == "London" ? 1 : 0)
+                    s_los_asia := s_los_asia + (ref_sess == "Asia"   ? 1 : 0)
+                    if i_show_outcome
+                        label.new(bar_index, stopPx, "LOSS -" + str.tostring(math.abs(stopPx - entryPx), format.mintick), style=label.style_label_left, color=i_col_stop, textcolor=i_col_text, size=size.tiny)
+            else if hit_target
+                tradeActive := false
+                s_wins += 1
+                s_wins_ny   := s_wins_ny   + (ref_sess == "NY"     ? 1 : 0)
+                s_wins_lon  := s_wins_lon  + (ref_sess == "London" ? 1 : 0)
+                s_wins_asia := s_wins_asia + (ref_sess == "Asia"   ? 1 : 0)
+                if i_show_outcome
+                    label.new(bar_index, tgtPx, "WIN +" + str.tostring(math.abs(tgtPx - entryPx), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+            else if not na(entryBarIdx) and (bar_index - entryBarIdx) >= i_time_stop_bars
+                tradeActive := false
+                float diff = close - entryPx
+                bool win_ts = partial_taken or (is_long ? diff > 0 : diff < 0)
+                if win_ts
+                    s_wins += 1
+                    s_timestops += 1
+                    s_wins_ny   := s_wins_ny   + (ref_sess == "NY"     ? 1 : 0)
+                    s_wins_lon  := s_wins_lon  + (ref_sess == "London" ? 1 : 0)
+                    s_wins_asia := s_wins_asia + (ref_sess == "Asia"   ? 1 : 0)
+                    if i_show_outcome
+                        label.new(bar_index, close, "TS WIN +" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=i_col_target, textcolor=color.black, size=size.tiny)
+                else
+                    s_losses += 1
+                    s_timestops += 1
+                    s_los_ny   := s_los_ny   + (ref_sess == "NY"     ? 1 : 0)
+                    s_los_lon  := s_los_lon  + (ref_sess == "London" ? 1 : 0)
+                    s_los_asia := s_los_asia + (ref_sess == "Asia"   ? 1 : 0)
+                    if i_show_outcome
+                        label.new(bar_index, close, "TS LOSS -" + str.tostring(math.abs(diff), format.mintick), style=label.style_label_left, color=color.new(color.orange, 20), textcolor=i_col_text, size=size.tiny)
+
+        if lowSwept and bar_index == sweepBarIdx
+            label.new(bar_index, sweepLow, "sw", style=label.style_label_up, color=i_col_swept, textcolor=color.black, size=size.tiny)
+        if highSwept and bar_index == sweepBarIdx
+            label.new(bar_index, sweepHigh, "sw", style=label.style_label_down, color=i_col_swept, textcolor=color.black, size=size.tiny)
+
+in_armed_window = not na(ref_h) and bar_index <= win_end_bar and win_armed
+bgcolor(i_show_window_bg and in_armed_window ? i_col_bg : na)
+
+pct(int w, int l) =>
+    int d = w + l
+    d > 0 ? str.tostring(100.0 * w / d, "#.#") + "%" : "--"
+
+var table stbl = table.new(get_pos(i_stats_pos), columns=2, rows=14, bgcolor=i_col_tbl_bg, border_width=1)
+if i_show_stats and barstate.islast
+    table.set_position(stbl, get_pos(i_stats_pos))
+    int decided = s_wins + s_losses
+    float wr = decided > 0 ? (s_wins / float(decided)) * 100.0 : na
+    table.cell(stbl, 0, 0, "Sweep+Reclaim", text_color=i_col_text, text_size=size.small)
+    table.cell(stbl, 1, 0, "v3.1 session-aware", text_color=color.gray, text_size=size.small)
+    table.cell(stbl, 0, 1, "box",         text_color=i_col_text)
+    table.cell(stbl, 1, 1, str.tostring(i_target_pts, "#.#") + " / " + str.tostring(i_stop_pts, "#.#") + "pt", text_color=i_col_text)
+    table.cell(stbl, 0, 2, "band (NY/Lon)", text_color=i_col_text)
+    table.cell(stbl, 1, 2, str.tostring(i_band_min, "#.#") + "-" + str.tostring(i_band_max, "#.#") + "pt", text_color=i_col_text)
+    table.cell(stbl, 0, 3, "armed wins",  text_color=i_col_text)
+    table.cell(stbl, 1, 3, str.tostring(s_armed),  text_color=i_col_text)
+    table.cell(stbl, 0, 4, "filled",      text_color=i_col_text)
+    table.cell(stbl, 1, 4, str.tostring(s_filled), text_color=i_col_text)
+    table.cell(stbl, 0, 5, "skip:band",   text_color=color.gray)
+    table.cell(stbl, 1, 5, str.tostring(s_skip_band), text_color=color.gray)
+    table.cell(stbl, 0, 6, "wins",        text_color=i_col_target)
+    table.cell(stbl, 1, 6, str.tostring(s_wins),   text_color=i_col_target)
+    table.cell(stbl, 0, 7, "losses",      text_color=i_col_stop)
+    table.cell(stbl, 1, 7, str.tostring(s_losses), text_color=i_col_stop)
+    table.cell(stbl, 0, 8, "time-stops",  text_color=color.gray)
+    table.cell(stbl, 1, 8, str.tostring(s_timestops), text_color=color.gray)
+    table.cell(stbl, 0, 9, "win%",        text_color=color.yellow)
+    table.cell(stbl, 1, 9, na(wr) ? "--" : str.tostring(wr, "#.#") + "%", text_color=color.yellow)
+    table.cell(stbl, 0, 10,"NY w/l/%",    text_color=i_col_text)
+    table.cell(stbl, 1, 10,str.tostring(s_wins_ny) + "/" + str.tostring(s_los_ny) + "/" + pct(s_wins_ny, s_los_ny), text_color=i_col_text)
+    table.cell(stbl, 0, 11,"London w/l/%",text_color=i_col_text)
+    table.cell(stbl, 1, 11,str.tostring(s_wins_lon) + "/" + str.tostring(s_los_lon) + "/" + pct(s_wins_lon, s_los_lon), text_color=i_col_text)
+    table.cell(stbl, 0, 12,"Asia w/l/%",  text_color=i_col_text)
+    table.cell(stbl, 1, 12,str.tostring(s_wins_asia) + "/" + str.tostring(s_los_asia) + "/" + pct(s_wins_asia, s_los_asia), text_color=i_col_text)
+    table.cell(stbl, 0, 13,"target",      text_color=color.gray)
+    table.cell(stbl, 1, 13,"~70%/+4pt",   text_color=color.gray)
