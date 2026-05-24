@@ -1,0 +1,260 @@
+//@version=5
+// ============================================================================
+// Sweep+Reclaim Event Logger — Phase 1 of Option 4 data mining
+//
+// PURPOSE
+// At every 15m reference candle close, watches for sweep+reclaim events
+// during the next 15m window. When one fires, snapshots ~15 features at the
+// reclaim bar, then tracks forward bars for `horizon_bars` to measure:
+//   - max favorable excursion (MFE)
+//   - max adverse excursion (MAE)
+//   - time-to-hit at 6 / 10 / 15 pt favorable
+//   - did an 8-pt adverse hit first (would have stopped a tight box)
+//
+// At horizon completion, emits a single pipe-delimited LABEL that can be
+// scraped via the TradingView MCP (data_get_pine_labels). Run for 3-7 days,
+// dump labels to CSV via merge.mjs, then run analyze.mjs to discover which
+// feature combinations produce edge.
+//
+// SCOPE: events happen 24h. Filtering by NY/non-NY is a downstream concern.
+// USAGE: 30s NQ1! chart. Open Pine editor, paste, save as a NEW script.
+// ============================================================================
+indicator("Sweep+Reclaim Event Logger", overlay=true, max_lines_count=100, max_labels_count=500)
+
+// ---- Inputs ----------------------------------------------------------------
+i_sweep_buf_ticks = input.int  (2,  "Sweep buffer (ticks beyond ref H/L)", minval=1, maxval=20, group="Detection")
+i_reclaim_bars    = input.int  (6,  "Bars allowed to reclaim after sweep", minval=1, maxval=20, group="Detection")
+i_min_ref_range   = input.float(8.0,"Min ref candle range (pts)", minval=0.0, maxval=100.0, step=0.5, group="Detection")
+i_horizon_bars    = input.int  (10, "Outcome tracking horizon (30s bars)", minval=2, maxval=30, group="Detection", tooltip="10 bars = 5 minutes. Each event tracked for this many bars to measure MFE/MAE/time-to-hit.")
+
+i_show_lines      = input.bool (true, "Draw ref H/L", group="Display")
+i_show_marker     = input.bool (true, "Mark reclaim entries", group="Display")
+i_show_stats      = input.bool (true, "Show stats table", group="Display")
+
+tz = "America/New_York"
+
+// ---- HTF context (non-repainting) ------------------------------------------
+htf = "15"
+[h15, l15, c15, o15, t15] = request.security(syminfo.tickerid, htf, [high[1], low[1], close[1], open[1], time[1]], lookahead=barmerge.lookahead_on)
+[prevH15, prevL15, prevC15, prevO15] = request.security(syminfo.tickerid, htf, [high[2], low[2], close[2], open[2]], lookahead=barmerge.lookahead_on)
+ema20_15 = request.security(syminfo.tickerid, htf, ta.ema(close, 20)[1], lookahead=barmerge.lookahead_on)
+ema50_15 = request.security(syminfo.tickerid, htf, ta.ema(close, 50)[1], lookahead=barmerge.lookahead_on)
+ma200_15 = request.security(syminfo.tickerid, htf, ta.sma(close, 200)[1], lookahead=barmerge.lookahead_on)
+atr15    = request.security(syminfo.tickerid, htf, ta.atr(14)[1], lookahead=barmerge.lookahead_on)
+
+// Prior session H/L (daily)
+[pdh, pdl] = request.security(syminfo.tickerid, "D", [high[1], low[1]], lookahead=barmerge.lookahead_on)
+
+vwapSess = ta.vwap(hlc3)
+volAvg   = ta.sma(volume, 20)
+volStd   = ta.stdev(volume, 20)
+
+isNew15m = timeframe.change(htf)
+
+// ---- Session classifier ----------------------------------------------------
+session_of(int bkt) =>
+    bkt >= 930  and bkt <= 1545 ? "NY"      :
+     bkt >= 300  and bkt <= 500  ? "London"  :
+     bkt >= 2000 and bkt <= 2300 ? "Asia"    :
+     bkt >= 1800 and bkt <= 1900 ? "Globex"  : "Other"
+
+// ---- Per-window state ------------------------------------------------------
+var float ref_h        = na
+var float ref_l        = na
+var float ref_mid      = na
+var float ref_rng      = na
+var int   ref_bkt      = na
+var string ref_session = "Other"
+var float prev_rng     = na
+var int   prev_color   = 0   // +1 green, -1 red, 0 doji
+var bool  ref_armed    = false
+
+var bool  lowSwept     = false
+var bool  highSwept    = false
+var float sweepLow     = na
+var float sweepHigh    = na
+var int   sweepBarIdx  = na
+var int   eventTaken   = 0    // 0=none, 1=this window already produced an event
+
+// ---- Active event tracking (max 1 at a time; new sweeps queue) -------------
+var bool   ev_active   = false
+var int    ev_side     = 0       // +1 long (low swept), -1 short (high swept)
+var float  ev_entry    = na
+var int    ev_start    = na
+var int    ev_horizon  = na
+var int    ev_swLag    = na
+var float  ev_swDep    = na
+var float  ev_clLoc    = na
+var float  ev_vwapD    = na
+var int    ev_regSide  = 0
+var int    ev_htfSide  = 0
+var float  ev_pdhD     = na
+var float  ev_pdlD     = na
+var float  ev_volZ     = na
+var float  ev_refRng   = na
+var int    ev_bkt      = na
+var string ev_session  = "Other"
+var int    ev_prevCol  = 0
+var float  ev_prevRng  = na
+// outcome accumulators
+var float  ev_mfe      = 0.0
+var float  ev_mae      = 0.0
+var int    ev_tt6      = 0
+var int    ev_tt10     = 0
+var int    ev_tt15     = 0
+var int    ev_st8      = 0
+
+var int    s_events   = 0     // total emitted events
+
+// ---- Helpers ---------------------------------------------------------------
+sgn_of(float v) =>
+    v > 0 ? 1 : v < 0 ? -1 : 0
+
+emit_event() =>
+    sess_str = ev_session
+    side_str = ev_side > 0 ? "L" : "S"
+    reg_str  = ev_regSide > 0 ? "A" : ev_regSide < 0 ? "B" : "X"   // A=above, B=below, X=na
+    htf_str  = ev_htfSide > 0 ? "U" : ev_htfSide < 0 ? "D" : "F"   // U=up, D=down, F=flat
+    pc_str   = ev_prevCol > 0 ? "G" : ev_prevCol < 0 ? "R" : "D"
+    txt = "EVT" +
+         "|t=" + str.format_time(time, "yyyy-MM-dd'T'HH:mm:ss", tz) +
+         "|sym=" + syminfo.ticker +
+         "|bkt=" + str.tostring(ev_bkt) +
+         "|sess=" + sess_str +
+         "|side=" + side_str +
+         "|refR=" + str.tostring(ev_refRng, "#.##") +
+         "|swDep=" + str.tostring(ev_swDep, "#.##") +
+         "|swLag=" + str.tostring(ev_swLag) +
+         "|clLoc=" + str.tostring(ev_clLoc, "#.###") +
+         "|vwapD=" + str.tostring(ev_vwapD, "#.##") +
+         "|reg=" + reg_str +
+         "|htf=" + htf_str +
+         "|pdhD=" + str.tostring(ev_pdhD, "#.##") +
+         "|pdlD=" + str.tostring(ev_pdlD, "#.##") +
+         "|volZ=" + str.tostring(ev_volZ, "#.##") +
+         "|prevCol=" + pc_str +
+         "|prevRng=" + str.tostring(ev_prevRng, "#.##") +
+         "|mfe=" + str.tostring(ev_mfe, "#.##") +
+         "|mae=" + str.tostring(ev_mae, "#.##") +
+         "|tt6=" + str.tostring(ev_tt6) +
+         "|tt10=" + str.tostring(ev_tt10) +
+         "|tt15=" + str.tostring(ev_tt15) +
+         "|st8=" + str.tostring(ev_st8) +
+         "|hor=" + str.tostring(i_horizon_bars)
+    label.new(bar_index, high, txt, style=label.style_none, color=color.new(color.gray, 100), textcolor=color.gray, size=size.tiny)
+
+// =============================================================================
+// Main loop
+// =============================================================================
+if barstate.isconfirmed
+
+    // ---- New 15m ref candle: capture features, reset window state ---------
+    if isNew15m
+        ref_h := h15
+        ref_l := l15
+        ref_mid := (ref_h + ref_l) / 2.0
+        ref_rng := ref_h - ref_l
+        ref_bkt := hour(t15, tz) * 100 + minute(t15, tz)
+        ref_session := session_of(ref_bkt)
+        prev_rng := prevH15 - prevL15
+        prev_color := prevC15 > prevO15 ? 1 : prevC15 < prevO15 ? -1 : 0
+        ref_armed := ref_rng >= i_min_ref_range
+
+        lowSwept := false
+        highSwept := false
+        sweepLow := na
+        sweepHigh := na
+        sweepBarIdx := na
+        eventTaken := 0
+
+        if ref_armed and i_show_lines
+            line.new(bar_index, ref_h, bar_index + 30, ref_h, color=color.new(color.aqua, 50), width=1)
+            line.new(bar_index, ref_l, bar_index + 30, ref_l, color=color.new(color.aqua, 50), width=1)
+
+    // ---- Sweep + reclaim detection within active window -------------------
+    if not na(ref_h) and ref_armed and eventTaken == 0
+        float buf = i_sweep_buf_ticks * syminfo.mintick
+        if low <= ref_l - buf
+            if not lowSwept
+                lowSwept := true
+                sweepLow := low
+                sweepBarIdx := bar_index
+            else
+                sweepLow := math.min(sweepLow, low)
+        if high >= ref_h + buf
+            if not highSwept
+                highSwept := true
+                sweepHigh := high
+                sweepBarIdx := bar_index
+            else
+                sweepHigh := math.max(sweepHigh, high)
+
+        int bars_since_sweep = na(sweepBarIdx) ? 999 : bar_index - sweepBarIdx
+        bool within_reclaim = bars_since_sweep <= i_reclaim_bars
+
+        // 2-bar reclaim (matches what we tested in v1.2)
+        bool reclaim_long  = lowSwept  and close > ref_l and close[1] > ref_l and within_reclaim
+        bool reclaim_short = highSwept and close < ref_h and close[1] < ref_h and within_reclaim
+
+        if (reclaim_long or reclaim_short) and not ev_active
+            ev_active := true
+            ev_side := reclaim_long ? 1 : -1
+            ev_entry := close
+            ev_start := bar_index
+            ev_horizon := bar_index + i_horizon_bars
+            ev_swLag := bars_since_sweep
+            ev_swDep := reclaim_long ? (ref_l - sweepLow) : (sweepHigh - ref_h)
+            ev_clLoc := ref_rng > 0 ? (close - ref_l) / ref_rng : 0.5
+            ev_vwapD := not na(vwapSess) ? (close - vwapSess) : 0.0
+            ev_regSide := not na(ma200_15) ? (close > ma200_15 ? 1 : -1) : 0
+            ev_htfSide := not na(ema20_15) and not na(ema50_15) ? (ema20_15 > ema50_15 ? 1 : ema20_15 < ema50_15 ? -1 : 0) : 0
+            ev_pdhD := not na(pdh) ? close - pdh : 0.0
+            ev_pdlD := not na(pdl) ? close - pdl : 0.0
+            ev_volZ := not na(volStd) and volStd > 0 ? (volume - volAvg) / volStd : 0.0
+            ev_refRng := ref_rng
+            ev_bkt := ref_bkt
+            ev_session := ref_session
+            ev_prevCol := prev_color
+            ev_prevRng := prev_rng
+            ev_mfe := 0.0
+            ev_mae := 0.0
+            ev_tt6 := 0
+            ev_tt10 := 0
+            ev_tt15 := 0
+            ev_st8 := 0
+            eventTaken := 1
+            if i_show_marker
+                label.new(bar_index, close, ev_side > 0 ? "L" : "S", style=ev_side > 0 ? label.style_label_up : label.style_label_down, color=ev_side > 0 ? color.new(color.green, 30) : color.new(color.red, 30), textcolor=color.white, size=size.tiny)
+
+    // ---- Track active event forward → measure outcomes --------------------
+    if ev_active and bar_index > ev_start
+        int bars_elapsed = bar_index - ev_start
+        float fav = ev_side > 0 ? (high - ev_entry) : (ev_entry - low)
+        float adv = ev_side > 0 ? (ev_entry - low) : (high - ev_entry)
+        ev_mfe := math.max(ev_mfe, fav)
+        ev_mae := math.max(ev_mae, adv)
+        if ev_tt6  == 0 and ev_mfe >= 6.0  and ev_st8 == 0
+            ev_tt6  := bars_elapsed
+        if ev_tt10 == 0 and ev_mfe >= 10.0 and ev_st8 == 0
+            ev_tt10 := bars_elapsed
+        if ev_tt15 == 0 and ev_mfe >= 15.0 and ev_st8 == 0
+            ev_tt15 := bars_elapsed
+        if ev_st8 == 0 and adv >= 8.0
+            ev_st8 := bars_elapsed   // record bar at which 8pt adverse first hit (1 = hit, value = lag)
+
+        if bar_index >= ev_horizon
+            emit_event()
+            s_events += 1
+            ev_active := false
+
+// ---- Stats table -----------------------------------------------------------
+var table stbl = table.new(position.top_right, columns=2, rows=4, bgcolor=color.new(color.black, 60), border_width=1)
+if i_show_stats and barstate.islast
+    table.cell(stbl, 0, 0, "Sweep Logger", text_color=color.white, text_size=size.small)
+    table.cell(stbl, 1, 0, "v1", text_color=color.gray, text_size=size.small)
+    table.cell(stbl, 0, 1, "events emitted", text_color=color.white)
+    table.cell(stbl, 1, 1, str.tostring(s_events), text_color=color.yellow)
+    table.cell(stbl, 0, 2, "horizon (bars)", text_color=color.white)
+    table.cell(stbl, 1, 2, str.tostring(i_horizon_bars), text_color=color.white)
+    table.cell(stbl, 0, 3, "active event", text_color=color.white)
+    table.cell(stbl, 1, 3, ev_active ? "yes" : "no", text_color=ev_active ? color.lime : color.gray)
