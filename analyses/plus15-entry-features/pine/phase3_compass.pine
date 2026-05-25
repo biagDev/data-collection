@@ -592,6 +592,15 @@ in_window = not na(w_magTime) and not na(w_bars) and w_armed and w_bars >= 0 and
 bgcolor(i_show_window_bg and in_window ? i_col_window_bg : na)
 
 // =============================================================================
+// Alerts
+// Fires once at the 15m close when the Compass arms a new window. In TV: right-
+// click chart → Add alert → Condition = "Magnet Compass — Phase 3" →
+// "Compass armed". Message supports placeholders: {{ticker}}, {{time}}, {{close}}.
+// =============================================================================
+armed_signal = barstate.isconfirmed and isNew15m and w_armed
+alertcondition(armed_signal, title="Compass armed", message="Magnet Compass armed on {{ticker}} — bucket close {{close}} @ {{time}}")
+
+// =============================================================================
 // Stats table — user-positioned
 // =============================================================================
 var table stbl = table.new(get_pos(i_stats_pos), columns=2, rows=8, bgcolor=i_col_tbl_bg, border_width=1)
